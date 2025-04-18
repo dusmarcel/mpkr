@@ -1,0 +1,17 @@
+body {
+    background-color: firebrick;
+}
+.graydient {
+    background: linear-gradient(to bottom, #ffffff, #dcdcdc);
+    padding-left: 2px;
+    padding-right: 2px;
+}
+.mb-0 {
+    margin-bottom: 0px;
+}
+.mb-1 {
+    margin-bottom: 1px;
+}
+.mb-2 {
+    margin-bottom: 2px;
+}
