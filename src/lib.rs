@@ -11,6 +11,11 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let change_verfahren = move |ev| set_v.set(Some(event_target_value(&ev).parse::<i32>().unwrap_or(0)));
 
+    let (t, set_t) = query_signal_with_options::<i32>(
+        "t",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_thema = move |ev| set_t.set(Some(event_target_value(&ev).parse::<i32>().unwrap_or(4)));
+
     view! {
         <div class="container max-w-screen-xl mx-auto px-4 bg-linear-to-b from-stone-50 to-stone-300">
             <h1 class="pt-4 text-3xl font-medium">
@@ -44,7 +49,7 @@ pub fn MPKR() -> impl IntoView {
                 Du kannst aber auch manuell selbst Streitwerte angeben."</label>
             </p>
             <p>
-                <select class="border-2 border-stone-400 rounded-lg p-1" aria-label="Auswahl des Themas" id="thema">
+                <select class="border-2 border-stone-400 rounded-lg p-1" aria-label="Auswahl des Themas" id="thema" on:change=change_thema>
                     <option value="0">"Asylrecht: Zulässigkeit (z.B. Dublin, Drittstaatenfall, Folgeantrag)"</option>
                     <option value="1">"Asylrecht: Anerkennungsverfahren"</option>
                     <option value="2">"Asylrecht: Widerruf/Rücknahme"</option>
@@ -57,48 +62,74 @@ pub fn MPKR() -> impl IntoView {
                     <option value="8">"Einbürgerung und Feststellung der Staatsangehörigkeit"</option>
                 </select>
             </p>
-            <div class="">
-                <div class="">
-                    <p><label for="anzahl">"Anzahl Personen"</label></p>
-                </div>
-                <div class="">
-                    <p>"Streitwerte"</p>
-                </div>
-                <div class="">
-                    <p>"Wertgebühr (§ 13 RVG)"</p>
-                </div>
-                <div class="">
-                    <p>"Wertgebühr (§ 49 RVG / Prozesskostenhilfe)"</p>
-                </div>
-                <div class="">
-                    <p>"Differenz"</p>
-                </div>
-                <div class="">
-                    <p>"Wertgebühr (GKG)"</p>
-                </div>
-            </div>
-            <div class="">
-                <div class=""></div>
-                <div class="">{move || match v.get().unwrap_or(0) {
-                        0 => "Hauptsache",
-                        1 => "vorläufiger Rechtsschutz",
-                        _ => "Hauptsache"
-                    }
-                }</div>
-                <div class=""></div>
-            </div>
-            <div class="">
-                <div class="">
-                    <input type="number" class="form-control" min="1" value="1" id="anzahl" />
-                    <button popovertarget="zahl-der-personen">i</button>
-                    <div id="zahl-der-personen" popover>
-                        <h4>Zahl der Personen</h4>
-                        <p>{PERSONS}</p>
-                    </div>
-                        // data-bs-toggle="popover"
-                        // data-bs-trigger="hover" title="Die Zahl der Personen"
-                        // data-bs-content=PERSONS />
-                </div>
+            <div>
+                <table class="table-auto">
+                    <thead>
+                        <tr class="text-left">
+                            <th class="px-1">
+                                <label for="anzahl">"Anzahl Personen"</label>
+                            </th>
+                            <th class="px-1">
+                                "Streitwerte"
+                            </th>
+                            <th class="px-1">
+                                "Wertgebühr (§ 13 RVG)"
+                            </th>
+                            <th class="px-1">
+                                "Wertgebühr (§ 49 RVG / Prozesskostenhilfe)"
+                            </th>
+                            // <th class="px-1">
+                            //     "Differenz"
+                            // </th>
+                            <th class="px-1">
+                                "Wertgebühr (GKG)"
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                            </td>
+                            <td  class="px-1">
+                                {move || match v.get().unwrap_or(0) {
+                                    0 => "Hauptsache",
+                                    1 => "vorläufiger Rechtsschutz",
+                                    _ => "Hauptsache"
+                                }}
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            //<td>
+                            //</td>
+                        </tr>
+                        <tr>
+                            <td class="px-1">
+                                <input type="number" min="1" value="1" id="anzahl" class="border-2 border-stone-400 rounded-lg px-1" />
+                                <button popovertarget="zahl-der-personen" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
+                                <div id="zahl-der-personen" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                                    <h4 class="text-xl font-medium">Zahl der Personen</h4>
+                                    <p>{PERSONS}</p>
+                                </div>
+                            </td>
+                            <td class="px-1">
+                                <input type="text" class="border-2 border-stone-400 rounded-lg px-1" value="5.000,00" id="streitwert" />
+                                EUR
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>                            
+                        </tr>
+                    </tbody>
+                </table>
             //     <div class="col-3 d-grid align-items-center">
             //       <div id="div_streitwert">
             //         <div class="input-group">

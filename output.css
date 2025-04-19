@@ -15,6 +15,8 @@
     --color-stone-400: oklch(70.9% 0.01 56.259);
     --spacing: 0.25rem;
     --breakpoint-xl: 80rem;
+    --text-xl: 1.25rem;
+    --text-xl--line-height: calc(1.75 / 1.25);
     --text-2xl: 1.5rem;
     --text-2xl--line-height: calc(2 / 1.5);
     --text-3xl: 1.875rem;
@@ -204,11 +206,17 @@
   .mx-auto {
     margin-inline: auto;
   }
+  .ml-1 {
+    margin-left: calc(var(--spacing) * 1);
+  }
   .contents {
     display: contents;
   }
   .max-w-screen-xl {
     max-width: var(--breakpoint-xl);
+  }
+  .table-auto {
+    table-layout: auto;
   }
   .rounded-lg {
     border-radius: var(--radius-lg);
@@ -241,11 +249,17 @@
   .p-1 {
     padding: calc(var(--spacing) * 1);
   }
+  .px-1 {
+    padding-inline: calc(var(--spacing) * 1);
+  }
   .px-4 {
     padding-inline: calc(var(--spacing) * 4);
   }
   .pt-4 {
     padding-top: calc(var(--spacing) * 4);
+  }
+  .text-left {
+    text-align: left;
   }
   .text-2xl {
     font-size: var(--text-2xl);
@@ -255,12 +269,47 @@
     font-size: var(--text-3xl);
     line-height: var(--tw-leading, var(--text-3xl--line-height));
   }
+  .text-xl {
+    font-size: var(--text-xl);
+    line-height: var(--tw-leading, var(--text-xl--line-height));
+  }
   .font-medium {
     --tw-font-weight: var(--font-weight-medium);
     font-weight: var(--font-weight-medium);
   }
   .text-blue-600 {
     color: var(--color-blue-600);
+  }
+  .open\:mx-60 {
+    &:is([open], :popover-open, :open) {
+      margin-inline: calc(var(--spacing) * 60);
+    }
+  }
+  .open\:mt-60 {
+    &:is([open], :popover-open, :open) {
+      margin-top: calc(var(--spacing) * 60);
+    }
+  }
+  .open\:rounded-lg {
+    &:is([open], :popover-open, :open) {
+      border-radius: var(--radius-lg);
+    }
+  }
+  .open\:border-2 {
+    &:is([open], :popover-open, :open) {
+      border-style: var(--tw-border-style);
+      border-width: 2px;
+    }
+  }
+  .open\:border-stone-400 {
+    &:is([open], :popover-open, :open) {
+      border-color: var(--color-stone-400);
+    }
+  }
+  .open\:p-2 {
+    &:is([open], :popover-open, :open) {
+      padding: calc(var(--spacing) * 2);
+    }
   }
   .hover\:text-violet-600 {
     &:hover {
