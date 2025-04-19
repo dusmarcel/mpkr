@@ -60,29 +60,29 @@ pub fn MPKR() -> impl IntoView {
                             <p><label for="anzahl">"Anzahl Personen"</label></p>
                         </div>
                         <div class="col-2">
-                            <p><label>"Streitwerte"</label></p>
+                            <p>"Streitwerte"</p>
                         </div>
                         <div class="col-2">
-                            <p><label>"Wertgebühr (§ 13 RVG)"</label></p>
+                            <p>"Wertgebühr (§ 13 RVG)"</p>
                         </div>
                         <div class="col-2">
-                            <p><label>"Wertgebühr (§ 49 RVG / Prozesskostenhilfe)"</label></p>
+                            <p>"Wertgebühr (§ 49 RVG / Prozesskostenhilfe)"</p>
                         </div>
                         <div class="col-2">
-                            <p><label>"Differenz"</label></p>
+                            <p>"Differenz"</p>
                         </div>
                         <div class="col-2">
-                            <p><label>"Wertgebühr (GKG)"</label></p>
+                            <p>"Wertgebühr (GKG)"</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-2"></div>
-                        <div class="col-2"><label>{move || match v.get().unwrap_or(0) {
+                        <div class="col-2">{move || match v.get().unwrap_or(0) {
                                 0 => "Hauptsache",
                                 1 => "vorläufiger Rechtsschutz",
                                 _ => "Hauptsache"
                             }
-                        }</label></div>
+                        }</div>
                         <div class="col-8"></div>
                     </div>
                 </div>
