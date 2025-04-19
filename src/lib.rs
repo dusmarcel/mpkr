@@ -49,7 +49,7 @@ pub fn MPKR() -> impl IntoView {
                 Du kannst aber auch manuell selbst Streitwerte angeben."</label>
             </p>
             <p>
-                <select class="border-2 border-stone-400 rounded-lg p-1" aria-label="Auswahl des Themas" id="thema" on:change=change_thema>
+                <select class="border-2 border-stone-400 rounded-lg p-1" aria-label="Auswahl des Themas" id="thema" on:change=change_thema prop:value=move || t.get().unwrap_or(4).to_string() >
                     <option value="0">"Asylrecht: Zulässigkeit (z.B. Dublin, Drittstaatenfall, Folgeantrag)"</option>
                     <option value="1">"Asylrecht: Anerkennungsverfahren"</option>
                     <option value="2">"Asylrecht: Widerruf/Rücknahme"</option>
@@ -78,9 +78,6 @@ pub fn MPKR() -> impl IntoView {
                             <th class="px-1">
                                 "Wertgebühr (§ 49 RVG / Prozesskostenhilfe)"
                             </th>
-                            // <th class="px-1">
-                            //     "Differenz"
-                            // </th>
                             <th class="px-1">
                                 "Wertgebühr (GKG)"
                             </th>
@@ -103,8 +100,6 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td>
                             </td>
-                            //<td>
-                            //</td>
                         </tr>
                         <tr>
                             <td class="px-1">
@@ -112,11 +107,11 @@ pub fn MPKR() -> impl IntoView {
                                 <button popovertarget="zahl-der-personen" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
                                 <div id="zahl-der-personen" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
                                     <h4 class="text-xl font-medium">Zahl der Personen</h4>
-                                    <p>{PERSONS}</p>
+                                    <p>{ PERSONS }</p>
                                 </div>
                             </td>
                             <td class="px-1">
-                                <input type="text" class="border-2 border-stone-400 rounded-lg px-1" value="5.000,00" id="streitwert" />
+                                <input type="text" class="border-2 border-stone-400 rounded-lg px-1" value=move || t.get().unwrap_or(5000).to_string() />
                                 EUR
                             </td>
                             <td>
@@ -124,9 +119,7 @@ pub fn MPKR() -> impl IntoView {
                             <td>
                             </td>
                             <td>
-                            </td>
-                            <td>
-                            </td>                            
+                            </td>                      
                         </tr>
                     </tbody>
                 </table>
