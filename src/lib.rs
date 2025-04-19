@@ -1,12 +1,14 @@
 use leptos::prelude::*;
-use leptos_router::hooks::query_signal;
+use leptos_router::{hooks::query_signal_with_options, location::State, NavigateOptions};
 
 mod popover;
 use popover::*;
 
 #[component]
 pub fn MPKR() -> impl IntoView {
-    let (v, set_v) = query_signal::<i32>("v");
+    let (v, set_v) = query_signal_with_options::<i32>(
+        "v", 
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let change_verfahren = move |ev| set_v.set(Some(event_target_value(&ev).parse::<i32>().unwrap_or(0)));
 
     view! {
