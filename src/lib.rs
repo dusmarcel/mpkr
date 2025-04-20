@@ -2,10 +2,7 @@ use leptos::prelude::*;
 use leptos_router::{hooks::query_signal_with_options, location::State, NavigateOptions};
 
 mod popover;
-use popover::*;
-
 mod fees;
-use fees::*;
 
 #[component]
 pub fn MPKR() -> impl IntoView {
@@ -14,21 +11,40 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let change_verfahren = move |ev| set_v.set(Some(event_target_value(&ev).parse::<u32>().unwrap_or(0)));
 
+    let (t_changed, set_t_changed) = signal(false);
     let (t, set_t) = query_signal_with_options::<u32>(
         "t",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_thema = move |ev| set_t.set(Some(event_target_value(&ev).parse::<u32>().unwrap_or(4)));
+    let change_thema = move |ev| {
+        set_t.set(Some(event_target_value(&ev).parse::<u32>().unwrap_or(4)));
+        set_t_changed.set(true);
+    };
 
+    let (p_changed, set_p_changed) = signal(false);
     let (p, set_p) = query_signal_with_options::<u32>(
         "p",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_personen = move |ev| set_p.set(Some(event_target_value(&ev).parse::<u32>().unwrap_or(1)));
+    let change_personen = move |ev| {
+        set_p.set(Some(event_target_value(&ev).parse::<u32>().unwrap_or(1)));
+        set_p_changed.set(true);
+    };
     
-    let (s, set_s) = query_signal_with_options::<u32>(
+    let (s, set_s) = query_signal_with_options::<f64>(
         "s",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_streitwert = move |ev| set_s.set(Some(event_target_value(&ev).parse::<u32>().unwrap_or(AUFFANGSTREITWERT)));
-    
+    let change_streitwert = move |ev| set_s.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(fees::AUFFANGSTREITWERT)));
+
+    let (sv, set_sv) = query_signal_with_options::<f64>(
+        "sv",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_streitwert_vorl = move |ev| set_sv.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(fees::AUFFANGSTREITWERT / 2.0)));
+
+    Effect::new(move |_| {
+        if t_changed.get() || p_changed.get() {
+            set_s.set(Some(fees::default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1))));
+            set_sv.set(Some(fees::default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1)) / 2.0));
+        }
+    });
 
     view! {
         <div class="container max-w-screen-xl mx-auto px-4 bg-linear-to-b from-stone-50 to-stone-300">
@@ -101,7 +117,7 @@ pub fn MPKR() -> impl IntoView {
                         <tr>
                             <td></td>
                             <td  class="px-1">
-                                {move || match v.get().unwrap_or(0) {
+                                { move || match v.get().unwrap_or(0) {
                                     0 => "Hauptsache",
                                     1 => "vorläufiger Rechtsschutz",
                                     _ => "Hauptsache"
@@ -117,71 +133,68 @@ pub fn MPKR() -> impl IntoView {
                                 <button popovertarget="zahl-der-personen" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
                                 <div id="zahl-der-personen" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
                                     <h4 class="text-xl font-medium">Zahl der Personen</h4>
-                                    <p>{ PERSONS }</p>
+                                    <p>{ popover::PERSONS }</p>
                                 </div>
                             </td>
                             <td class="px-1">
                                 <input
-                                    type="text"
-                                    class="border-2 border-stone-400 rounded-lg px-1"
-                                    value=move || if let Some(s) = s.get() {
-                                        s
-                                    } else {
-                                        default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1))
-                                    }
+                                    type="number"
+                                    class="px-1 border-2 border-stone-400 rounded-lg text-right"
+                                    value=move || s.get().unwrap_or(fees::default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1)))
                                     on:change=change_streitwert
+                                    prop:value=move || s.get().unwrap_or(fees::AUFFANGSTREITWERT)
                                 />
                                 EUR
                             </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>                      
+                            <td class="px-1 text-right">
+                                { move || fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT)) }
+                                EUR
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT)) }
+                                EUR
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT)) }
+                                EUR
+                            </td>                     
                         </tr>
-                        <tr class=move || if v.get().unwrap_or(0) == 2 { "visible" } else { "invisible" }>
+                        <tr class=move || if v.get().unwrap_or(0) == 2 { "visible" } else { "collapse" }>
                             <td></td>
                             <td class="px-1">
                                 vorläufiger Rechtsschutz
                             </td>
                             <td></td>
                             <td></td>
-                            <td></td>
+                            <td></td> 
                         </tr>
-                        <tr class=move || if v.get().unwrap_or(0) == 2 { "visible" } else { "invisible" }>
+                        <tr class=move || if v.get().unwrap_or(0) == 2 { "visible" } else { "collapse" }>
                             <td></td>
                             <td class="px-1">
-                                <input type="text" class="border-2 border-stone-400 rounded-lg px-1" value=move || default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1)) / 2 />
+                                <input
+                                    type="number"
+                                    class="px-1 border-2 border-stone-400 rounded-lg text-right"
+                                    value=move || sv.get().unwrap_or(fees::default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1)) / 2.0)
+                                    on:change=change_streitwert_vorl
+                                    prop:value=move || sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0)
+                                />
                                 EUR                                
                             </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td class="px-1 text-right">
+                                { move || fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0)) }
+                                EUR
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0)) }
+                                EUR
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0)) }
+                                EUR
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-            //     <div class="col-3 d-grid align-items-center">
-            //       <div id="div_streitwert">
-            //         <div class="input-group">
-            //           <input type="text" class="form-control" value="5.000,00" id="streitwert">
-            //           <label class="input-group-text" for="streitwert">EUR</label>
-            //         </div>
-            //       </div>
-            //     </div>
-            //     <div class="col-2 d-grid align-items-center" id="l_geb13_1"></div>
-            //     <div class="col-3 d-grid align-items-center" id="l_geb49_1"></div>
-            //     <div class="col-2 d-grid align-items-center" id="l_gkg_1"></div>
-            //     <div class="col-1"></div>
-            //   </div>
-            //   <div class="row collapse" id="div_streitwert_v">
-            //     <div class="col-2"></div>
-            //     <div class="col-3 d-grid align-items-center">
-            //       <div class="input-group">
-            //         <input type="text" class="form-control" value="2.500,00" id="streitwert_v">
-            //         <label class="input-group-text" for="streitwert_v">EUR</label>
-            //       </div>
-            //     </div>
-            //     <div class="col-2 d-grid align-items-center" id="l_geb13_2"></div>
-            //     <div class="col-3 d-grid align-items-center" id="l_geb49_2"></div>
-            //     <div class="col-2 d-grid align-items-center" id="l_gkg_2"></div>
             </div>
         </div>
         <div class="container max-w-screen-xl mx-auto px-4 bg-linear-to-b from-stone-50 to-stone-300">
