@@ -4,17 +4,31 @@ use leptos_router::{hooks::query_signal_with_options, location::State, NavigateO
 mod popover;
 use popover::*;
 
+mod fees;
+use fees::*;
+
 #[component]
 pub fn MPKR() -> impl IntoView {
-    let (v, set_v) = query_signal_with_options::<i32>(
+    let (v, set_v) = query_signal_with_options::<u32>(
         "v", 
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_verfahren = move |ev| set_v.set(Some(event_target_value(&ev).parse::<i32>().unwrap_or(0)));
+    let change_verfahren = move |ev| set_v.set(Some(event_target_value(&ev).parse::<u32>().unwrap_or(0)));
 
-    let (t, set_t) = query_signal_with_options::<i32>(
+    let (t, set_t) = query_signal_with_options::<u32>(
         "t",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_thema = move |ev| set_t.set(Some(event_target_value(&ev).parse::<i32>().unwrap_or(4)));
+    let change_thema = move |ev| set_t.set(Some(event_target_value(&ev).parse::<u32>().unwrap_or(4)));
+
+    let (p, set_p) = query_signal_with_options::<u32>(
+        "p",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_personen = move |ev| set_p.set(Some(event_target_value(&ev).parse::<u32>().unwrap_or(1)));
+    
+    let (s, set_s) = query_signal_with_options::<u32>(
+        "s",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_streitwert = move |ev| set_s.set(Some(event_target_value(&ev).parse::<u32>().unwrap_or(AUFFANGSTREITWERT)));
+    
 
     view! {
         <div class="container max-w-screen-xl mx-auto px-4 bg-linear-to-b from-stone-50 to-stone-300">
@@ -99,7 +113,7 @@ pub fn MPKR() -> impl IntoView {
                         </tr>
                         <tr>
                             <td class="px-1">
-                                <input type="number" min="1" value="1" id="anzahl" class="border-2 border-stone-400 rounded-lg px-1" />
+                                <input type="number" min="1" value=move || p.get().unwrap_or(1) class="border-2 border-stone-400 rounded-lg px-1" on:change=change_personen />
                                 <button popovertarget="zahl-der-personen" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
                                 <div id="zahl-der-personen" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
                                     <h4 class="text-xl font-medium">Zahl der Personen</h4>
@@ -107,7 +121,16 @@ pub fn MPKR() -> impl IntoView {
                                 </div>
                             </td>
                             <td class="px-1">
-                                <input type="text" class="border-2 border-stone-400 rounded-lg px-1" value=move || t.get().unwrap_or(5000) />
+                                <input
+                                    type="text"
+                                    class="border-2 border-stone-400 rounded-lg px-1"
+                                    value=move || if let Some(s) = s.get() {
+                                        s
+                                    } else {
+                                        default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1))
+                                    }
+                                    on:change=change_streitwert
+                                />
                                 EUR
                             </td>
                             <td></td>
@@ -125,7 +148,10 @@ pub fn MPKR() -> impl IntoView {
                         </tr>
                         <tr class=move || if v.get().unwrap_or(0) == 2 { "visible" } else { "invisible" }>
                             <td></td>
-                            <td></td>
+                            <td class="px-1">
+                                <input type="text" class="border-2 border-stone-400 rounded-lg px-1" value=move || default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1)) / 2 />
+                                EUR                                
+                            </td>
                             <td></td>
                             <td></td>
                             <td></td>
