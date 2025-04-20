@@ -140,11 +140,11 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1">
                                 <input
-                                    type="number"
+                                    type="text"
                                     class="px-1 border-2 border-stone-400 rounded-lg text-right"
                                     value=move || s.get().unwrap_or(fees::default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1)))
                                     on:change=change_streitwert
-                                    prop:value=move || s.get().unwrap_or(fees::AUFFANGSTREITWERT)
+                                    prop:value=move || format_euro(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
                                 />
                                 EUR
                             </td>
@@ -174,11 +174,11 @@ pub fn MPKR() -> impl IntoView {
                             <td></td>
                             <td class="px-1">
                                 <input
-                                    type="number"
+                                    type="text"
                                     class="px-1 border-2 border-stone-400 rounded-lg text-right"
                                     value=move || sv.get().unwrap_or(fees::default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1)) / 2.0)
                                     on:change=change_streitwert_vorl
-                                    prop:value=move || sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0)
+                                    prop:value=move || format_euro(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
                                 />
                                 EUR                                
                             </td>
