@@ -146,19 +146,19 @@ pub fn MPKR() -> impl IntoView {
                                     on:change=change_streitwert
                                     prop:value=move || format_euro(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
                                 />
-                                EUR
+                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))) }
-                                EUR
+                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))) }
-                                EUR
+                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))) }
-                                EUR
+                                <span class="ml-1">EUR</span>
                             </td>                     
                         </tr>
                         <tr class=move || if v.get().unwrap_or(0) == 2 { "visible" } else { "collapse" }>
@@ -180,19 +180,19 @@ pub fn MPKR() -> impl IntoView {
                                     on:change=change_streitwert_vorl
                                     prop:value=move || format_euro(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
                                 />
-                                EUR                                
+                                <span class="ml-1">EUR</span>                                
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))) }
-                                EUR
+                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))) }
-                                EUR
+                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))) }
-                                EUR
+                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                     </tbody>
