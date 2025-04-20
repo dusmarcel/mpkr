@@ -48,6 +48,11 @@ pub fn MPKR() -> impl IntoView {
         }
     });
 
+    let (a, set_a) = query_signal_with_options::<bool>(
+        "a",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_aussergerichtlich = move |ev| set_a.set(Some(event_target_checked(&ev)));
+
     view! {
         <div class="container max-w-screen-xl mx-auto px-4 bg-linear-to-b from-stone-50 to-stone-300">
             <h1 class="pt-4 text-3xl font-medium">
@@ -199,17 +204,92 @@ pub fn MPKR() -> impl IntoView {
                 </table>
             </div>
         </div>
-//         <div class="container border border-5 rounded p-4 m-4">
-//             <h2>Außergerichtliche Vertretung</h2>
-//             <p>
-//               <input type="checkbox" id="aussergerichtlich" data-bs-toggle="popover" data-bs-trigger="hover"
-//                 title="Außergerichtliche Vertretung"
-//                 data-bs-content="Kann nur ausgewählt werden, wenn oben nicht „Nur Verfahren zum vorläufigen Rechtsschutz“ ausgewählt wurde">
-//               <label for="aussergerichtlich" data-bs-toggle="popover" data-bs-trigger="hover"
-//                 title="Außergerichtliche Vertretung"
-//                 data-bs-content="Kann nur ausgewählt werden, wenn oben nicht „Nur Verfahren zum vorläufigen Rechtsschutz“ ausgewählt wurde">Außergerichtliche
-//                 Vertretung</label>
-//             </p>
+        <div class="container max-w-screen-xl mx-auto px-4 bg-linear-to-b from-stone-50 to-stone-300">
+            <h2 class="pt-4 text-2xl font-medium">
+                "Außergerichtliche Vertretung"
+            </h2>
+            <p>
+                <input
+                    type="checkbox"
+                    id="aussergerichtlich"
+                    on:change=change_aussergerichtlich
+                    prop:checked=move || a.get().unwrap_or(false)
+                />
+                <label for="aussergerichtlich" class="ml-1">Außergerichtliche Vertretung</label>
+                <button popovertarget="aussergerichtliche-vertretung" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
+                <div id="aussergerichtliche-vertretung" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                    <h4 class="text-xl font-medium">Außergerichtliche Vertretung</h4>
+                    <p>{ popover::AUSSERGERICHTLICH }</p>
+                </div>            
+            </p>
+            <p class=move || if a.get().unwrap_or(false) { "visible" } else { "collapse" }>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="px-1 font-semibold">Geschäftsgebühr, Nr. 2300 VV RVG</td>
+                            <td class="px-1">
+                                Gebührensatz
+                                <button popovertarget="gebuehrensatz" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
+                                <div id="gebuehrensatz" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                                    <h4 class="text-xl font-medium">Gebührensatz für die Geschäftsgebühr</h4>
+                                    <p>{ popover::GEBUEHRENSATZ }</p>
+                                </div>    
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="px-1 font-semibold">Auslagenpauschale, Nr. 7002 VV RVG</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="px-1">
+                                <span class="font-semibold">Sonstige Auslagen, z. B. Nr. 7000, 7003 ff. VV RVG</span>
+                                <button popovertarget="auslagen" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
+                                <div id="auslagen" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                                    <h4 class="text-xl font-medium">Sonstige Auslagen</h4>
+                                    <p>"Zum Beispiel:"
+                                        <ul>
+                                            <li>"7000 Pauschale für die Herstellung und Überlassung von Dokumenten:"
+                                                <ul>
+                                                    <li>"für Kopien und Ausdrucke"</li>        
+                                                    <li>"für die ersten 50 abzurechnenden Seiten je Seite 0,50 EUR"</li>
+                                                    <li>"für jede weitere Seite 0,15 EUR"</li>
+                                                    <li>"für die ersten 50 abzurechnenden Seiten in Farbe je Seite 1,00 EUR"</li>
+                                                    <li>"für jede weitere Seite in Farbe 0,30 EUR"</li>
+                                                </ul>
+                                            </li>
+                                            <li>"7003 Fahrtkosten für eine Geschäftsreise bei Benutzung eines eigenen Kraftfahrzeugs für jeden gefahrenen Kilometer 0,42 EUR."</li>
+                                            <li>"7004 Fahrtkosten für eine Geschäftsreise bei Benutzung eines anderen Verkehrsmittels, soweit sie angemessen sind in voller Höhe."</li>
+                                            <li>"7005 Tage- und Abwesenheitsgeld bei einer Geschäftsreise"
+                                                <ol>
+                                                    <li>"von nicht mehr als 4 Stunden 30,00 EUR"</li>
+                                                    <li>"von mehr als 4 bis 8 Stunden 50,00 EUR"</li>
+                                                    <li>"von mehr als 8 Stunden 80,00 EUR"</li>
+                                                </ol>
+                                                    "Bei Auslandsreisen kann zu diesen Beträgen ein Zuschlag von 50 % berechnet werden."</li>
+                                                    <li>"7006 Sonstige Auslagen (z.B. Hotel) anlässlich einer Geschäftsreise, soweit sie angemessen sind in voller Höhe."</li>
+                                                    "Die Umsatzsteuer (Nr. 7008) VV RVG wird unten, unter „Summe“ berechnet."
+                                        </ul>
+                                    </p>
+                                </div>  
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>                        
+                        <tr>
+                            <td class="px-1 font-semibold italic">Summe</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>  
+                    </tbody>
+                </table>
+            </p>
+        </div>
 //             <div class="collapse" id="div_aussergerichtlich">
 //               <div class="row">
 //                 <div class="col">
