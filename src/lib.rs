@@ -39,9 +39,9 @@ pub fn MPKR() -> impl IntoView {
             </p>
             <p>
                 <select class="border-2 border-stone-400 rounded-lg p-1" aria-label="Auswahl der Verfahrensart" id="verfahren" on:change=change_verfahren>
-                    <option value="0" selected=true>"Nur Hauptsacheverfahren"</option>
-                    <option value="1">"Nur Verfahren zum vorläufigen Rechtsschutz"</option>
-                    <option value="2">"Hauptsacheverfahren und Verfahren zum vorläufigen Rechtsschutz"</option>
+                    <option value="0" selected=move || v.get().unwrap_or(0) == 0>"Nur Hauptsacheverfahren"</option>
+                    <option value="1" selected=move || v.get().unwrap_or(0) == 1>"Nur Verfahren zum vorläufigen Rechtsschutz"</option>
+                    <option value="2" selected=move || v.get().unwrap_or(0) == 2>"Hauptsacheverfahren und Verfahren zum vorläufigen Rechtsschutz"</option>
                 </select>
             </p>
             <p>
@@ -49,17 +49,17 @@ pub fn MPKR() -> impl IntoView {
                 Du kannst aber auch manuell selbst Streitwerte angeben."</label>
             </p>
             <p>
-                <select class="border-2 border-stone-400 rounded-lg p-1" aria-label="Auswahl des Themas" id="thema" on:change=change_thema prop:value=move || t.get().unwrap_or(4).to_string() >
-                    <option value="0">"Asylrecht: Zulässigkeit (z.B. Dublin, Drittstaatenfall, Folgeantrag)"</option>
-                    <option value="1">"Asylrecht: Anerkennungsverfahren"</option>
-                    <option value="2">"Asylrecht: Widerruf/Rücknahme"</option>
-                    <option value="3">"Asylrecht: Untätigkeitsklage"</option>
-                    <option value="4" selected=true>"Aufenthaltsrecht: Aufenthaltstitel inkl. Untätigkeitsklage"</option>
-                    <option value="5">"Ausweisung"</option>
-                    <option value="6">"Pass/Passersatz"</option>
-                    <option value="7">"Aufenthaltsrecht: Duldung und Abschiebung inkl. Ausbildungs-/Beschäftigungsduldung,
+                <select class="border-2 border-stone-400 rounded-lg p-1" aria-label="Auswahl des Themas" id="thema" on:change=change_thema>
+                    <option value="0" selected=move || t.get().unwrap_or(4) == 0>"Asylrecht: Zulässigkeit (z.B. Dublin, Drittstaatenfall, Folgeantrag)"</option>
+                    <option value="1" selected=move || t.get().unwrap_or(4) == 1>"Asylrecht: Anerkennungsverfahren"</option>
+                    <option value="2" selected=move || t.get().unwrap_or(4) == 2>"Asylrecht: Widerruf/Rücknahme"</option>
+                    <option value="3" selected=move || t.get().unwrap_or(4) == 3>"Asylrecht: Untätigkeitsklage"</option>
+                    <option value="4" selected=move || t.get().unwrap_or(4) == 4>"Aufenthaltsrecht: Aufenthaltstitel inkl. Untätigkeitsklage"</option>
+                    <option value="5" selected=move || t.get().unwrap_or(4) == 5>"Ausweisung"</option>
+                    <option value="6" selected=move || t.get().unwrap_or(4) == 6>"Pass/Passersatz"</option>
+                    <option value="7" selected=move || t.get().unwrap_or(4) == 7>"Aufenthaltsrecht: Duldung und Abschiebung inkl. Ausbildungs-/Beschäftigungsduldung,
                         Untätigkeitsklage"</option>
-                    <option value="8">"Einbürgerung und Feststellung der Staatsangehörigkeit"</option>
+                    <option value="8" selected=move || t.get().unwrap_or(4) == 8>"Einbürgerung und Feststellung der Staatsangehörigkeit"</option>
                 </select>
             </p>
             <div>
@@ -85,8 +85,7 @@ pub fn MPKR() -> impl IntoView {
                     </thead>
                     <tbody>
                         <tr>
-                            <td>
-                            </td>
+                            <td></td>
                             <td  class="px-1">
                                 {move || match v.get().unwrap_or(0) {
                                     0 => "Hauptsache",
@@ -94,12 +93,9 @@ pub fn MPKR() -> impl IntoView {
                                     _ => "Hauptsache"
                                 }}
                             </td>
-                            <td>
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td class="px-1">
@@ -111,15 +107,28 @@ pub fn MPKR() -> impl IntoView {
                                 </div>
                             </td>
                             <td class="px-1">
-                                <input type="text" class="border-2 border-stone-400 rounded-lg px-1" value=move || t.get().unwrap_or(5000).to_string() />
+                                <input type="text" class="border-2 border-stone-400 rounded-lg px-1" value=move || t.get().unwrap_or(5000) />
                                 EUR
                             </td>
-                            <td>
+                            <td></td>
+                            <td></td>
+                            <td></td>                      
+                        </tr>
+                        <tr class=move || if v.get().unwrap_or(0) == 2 { "visible" } else { "invisible" }>
+                            <td></td>
+                            <td class="px-1">
+                                vorläufiger Rechtsschutz
                             </td>
-                            <td>
-                            </td>
-                            <td>
-                            </td>                      
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class=move || if v.get().unwrap_or(0) == 2 { "visible" } else { "invisible" }>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
@@ -135,17 +144,6 @@ pub fn MPKR() -> impl IntoView {
             //     <div class="col-3 d-grid align-items-center" id="l_geb49_1"></div>
             //     <div class="col-2 d-grid align-items-center" id="l_gkg_1"></div>
             //     <div class="col-1"></div>
-            //   </div>
-            //   <div class="row collapse" id="div_l_streitwert_v">
-            //     <p>
-            //     <div class="col-2"></div>
-            //     <div class="col-3">
-            //       <div>
-            //         <label for="streitwert_v">vorläufiger Rechtsschutz</label>
-            //       </div>
-            //     </div>
-            //     <div class="col"></div>
-            //     </p>
             //   </div>
             //   <div class="row collapse" id="div_streitwert_v">
             //     <div class="col-2"></div>
