@@ -1,3 +1,3 @@
 pub const PERSONS: &str = "Es geht um die Zahl der Personen, die in einem Verfahren zusammengefasst werden. Das trifft beispielsweise häufig auf Eheleute oder Eltern mit minderjährigen Kindern zu. Volljährige Kinder, Geschwister und Partner*innen laufen hingegen regelmäßig in eigenen Verfahren. In diesem Falle hat man mehrere Verfahren mit entsprechend niedrigerer Anzahl von Personen bzw. nur einzeln Personen.";
-pub const AUSSERGERICHTLICH: &str = "Kann nur ausgewählt werden, wenn oben nicht „Nur Verfahren zum vorläufigen Rechtsschutz“ ausgewählt wurde.";
+pub const AUSSERGERICHTLICH: &str = "Wird ignoriert, wenn oben „Nur Verfahren zum vorläufigen Rechtsschutz“ ausgewählt wurde.";
 pub const GEBUEHRENSATZ: &str = "Eine Gebühr von mehr als 1,3 kann nur gefordert werden, wenn die Tätigkeit umfangreich oder schwierig war. Wenn du dir unsicher bist, wähle 1,3.";

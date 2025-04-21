@@ -118,3 +118,11 @@ pub fn gkg_geb(thema: u32, streitwert: f64) -> f64 {
         gkg_geb
     }
 }
+
+pub fn pauschale(gebuehren: f64) -> f64 {
+    if gebuehren * 0.2 > 20.0 {
+        20.0
+    } else {
+        gebuehren * 0.2
+    }
+}

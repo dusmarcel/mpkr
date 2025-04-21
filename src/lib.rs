@@ -1,3 +1,4 @@
+use fees::pauschale;
 use leptos::prelude::*;
 use leptos_router::{hooks::query_signal_with_options, location::State, NavigateOptions};
 
@@ -8,6 +9,7 @@ use utils::format_euro;
 
 #[component]
 pub fn MPKR() -> impl IntoView {
+    // Allgemeine Einstellungen zum Streitwert
     let (v, set_v) = query_signal_with_options::<u32>(
         "v", 
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
@@ -48,10 +50,54 @@ pub fn MPKR() -> impl IntoView {
         }
     });
 
+    // aussgerichtliche Vertretung
     let (a, set_a) = query_signal_with_options::<bool>(
         "a",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_aussergerichtlich = move |ev| set_a.set(Some(event_target_checked(&ev)));
+    let change_aussergerichtlich = move |ev| {
+        if v.get().unwrap_or(0) != 1 {
+            set_a.set(Some(event_target_checked(&ev)));
+        } else {
+            set_a.set(Some(false));
+        }
+    };
+
+    let (g, set_g) = query_signal_with_options::<bool>(
+        "g",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_geschaeftsgebuehr = move |ev| set_g.set(Some(event_target_checked(&ev)));
+
+    let (gs, set_gs) = query_signal_with_options::<f64>(
+        "gs",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_gebuehrensatz = move |ev| set_gs.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(1.3))); 
+
+    let n2300 = Memo::new( move |_| {
+        gs.get().unwrap_or(1.3) * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+    });
+
+    let (ap, set_ap) = query_signal_with_options::<bool>(
+        "ap",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_a_pauschale = move |ev| set_ap.set(Some(event_target_checked(&ev)));
+
+    let (aa, set_aa) = query_signal_with_options::<bool>(
+        "aa",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_a_auslagen = move |ev| set_aa.set(Some(event_target_checked(&ev)));
+
+    let (asa, set_asa) = query_signal_with_options::<f64>(
+        "asa",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_aussergerichtlich_sonstige_auslagen = move |ev| set_asa.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(0.0))); 
+
+    let summe_aussergerichtlich = Memo::new(move |_| {
+        let mut summe = 0.0;
+        if g.get().unwrap_or(true) { summe += n2300.get() };
+        if ap.get().unwrap_or(true) { summe += pauschale(n2300.get()) };
+        if aa.get().unwrap_or(false) { summe += asa.get().unwrap_or(0.0) };
+        summe
+    });
 
     view! {
         <div class="container max-w-screen-xl mx-auto px-4 bg-linear-to-b from-stone-50 to-stone-300">
@@ -75,7 +121,7 @@ pub fn MPKR() -> impl IntoView {
                 zum vorläufigen Rechtsschutz, oder für beides berechnet werden sollen."</label>
             </p>
             <p>
-                <select class="border-2 border-stone-400 rounded-lg p-1" aria-label="Auswahl der Verfahrensart" id="verfahren" on:change=change_verfahren>
+                <select class="p-1 border-2 border-stone-400 rounded-lg" aria-label="Auswahl der Verfahrensart" id="verfahren" on:change=change_verfahren>
                     <option value="0" selected=move || v.get().unwrap_or(0) == 0>"Nur Hauptsacheverfahren"</option>
                     <option value="1" selected=move || v.get().unwrap_or(0) == 1>"Nur Verfahren zum vorläufigen Rechtsschutz"</option>
                     <option value="2" selected=move || v.get().unwrap_or(0) == 2>"Hauptsacheverfahren und Verfahren zum vorläufigen Rechtsschutz"</option>
@@ -86,7 +132,7 @@ pub fn MPKR() -> impl IntoView {
                 Du kannst aber auch manuell selbst Streitwerte angeben."</label>
             </p>
             <p>
-                <select class="border-2 border-stone-400 rounded-lg p-1" aria-label="Auswahl des Themas" id="thema" on:change=change_thema>
+                <select class="p-1 border-2 border-stone-400 rounded-lg" aria-label="Auswahl des Themas" id="thema" on:change=change_thema>
                     <option value="0" selected=move || t.get().unwrap_or(4) == 0>"Asylrecht: Zulässigkeit (z.B. Dublin, Drittstaatenfall, Folgeantrag)"</option>
                     <option value="1" selected=move || t.get().unwrap_or(4) == 1>"Asylrecht: Anerkennungsverfahren"</option>
                     <option value="2" selected=move || t.get().unwrap_or(4) == 2>"Asylrecht: Widerruf/Rücknahme"</option>
@@ -185,7 +231,7 @@ pub fn MPKR() -> impl IntoView {
                                     on:change=change_streitwert_vorl
                                     prop:value=move || format_euro(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
                                 />
-                                <span class="ml-1">EUR</span>                                
+                                <span class="ml-1">EUR</span>                       
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))) }
@@ -222,10 +268,18 @@ pub fn MPKR() -> impl IntoView {
                     <p>{ popover::AUSSERGERICHTLICH }</p>
                 </div>            
             </p>
-            <p class=move || if a.get().unwrap_or(false) { "visible" } else { "collapse" }>
+            <p class=move || if a.get().unwrap_or(false) && v.get().unwrap_or(0) != 1 { "visible" } else { "collapse" }>
                 <table>
                     <tbody>
                         <tr>
+                            <td class="px-1">
+                                <input
+                                    type="checkbox"
+                                    id="geschaeftsgebuehr"
+                                    on:change=change_geschaeftsgebuehr
+                                    prop:checked=move || g.get().unwrap_or(true)
+                                />
+                            </td>
                             <td class="px-1 font-semibold">Geschäftsgebühr, Nr. 2300 VV RVG</td>
                             <td class="px-1">
                                 Gebührensatz
@@ -235,16 +289,49 @@ pub fn MPKR() -> impl IntoView {
                                     <p>{ popover::GEBUEHRENSATZ }</p>
                                 </div>    
                             </td>
-                            <td></td>
-                            <td></td>
+                            <td class="px-1">
+                                <input
+                                    type="number"
+                                    class="p-1 border-2 border-stone-400 rounded-lg"
+                                    step="0.1"
+                                    min="0.5"
+                                    max="2.5"
+                                    value="1.3"
+                                    on:change=change_gebuehrensatz
+                                    prop:value=move || gs.get().unwrap_or(1.3)
+                                />
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || if g.get().unwrap_or(true) { format_euro(n2300.get()) } else { "0,00".to_string() } }
+                                <span class="ml-1">EUR</span>
+                            </td>
                         </tr>
                         <tr>
+                            <td class="px-1">
+                                <input
+                                    type="checkbox"
+                                    id="a_pauschale"
+                                    on:change=change_a_pauschale
+                                    prop:checked=move || ap.get().unwrap_or(true)
+                                />
+                            </td>                            
                             <td class="px-1 font-semibold">Auslagenpauschale, Nr. 7002 VV RVG</td>
                             <td></td>
                             <td></td>
-                            <td></td>
+                            <td class="px-1 text-right">
+                                { move || if ap.get().unwrap_or(true) { format_euro(pauschale(n2300.get())) } else { "0.00".to_string() } }
+                                <span class="ml-1">EUR</span>
+                            </td>
                         </tr>
                         <tr>
+                            <td class="px-1">
+                                <input
+                                    type="checkbox"
+                                    id="a_auslagen"
+                                    on:change=change_a_auslagen
+                                    prop:checked=move || aa.get().unwrap_or(false)
+                                />
+                            </td>
                             <td class="px-1">
                                 <span class="font-semibold">Sonstige Auslagen, z. B. Nr. 7000, 7003 ff. VV RVG</span>
                                 <button popovertarget="auslagen" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
@@ -269,86 +356,40 @@ pub fn MPKR() -> impl IntoView {
                                                     <li>"von mehr als 4 bis 8 Stunden 50,00 EUR"</li>
                                                     <li>"von mehr als 8 Stunden 80,00 EUR"</li>
                                                 </ol>
-                                                    "Bei Auslandsreisen kann zu diesen Beträgen ein Zuschlag von 50 % berechnet werden."</li>
-                                                    <li>"7006 Sonstige Auslagen (z.B. Hotel) anlässlich einer Geschäftsreise, soweit sie angemessen sind in voller Höhe."</li>
-                                                    "Die Umsatzsteuer (Nr. 7008) VV RVG wird unten, unter „Summe“ berechnet."
+                                                "Bei Auslandsreisen kann zu diesen Beträgen ein Zuschlag von 50 % berechnet werden."</li>
+                                            <li>"7006 Sonstige Auslagen (z.B. Hotel) anlässlich einer Geschäftsreise, soweit sie angemessen sind in voller Höhe."</li>
+                                            "Die Umsatzsteuer (Nr. 7008) VV RVG wird unten, unter „Summe“ berechnet."
                                         </ul>
                                     </p>
                                 </div>  
                             </td>
                             <td></td>
                             <td></td>
-                            <td></td>
+                            <td class="px-1">
+                                <input
+                                    type="text"
+                                    class="px-1 border-2 border-stone-400 rounded-lg text-right"
+                                    value=move || asa.get().unwrap_or(0.0)
+                                    on:change=change_aussergerichtlich_sonstige_auslagen
+                                    prop:value=move || if aa.get().unwrap_or(false) { format_euro(asa.get().unwrap_or(0.0)) } else { "0.00".to_string() }
+                                />
+                                <span class="ml-1">EUR</span>
+                            </td>
                         </tr>                        
-                        <tr>
-                            <td class="px-1 font-semibold italic">Summe</td>
+                        <tr class="font-semibold italic">
+                            <td></td>
+                            <td class="px-1">Summe</td>
                             <td></td>
                             <td></td>
-                            <td></td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(summe_aussergerichtlich.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
                         </tr>  
                     </tbody>
                 </table>
             </p>
-        </div>
-//             <div class="collapse" id="div_aussergerichtlich">
-//               <div class="row">
-//                 <div class="col">
-//                   <p><label for="gebuehrensatz">Gebührensatz</label></p>
-//                   <p><input type="number" class="form-control" step="0.1" min="0.5" max="2.5" value="1.3"
-//                       data-bs-toggle="popover" data-bs-trigger="hover" title="Gebührensatz für die Geschäftsgebühr"
-//                       data-bs-content="Eine Gebühr von mehr als 1,3 kann nur gefordert werden, wenn die Tätigkeit umfangreich oder schwierig war. Wenn du dir unsicher bist, wähle 1,3."
-//                       id="gebuehrensatz"></p>
-//                 </div>
-//                 <div class="col">
-//                   <p><label for="geschaeftsgebuehr">Geschäftsgebühr, Nr. 2300 VV RVG</label></p>
-//                   <p>
-//                   <div class="input-group">
-//                     <input type="text" class="form-control" id="geschaeftsgebuehr">
-//                     <label class="input-group-text" for="geschaeftsgebuehr">EUR</label>
-//                   </div>
-//                   </p>
-//                   <p><label for="pauschale_aussergerichtlich">Auslagenpauschale, Nr. 7002 VV RVG</label></p>
-//                   <p>
-//                   <div class="input-group">
-//                     <input type="text" class="form-control" id="pauschale_aussergerichtlich">
-//                     <label class="input-group-text" for="pauschale_aussergerichtlich">EUR</label>
-//                   </div>
-//                   </p>
-//                   <p><label for="auslagen_aussergerichtlich">Sonstige Auslagen, z. B. Nr. 7000, 7003 ff. RVG</label></p>
-//                   <p>
-//                   <div class="input-group">
-//                     <input type="text" class="form-control" id="auslagen_aussergerichtlich" data-bs-toggle="popover"
-//                       data-bs-trigger="hover" title="Sonstige Auslagen" data-bs-content="Zum Beispiel:
-//   7000 Pauschale für die Herstellung und Überlassung von Dokumenten:
-//   für Kopien und Ausdrucke                  
-//   für die ersten 50 abzurechnenden Seiten je Seite 0,50 EUR
-//   für jede weitere Seite 0,15 EUR
-//   für die ersten 50 abzurechnenden Seiten in Farbe je Seite 1,00 EUR
-//   für jede weitere Seite in Farbe 0,30 EUR
-//   7003 Fahrtkosten für eine Geschäftsreise bei Benutzung eines eigenen Kraftfahrzeugs für jeden gefahrenen Kilometer 0,42 EUR.
-//   Die Umsatzsteuer (Nr. 7008) VV RVG wird unten, unter „Summe“ berechnet.
-//   7004 Fahrtkosten für eine Geschäftsreise bei Benutzung eines anderen Verkehrsmittels, soweit sie angemessen sind in voller Höhe
-//   7005 Tage- und Abwesenheitsgeld bei einer Geschäftsreise
-//   1. von nicht mehr als 4 Stunden 30,00 EUR
-//   2. von mehr als 4 bis 8 Stunden 50,00 EUR
-//   3. von mehr als 8 Stunden 80,00 EUR
-//   Bei Auslandsreisen kann zu diesen Beträgen ein Zuschlag von 50 % berechnet werden.
-//   7006 Sonstige Auslagen (z.B. Hotel) anlässlich einer Geschäftsreise, soweit sie angemessen sind in voller Höhe">
-//                     <label class="input-group-text" for="auslagen_aussergerichtlich">EUR</label>
-//                   </div>
-//                   </p>
-//                   <p><label for="summe_aussergerichtlich">Summe</label></p>
-//                   <p>
-//                   <div class="input-group">
-//                     <input type="text" class="form-control" id="summe_aussergerichtlich">
-//                     <label class="input-group-text" for="summe_aussergerichtlich">EUR</label>
-//                   </div>
-//                   </p>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-  
+        </div>  
 //           <div class="container border border-5 rounded p-4 m-4 collapse" id="hauptsache">
 //             <h2>Hauptsacheverfahren</h2>
 //             <p>
