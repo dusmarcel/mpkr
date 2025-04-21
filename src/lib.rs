@@ -1293,14 +1293,27 @@ pub fn MPKR() -> impl IntoView {
 //               <div class="col-3"></div>
 //             </div>
 //           </div>
-  
-//           <div class="container border border-5 rounded p-4 m-4">
-//             <h2>Summe</h2>
-//             <h3>Summe Rechtsanwaltsvergütungsgesetz</h3>
-//             <div class="row collapse" id="row_summe_aussergerichtlich">
-//               <div class="col-4">
-//                 <label>Außergerichtliche Vertretung</label>
-//               </div>
+        <div class="container max-w-screen-xl mx-auto px-4 bg-linear-to-b from-stone-50 to-stone-300">
+            <h2 class="pt-4 text-2xl font-medium">
+                "Summe"
+            </h2>
+            <div class="grid grid-cols-4">
+                <div class="col-span-4 pt-4 text-xl font-medium">
+                    "Summe Rechtsanwaltsvergütungsgesetz"
+                </div>
+                <div class=move || if a.get().unwrap_or(false) == true { "visible" } else { "collapse" }>
+                    "Außergerichtliche Vertretung"
+                </div>
+                <div class=move || if a.get().unwrap_or(false) == true { "visible col-span-3" } else { "collapse col-span-3" }>
+                </div>
+                // <div class="col-span-4 pt-4 text-xl font-medium">
+                //     "Summe Gerichtskostengesetz"
+                // </div>
+                <div class="col-span-4 pt-4 text-xl font-medium">
+                    "Gesamtsumme"
+                </div>
+            </div>
+        </div>
 //               <div class="col-2"></div>
 //               <div class="col-3 text-end">
 //                 <div id="l_summe_aussergerichtlich"></div>
