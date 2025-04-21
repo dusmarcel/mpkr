@@ -280,7 +280,7 @@ pub fn MPKR() -> impl IntoView {
                                     prop:checked=move || g.get().unwrap_or(true)
                                 />
                             </td>
-                            <td class="px-1 font-semibold">Geschäftsgebühr, Nr. 2300 VV RVG</td>
+                            <td class="px-1 font-semibold">"Geschäftsgebühr, Nr. 2300 VV RVG"</td>
                             <td class="px-1">
                                 Gebührensatz
                                 <button popovertarget="gebuehrensatz" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
@@ -315,11 +315,11 @@ pub fn MPKR() -> impl IntoView {
                                     prop:checked=move || ap.get().unwrap_or(true)
                                 />
                             </td>                            
-                            <td class="px-1 font-semibold">Auslagenpauschale, Nr. 7002 VV RVG</td>
+                            <td class="px-1 font-semibold">"Auslagenpauschale, Nr. 7002 VV RVG"</td>
                             <td></td>
                             <td></td>
                             <td class="px-1 text-right">
-                                { move || if ap.get().unwrap_or(true) { format_euro(pauschale(n2300.get())) } else { "0.00".to_string() } }
+                                { move || if ap.get().unwrap_or(true) { format_euro(pauschale(n2300.get())) } else { "0,00".to_string() } }
                                 <span class="ml-1">EUR</span>
                             </td>
                         </tr>
@@ -333,7 +333,7 @@ pub fn MPKR() -> impl IntoView {
                                 />
                             </td>
                             <td class="px-1">
-                                <span class="font-semibold">Sonstige Auslagen, z. B. Nr. 7000, 7003 ff. VV RVG</span>
+                                <span class="font-semibold">"Sonstige Auslagen, z. B. Nr. 7000, 7003 ff. VV RVG"</span>
                                 <button popovertarget="auslagen" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
                                 <div id="auslagen" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
                                     <h4 class="text-xl font-medium">Sonstige Auslagen</h4>
@@ -371,7 +371,7 @@ pub fn MPKR() -> impl IntoView {
                                     class="px-1 border-2 border-stone-400 rounded-lg text-right"
                                     value=move || asa.get().unwrap_or(0.0)
                                     on:change=change_aussergerichtlich_sonstige_auslagen
-                                    prop:value=move || if aa.get().unwrap_or(false) { format_euro(asa.get().unwrap_or(0.0)) } else { "0.00".to_string() }
+                                    prop:value=move || if aa.get().unwrap_or(false) { format_euro(asa.get().unwrap_or(0.0)) } else { "0,00".to_string() }
                                 />
                                 <span class="ml-1">EUR</span>
                             </td>
