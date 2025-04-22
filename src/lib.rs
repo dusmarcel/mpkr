@@ -50,7 +50,7 @@ pub fn MPKR() -> impl IntoView {
         }
     });
 
-    // aussgerichtliche Vertretung
+    // Aussergerichtliche Vertretung
     let (a, set_a) = query_signal_with_options::<bool>(
         "a",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
@@ -96,6 +96,19 @@ pub fn MPKR() -> impl IntoView {
         if g.get().unwrap_or(true) { summe += n2300.get() };
         if ap.get().unwrap_or(true) { summe += pauschale(n2300.get()) };
         if aa.get().unwrap_or(false) { summe += asa.get().unwrap_or(0.0) };
+        summe
+    });
+
+    // Summen
+    let summe_rvg13_netto = Memo::new( move |_| {
+        let mut summe = 0.0;
+        if a.get().unwrap_or(false) { summe += summe_aussergerichtlich.get() }
+        summe
+    });
+
+    let summe_rvg49_netto = Memo::new( move |_| {
+        let mut summe = 0.0;
+        if a.get().unwrap_or(false) { summe += summe_aussergerichtlich.get() }
         summe
     });
 
@@ -159,7 +172,7 @@ pub fn MPKR() -> impl IntoView {
                                 "Wertgebühr (§ 13 RVG)"
                             </th>
                             <th class="px-1">
-                                "Wertgebühr (§ 49 RVG / Prozesskostenhilfe)"
+                                "Wertgebühr (§ 49 RVG / PKH)"
                             </th>
                             <th class="px-1">
                                 "Wertgebühr (GKG)"
@@ -212,7 +225,7 @@ pub fn MPKR() -> impl IntoView {
                                 <span class="ml-1">EUR</span>
                             </td>                     
                         </tr>
-                        <tr class=move || if v.get().unwrap_or(0) == 2 { "visible" } else { "collapse" }>
+                        <tr class=move || if v.get().unwrap_or(0) == 2 { "visible" } else { "hidden" }>
                             <td></td>
                             <td class="px-1">
                                 vorläufiger Rechtsschutz
@@ -221,7 +234,7 @@ pub fn MPKR() -> impl IntoView {
                             <td></td>
                             <td></td> 
                         </tr>
-                        <tr class=move || if v.get().unwrap_or(0) == 2 { "visible" } else { "collapse" }>
+                        <tr class=move || if v.get().unwrap_or(0) == 2 { "visible" } else { "hidden" }>
                             <td></td>
                             <td class="px-1">
                                 <input
@@ -250,6 +263,7 @@ pub fn MPKR() -> impl IntoView {
                 </table>
             </div>
         </div>
+        // Aussergerichtliche Vertretung
         <div class="container max-w-screen-xl mx-auto px-4 bg-linear-to-b from-stone-50 to-stone-300">
             <h2 class="pt-4 text-2xl font-medium">
                 "Außergerichtliche Vertretung"
@@ -268,7 +282,10 @@ pub fn MPKR() -> impl IntoView {
                     <p>{ popover::AUSSERGERICHTLICH }</p>
                 </div>            
             </p>
-            <p class=move || if a.get().unwrap_or(false) && v.get().unwrap_or(0) != 1 { "visible" } else { "collapse" }>
+            // Abschnitt für die Berechnung der Gebühren der außergerichtlichen Vertretung.
+            // Er soll nur angezeigt werden, wenn die Box für außergerichtliche Vertretung (a)
+            // und nicht nur Hauptsacheverfahren (v != 1) ausgewählt wurde
+            <p class=move || if a.get().unwrap_or(false) && v.get().unwrap_or(0) != 1 { "visible" } else { "hidden" }>
                 <table>
                     <tbody>
                         <tr>
@@ -1301,11 +1318,49 @@ pub fn MPKR() -> impl IntoView {
                 <div class="col-span-4 pt-4 text-xl font-medium">
                     "Summe Rechtsanwaltsvergütungsgesetz"
                 </div>
-                <div class=move || if a.get().unwrap_or(false) == true { "visible" } else { "collapse" }>
+                <div></div>
+                <div class="font-semibold">
+                    "Wertgebühren (§ 13 RVG)"
+                </div>
+                <div class="font-semibold">
+                    "Wertgebühren (§ 49 RVG / PKH)"
+                </div>
+                <div class="font-semibold">
+                    "Differenz"
+                </div>
+                <div class=move || if a.get().unwrap_or(false) == true { "visible" } else { "hidden" }>
                     "Außergerichtliche Vertretung"
                 </div>
-                <div class=move || if a.get().unwrap_or(false) == true { "visible col-span-3" } else { "collapse col-span-3" }>
+                <div class=move || if a.get().unwrap_or(false) == true { "visible" } else { "hidden" }>
+                    { move || format_euro(summe_aussergerichtlich.get()) }
+                    <span class="ml-1">EUR</span>
                 </div>
+                <div class=move || if a.get().unwrap_or(false) == true { "visible" } else { "hidden" }>
+                    { move || format_euro(summe_aussergerichtlich.get()) }
+                    <span class="ml-1">EUR</span>
+                </div>
+                <div></div>
+                <div class=move || if v.get().unwrap_or(0) != 1 { "visible col-span-4"} else { "hidden col-span-4" }>
+                    "Hauptsacheverfahren"
+                </div>
+                <div class=move || if v.get().unwrap_or(0) != 0 { "visible col-span-4"} else { "hidden col-span-4" }>
+                    "Vorläufiger Rechtsschutz"
+                </div>
+                <div class="italic">
+                    "Summe netto"
+                </div>
+                <div class="italic">
+                    { move || format_euro(summe_rvg13_netto.get()) }
+                    <span class="ml-1">EUR</span>
+                </div>
+                <div class="italic">
+                    { move || format_euro(summe_rvg49_netto.get()) }
+                    <span class="ml-1">EUR</span>
+                </div>            
+                <div class="italic">
+                    { move || format_euro(summe_rvg13_netto.get() - summe_rvg49_netto.get()) }
+                    <span class="ml-1">EUR</span>
+                </div>  
                 // <div class="col-span-4 pt-4 text-xl font-medium">
                 //     "Summe Gerichtskostengesetz"
                 // </div>
@@ -1313,39 +1368,7 @@ pub fn MPKR() -> impl IntoView {
                     "Gesamtsumme"
                 </div>
             </div>
-        </div>
-//               <div class="col-2"></div>
-//               <div class="col-3 text-end">
-//                 <div id="l_summe_aussergerichtlich"></div>
-//               </div>
-//               <div class="col-3"></div>
-//             </div>
-  
-//             <div class="row collapse" id="row_summe_rvg_h">
-//               <div class="col-4"><label>Hauptsacheverfahren</label></div>
-//               <div class="col-2"></div>
-//               <div class="col-3 text-end" id="l_summe_rvg_h"></div>
-//               <div class="col-3"></div>
-//             </div>
-  
-//             <div class="row collapse" id="row_summe_rvg_v">
-//               <div class="col-4"><label>Vorläufiger Rechtsschutz</label></div>
-//               <div class="col-2"></div>
-//               <div class="col-3 text-end" id="l_summe_rvg_v"></div>
-//               <div class="col-3"></div>
-//             </div>
-  
-//             <div class="row">
-//               <div class="col-4 fst-italic">
-//                 <label>Summe netto</label>
-//               </div>
-//               <div class="col-2"></div>
-//               <div class="col-3 fst-italic text-end">
-//                 <div id="summe_netto"></div>
-//               </div>
-//               <div class="col-3"></div>
-//             </div>
-  
+        </div>  
 //             <div class="row">
 //               <div class="col-4 d-grid align-items-center">
 //                 <label for="steuersatz">Umsatzsteuer, Nr. 7008 VV RVG</label>
@@ -1438,6 +1461,11 @@ pub fn MPKR() -> impl IntoView {
                 die 1. Instanz des Hauptsacheverfahrens, da dies auch in der Praxis nahezu immer der Fall sein wird. Soweit
                 zumindest theoretisch auch Fälle konstruiert werden können, in denen die Anrechnung auf die Verfahrensgebühr
                 in einer höheren Insatz erfolgt, bleiben diese Fälle hier um der Einfachheit willen unberücksichtigt."
+            </p>
+            <p>
+                "Die Abkürzung PKH steht für Prozesskostenhilfe. Da die Wertgebühren bei Prozesskostenhilfe teilweise abweichen,
+                werden die entsprechenden Gebühren gesondert ausgewiesen. Für außergerichtliche Vertretung gibt es keine
+                Prozesskostenhilfe, daher werden für die außergerichtliche Vertretung immer die Wergebühren nach § 13 RVG ausgewiesen."
             </p>
             <p>
                 "Der Rechner geht äußerst sparsam mit deinen Daten um. Zwar werden einige technisch benötigte Daten,
