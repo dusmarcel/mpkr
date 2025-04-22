@@ -387,7 +387,7 @@ pub fn MPKR() -> impl IntoView {
                                     prop:checked=move || g.get().unwrap_or(true)
                                 />
                             </td>
-                            <td class="px-1 font-semibold">"Geschäftsgebühr, Nr. 2300 VV RVG"</td>
+                            <td class="px-1">"Geschäftsgebühr, Nr. 2300 VV RVG"</td>
                             <td class="px-1">
                                 Gebührensatz
                             </td>
@@ -422,7 +422,7 @@ pub fn MPKR() -> impl IntoView {
                                     prop:checked=move || ap.get().unwrap_or(true)
                                 />
                             </td>                            
-                            <td class="px-1 font-semibold">"Auslagenpauschale, Nr. 7002 VV RVG"</td>
+                            <td class="px-1">"Auslagenpauschale, Nr. 7002 VV RVG"</td>
                             <td></td>
                             <td></td>
                             <td class="px-1 text-right">
@@ -440,7 +440,7 @@ pub fn MPKR() -> impl IntoView {
                                 />
                             </td>
                             <td class="px-1">
-                                <span class="font-semibold">"Sonstige Auslagen, z. B. Nr. 7000, 7003 ff. VV RVG"</span>
+                                <span>"Sonstige Auslagen, z. B. Nr. 7000, 7003 ff. VV RVG"</span>
                                 <button popovertarget="auslagen" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
                                 <div id="auslagen" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
                                     <h4 class="text-xl font-medium">Sonstige Auslagen</h4>
@@ -483,7 +483,7 @@ pub fn MPKR() -> impl IntoView {
                                 <span class="ml-1">EUR</span>
                             </td>
                         </tr>                        
-                        <tr class="font-semibold italic">
+                        <tr class="font-semibold">
                             <td></td>
                             <td class="px-1">Summe</td>
                             <td></td>
