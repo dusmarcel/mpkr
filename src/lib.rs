@@ -307,11 +307,6 @@ pub fn MPKR() -> impl IntoView {
                             <td class="px-1 font-semibold">"Geschäftsgebühr, Nr. 2300 VV RVG"</td>
                             <td class="px-1">
                                 Gebührensatz
-                                <button popovertarget="gebuehrensatz" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
-                                <div id="gebuehrensatz" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
-                                    <h4 class="text-xl font-medium">Gebührensatz für die Geschäftsgebühr</h4>
-                                    <p>{ popover::GEBUEHRENSATZ }</p>
-                                </div>    
                             </td>
                             <td class="px-1">
                                 <input
@@ -324,6 +319,11 @@ pub fn MPKR() -> impl IntoView {
                                     on:change=change_gebuehrensatz
                                     prop:value=move || gs.get().unwrap_or(1.3)
                                 />
+                                <button popovertarget="gebuehrensatz" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
+                                <div id="gebuehrensatz" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                                    <h4 class="text-xl font-medium">Gebührensatz für die Geschäftsgebühr</h4>
+                                    <p>{ popover::GEBUEHRENSATZ }</p>
+                                </div>
                             </td>
                             <td class="px-1 text-right">
                                 { move || if g.get().unwrap_or(true) { format_euro(n2300.get()) } else { "0,00".to_string() } }
