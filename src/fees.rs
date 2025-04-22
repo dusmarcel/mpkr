@@ -126,3 +126,11 @@ pub fn pauschale(gebuehren: f64) -> f64 {
         gebuehren * 0.2
     }
 }
+
+pub fn umsatzsteuer(steuersatz: u32, nettobetrag: f64) -> f64 {
+    nettobetrag / 100.0 * steuersatz as f64
+}
+
+pub fn umsatzsteuer_brutto(steuersatz: u32, nettobetrag: f64) -> f64 {
+    nettobetrag + umsatzsteuer(steuersatz, nettobetrag)
+}

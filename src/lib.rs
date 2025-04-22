@@ -1,4 +1,4 @@
-use fees::pauschale;
+use fees::{pauschale, umsatzsteuer_brutto};
 use leptos::prelude::*;
 use leptos_router::{hooks::query_signal_with_options, location::State, NavigateOptions};
 
@@ -118,6 +118,18 @@ pub fn MPKR() -> impl IntoView {
     let change_umsatzsteuer = move |ev| {
         set_u.set(Some(event_target_value(&ev).parse::<u32>().unwrap_or(19)));
     };
+
+    let gesamtsumme13 = Memo::new ( move |_| {
+        let mut summe = 0.0;
+        summe += umsatzsteuer_brutto(u.get().unwrap_or(19), summe_rvg13_netto.get());
+        summe
+    });
+
+    let gesamtsumme49 = Memo::new ( move |_| {
+        let mut summe = 0.0;
+        summe += umsatzsteuer_brutto(u.get().unwrap_or(19), summe_rvg49_netto.get());
+        summe
+    });
 
     view! {
         <div class="container max-w-screen-xl mx-auto px-4 bg-linear-to-b from-stone-50 to-stone-300">
@@ -1381,44 +1393,50 @@ pub fn MPKR() -> impl IntoView {
                     </div>
                 </div>
                 <div class="text-right">
-                    { move || format_euro(summe_rvg13_netto.get() / 100.00 * u.get().unwrap_or(19) as f64) }
+                    { move || format_euro(fees::umsatzsteuer(u.get().unwrap_or(19), summe_rvg13_netto.get())) }
                     <span class="ml-1">EUR</span>
                 </div>
                 <div class="text-right">
-                    { move || format_euro(summe_rvg49_netto.get() / 100.00 * u.get().unwrap_or(19) as f64) }
+                    { move || format_euro(fees::umsatzsteuer(u.get().unwrap_or(19), summe_rvg49_netto.get())) }
                     <span class="ml-1">EUR</span>
                 </div>
                 <div class="text-right">
-                    { move || format_euro((summe_rvg13_netto.get() / 100.00 * u.get().unwrap_or(19) as f64) - (summe_rvg49_netto.get() / 100.00 * u.get().unwrap_or(19) as f64)) }
+                    { move || format_euro(fees::umsatzsteuer(u.get().unwrap_or(19), summe_rvg13_netto.get()) - fees::umsatzsteuer(u.get().unwrap_or(19), summe_rvg49_netto.get())) }
                     <span class="ml-1">EUR</span>
                 </div>
+                <div class="col-span-2 font-semibold">
+                    "Summe brutto"
+                </div>
+                <div class="text-right font-semibold">
+                    { move || format_euro(fees::umsatzsteuer_brutto(u.get().unwrap_or(19), summe_rvg13_netto.get())) }
+                    <span class="ml-1">EUR</span>
+                </div>
+                <div class="text-right font-semibold">
+                    { move || format_euro(fees::umsatzsteuer_brutto(u.get().unwrap_or(19), summe_rvg49_netto.get())) }
+                    <span class="ml-1">EUR</span>
+                </div>            
+                <div class="text-right font-semibold">
+                    { move || format_euro(fees::umsatzsteuer(u.get().unwrap_or(19), summe_rvg13_netto.get()) - fees::umsatzsteuer(u.get().unwrap_or(19), summe_rvg49_netto.get())) }
+                    <span class="ml-1">EUR</span>
+                </div> 
                 // <div class="col-span-5 pt-4 text-xl font-medium">
                 //     "Summe Gerichtskostengesetz"
                 // </div>
                 <div class="col-span-2 pt-4 text-xl font-medium">
                     "Gesamtsumme"
                 </div>
-                <div class="pt-4 text-xl font-medium">
+                <div class="pt-4 text-right text-xl font-medium">
+                    { move || format_euro(gesamtsumme13.get()) }
                 </div>
-                <div class="pt-4 text-xl font-medium">
+                <div class="pt-4 text-right text-xl font-medium">
+                    { move || format_euro(gesamtsumme49.get()) }
                 </div>
-                <div class="pt-4 text-xl font-medium">
+                <div class="pt-4 text-right text-xl font-medium">
+                    { move || format_euro(gesamtsumme13.get() - gesamtsumme49.get()) }
                 </div>
             </div>
         </div>  
   
-//             <div class="row">
-//               <div class="col-4 fw-bold">
-//                 <label>Summe brutto</label>
-//               </div>
-//               <div class="col-2"></div>
-//               <div class="col-3 fw-bold text-end">
-//                 <div id="summe_brutto"></div>
-//               </div>
-//               <div class="col-3"></div>
-//             </div>
-  
-//             <h3>Summe Gerichtskostengesetz</h3>
 //             <div class="row collapse" id="row_summe_gkg_h">
 //               <div class="col-4">
 //                 <label>Hauptsacheverfahren</label>
@@ -1445,16 +1463,7 @@ pub fn MPKR() -> impl IntoView {
 //               <div class="col-3 fw-bold text-end" id="l_summe_gkg"></div>
 //               <div class="col-3"></div>
 //             </div>
-  
-//             <div class="row">
-//               <div class="col-4">
-//                 <h3>Gesamtsumme</h3>
-//               </div>
-//               <div class="col-2"></div>
-//               <div class="col-3 text-end" id="l_summe_total"></div>
-//               <div class="col-3"></div>
-//             </div>
-//           </div>
+
         <div class="container max-w-screen-xl mx-auto px-4 bg-linear-to-b from-stone-50 to-stone-300">
             <h2 class="pt-4 text-2xl font-medium">
                 "Rechtliche Hinweise"
