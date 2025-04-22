@@ -239,10 +239,10 @@ pub fn MPKR() -> impl IntoView {
                     <option value="1" selected=move || t.get().unwrap_or(4) == 1>"Asylrecht: Anerkennungsverfahren"</option>
                     <option value="2" selected=move || t.get().unwrap_or(4) == 2>"Asylrecht: Widerruf/Rücknahme"</option>
                     <option value="3" selected=move || t.get().unwrap_or(4) == 3>"Asylrecht: Untätigkeitsklage"</option>
-                    <option value="4" selected=move || t.get().unwrap_or(4) == 4>"Aufenthaltsrecht: Aufenthaltstitel inkl. Untätigkeitsklage"</option>
+                    <option value="4" selected=move || t.get().unwrap_or(4) == 4>"Aufenthaltstitel inkl. Untätigkeitsklage"</option>
                     <option value="5" selected=move || t.get().unwrap_or(4) == 5>"Ausweisung"</option>
                     <option value="6" selected=move || t.get().unwrap_or(4) == 6>"Pass/Passersatz"</option>
-                    <option value="7" selected=move || t.get().unwrap_or(4) == 7>"Aufenthaltsrecht: Duldung und Abschiebung inkl. Ausbildungs-/Beschäftigungsduldung,
+                    <option value="7" selected=move || t.get().unwrap_or(4) == 7>"Duldung und Abschiebung inkl. Ausbildungs-/Beschäftigungsduldung,
                         Untätigkeitsklage"</option>
                     <option value="8" selected=move || t.get().unwrap_or(4) == 8>"Einbürgerung und Feststellung der Staatsangehörigkeit"</option>
                 </select>
@@ -531,6 +531,15 @@ pub fn MPKR() -> impl IntoView {
                 />
                 <label for="h3" class="mx-1">3. Instanz</label>
             </p>
+            <h3 class=move || if h1.get().unwrap_or(true) { "visible text-xl font-medium" } else { "hidden" }>
+                "1. Instanz"
+            </h3>
+            <h3 class=move || if h2.get().unwrap_or(false) { "visible text-xl font-medium" } else { "hidden" }>
+                "2. Instanz"
+            </h3>
+            <h3 class=move || if h3.get().unwrap_or(false) { "visible text-xl font-medium" } else { "hidden" }>
+                "3. Instanz"
+            </h3>
         </div>
 
         // Vorläufiger Rechtsschutz
@@ -559,6 +568,12 @@ pub fn MPKR() -> impl IntoView {
                 />
                 <span class="mx-1">2. Instanz</span>
             </p>
+            <h3 class=move || if v1.get().unwrap_or(true) { "visible text-xl font-medium" } else { "hidden" }>
+                "1. Instanz"
+            </h3>
+            <h3 class=move || if v2.get().unwrap_or(false) { "visible text-xl font-medium" } else { "hidden" }>
+                "2. Instanz"
+            </h3>
         </div>
 
         // Summen
