@@ -198,8 +198,14 @@
   .col-6 {
     grid-column: 6;
   }
+  .col-span-2 {
+    grid-column: span 2 / span 2;
+  }
   .col-span-4 {
     grid-column: span 4 / span 4;
+  }
+  .col-span-5 {
+    grid-column: span 5 / span 5;
   }
   .container {
     width: 100%;
@@ -237,14 +243,17 @@
   .hidden {
     display: none;
   }
+  .w-16 {
+    width: calc(var(--spacing) * 16);
+  }
   .max-w-screen-xl {
     max-width: var(--breakpoint-xl);
   }
   .table-auto {
     table-layout: auto;
   }
-  .grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
   .rounded {
     border-radius: 0.25rem;

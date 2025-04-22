@@ -1321,56 +1321,58 @@ pub fn MPKR() -> impl IntoView {
             <h2 class="pt-4 text-2xl font-medium">
                 "Summe"
             </h2>
-            <div class="grid grid-cols-4">
-                <div class="col-span-4 pt-4 text-xl font-medium">
+            <div class="grid grid-cols-5">
+                <div class="col-span-5 pt-4 text-xl font-medium">
                     "Summe Rechtsanwaltsvergütungsgesetz"
                 </div>
-                <div></div>
-                <div class="font-semibold">
+                <div class="col-span-2"></div>
+                <div class="text-right font-semibold">
                     "Wertgebühren (§ 13 RVG)"
                 </div>
-                <div class="font-semibold">
+                <div class="text-right font-semibold">
                     "Wertgebühren (§ 49 RVG / PKH)"
                 </div>
-                <div class="font-semibold">
+                <div class="text-right font-semibold">
                     "Differenz"
                 </div>
-                <div class=move || if a.get().unwrap_or(false) == true { "visible" } else { "hidden" }>
+                <div class=move || if a.get().unwrap_or(false) == true { "visible col-span-2" } else { "hidden col-span-2" }>
                     "Außergerichtliche Vertretung"
                 </div>
-                <div class=move || if a.get().unwrap_or(false) == true { "visible" } else { "hidden" }>
+                <div class=move || if a.get().unwrap_or(false) == true { "visible text-right" } else { "hidden" }>
                     { move || format_euro(summe_aussergerichtlich.get()) }
                     <span class="ml-1">EUR</span>
                 </div>
-                <div class=move || if a.get().unwrap_or(false) == true { "visible" } else { "hidden" }>
+                <div class=move || if a.get().unwrap_or(false) == true { "visible text-right" } else { "hidden" }>
                     { move || format_euro(summe_aussergerichtlich.get()) }
                     <span class="ml-1">EUR</span>
                 </div>
                 <div></div>
-                <div class=move || if v.get().unwrap_or(0) != 1 { "visible col-span-4"} else { "hidden col-span-4" }>
+                <div class=move || if v.get().unwrap_or(0) != 1 { "visible col-span-5"} else { "hidden col-span-4" }>
                     "Hauptsacheverfahren"
                 </div>
-                <div class=move || if v.get().unwrap_or(0) != 0 { "visible col-span-4"} else { "hidden col-span-4" }>
+                <div class=move || if v.get().unwrap_or(0) != 0 { "visible col-span-5"} else { "hidden col-span-4" }>
                     "Vorläufiger Rechtsschutz"
                 </div>
-                <div class="italic">
+                <div class="col-span-2 italic">
                     "Summe netto"
                 </div>
-                <div class="italic">
+                <div class="text-right italic">
                     { move || format_euro(summe_rvg13_netto.get()) }
                     <span class="ml-1">EUR</span>
                 </div>
-                <div class="italic">
+                <div class="text-right italic">
                     { move || format_euro(summe_rvg49_netto.get()) }
                     <span class="ml-1">EUR</span>
                 </div>            
-                <div class="italic">
+                <div class="text-right italic">
                     { move || format_euro(summe_rvg13_netto.get() - summe_rvg49_netto.get()) }
                     <span class="ml-1">EUR</span>
                 </div>
                 <div>
                     "Umsatzsteuer, Nr. 7008 VV RVG"
-                    <input type="number" min="0" value=move || u.get().unwrap_or(19) class="border-2 border-stone-400 rounded-lg px-1" on:change=change_umsatzsteuer />
+                </div>
+                <div>
+                    <input type="number" min="0" value=move || u.get().unwrap_or(19) class="px-1 w-16 border-2 border-stone-400 rounded-lg" on:change=change_umsatzsteuer />
                     <span class="ml-1">%</span>
                     <button popovertarget="umsatzsteuer" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
                     <div id="umsatzsteuer" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
@@ -1378,16 +1380,22 @@ pub fn MPKR() -> impl IntoView {
                         <p>{ popover::UMSATZSTEUER }</p>
                     </div>
                 </div>
-                <div>
+                <div class="text-right">
+                    { move || format_euro(summe_rvg13_netto.get() / 100.00 * u.get().unwrap_or(19) as f64) }
+                    <span class="ml-1">EUR</span>
                 </div>
-                <div>
+                <div class="text-right">
+                    { move || format_euro(summe_rvg49_netto.get() / 100.00 * u.get().unwrap_or(19) as f64) }
+                    <span class="ml-1">EUR</span>
                 </div>
-                <div>
+                <div class="text-right">
+                    { move || format_euro((summe_rvg13_netto.get() / 100.00 * u.get().unwrap_or(19) as f64) - (summe_rvg49_netto.get() / 100.00 * u.get().unwrap_or(19) as f64)) }
+                    <span class="ml-1">EUR</span>
                 </div>
-                // <div class="col-span-4 pt-4 text-xl font-medium">
+                // <div class="col-span-5 pt-4 text-xl font-medium">
                 //     "Summe Gerichtskostengesetz"
                 // </div>
-                <div class="pt-4 text-xl font-medium">
+                <div class="col-span-2 pt-4 text-xl font-medium">
                     "Gesamtsumme"
                 </div>
                 <div class="pt-4 text-xl font-medium">
@@ -1398,15 +1406,6 @@ pub fn MPKR() -> impl IntoView {
                 </div>
             </div>
         </div>  
-
-//                   <label class="input-group-text" for="steuersatz">%</label>
-//                 </div>
-//               </div>
-//               <div class="col-3 d-grid align-items-center text-end">
-//                 <div id="umsatzsteuer"></div>
-//               </div>
-//               <div class="col-3"></div>
-//             </div>
   
 //             <div class="row">
 //               <div class="col-4 fw-bold">
