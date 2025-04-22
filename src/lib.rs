@@ -112,6 +112,13 @@ pub fn MPKR() -> impl IntoView {
         summe
     });
 
+    let (u, set_u) = query_signal_with_options::<u32>(
+        "u",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_umsatzsteuer = move |ev| {
+        set_u.set(Some(event_target_value(&ev).parse::<u32>().unwrap_or(19)));
+    };
+
     view! {
         <div class="container max-w-screen-xl mx-auto px-4 bg-linear-to-b from-stone-50 to-stone-300">
             <h1 class="pt-4 text-3xl font-medium">
@@ -1360,25 +1367,38 @@ pub fn MPKR() -> impl IntoView {
                 <div class="italic">
                     { move || format_euro(summe_rvg13_netto.get() - summe_rvg49_netto.get()) }
                     <span class="ml-1">EUR</span>
-                </div>  
+                </div>
+                <div>
+                    "Umsatzsteuer, Nr. 7008 VV RVG"
+                    <input type="number" min="0" value=move || u.get().unwrap_or(19) class="border-2 border-stone-400 rounded-lg px-1" on:change=change_umsatzsteuer />
+                    <span class="ml-1">%</span>
+                    <button popovertarget="umsatzsteuer" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
+                    <div id="umsatzsteuer" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                        <h4 class="text-xl font-medium">Steuersatz der Umsatzsteuer</h4>
+                        <p>{ popover::UMSATZSTEUER }</p>
+                    </div>
+                </div>
+                <div>
+                </div>
+                <div>
+                </div>
+                <div>
+                </div>
                 // <div class="col-span-4 pt-4 text-xl font-medium">
                 //     "Summe Gerichtskostengesetz"
                 // </div>
-                <div class="col-span-4 pt-4 text-xl font-medium">
+                <div class="pt-4 text-xl font-medium">
                     "Gesamtsumme"
+                </div>
+                <div class="pt-4 text-xl font-medium">
+                </div>
+                <div class="pt-4 text-xl font-medium">
+                </div>
+                <div class="pt-4 text-xl font-medium">
                 </div>
             </div>
         </div>  
-//             <div class="row">
-//               <div class="col-4 d-grid align-items-center">
-//                 <label for="steuersatz">Umsatzsteuer, Nr. 7008 VV RVG</label>
-//               </div>
-//               <div class="col-2">
-//                 <div class="input-group">
-//                   <input type="number" class="form-control tax-input" value="19" id="steuersatz" data-bs-toggle="popover"
-//                     data-bs-trigger="hover" title="Steuersatz für die Umsatzsteuer" data-bs-content="Wird als ganze Zahl interpretiert; 
-//   Nachkommastellen werden also ignoriert.
-//   Wenn keine Umsatzsteuer in Ansatz gebracht werden soll, einfach auf Null setzen.">
+
 //                   <label class="input-group-text" for="steuersatz">%</label>
 //                 </div>
 //               </div>
