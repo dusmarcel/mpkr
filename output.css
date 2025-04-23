@@ -23,6 +23,7 @@
     --text-3xl--line-height: calc(2.25 / 1.875);
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
+    --font-weight-bold: 700;
     --radius-lg: 0.5rem;
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
@@ -277,6 +278,9 @@
   .pt-4 {
     padding-top: calc(var(--spacing) * 4);
   }
+  .pl-1 {
+    padding-left: calc(var(--spacing) * 1);
+  }
   .text-left {
     text-align: left;
   }
@@ -294,6 +298,10 @@
   .text-xl {
     font-size: var(--text-xl);
     line-height: var(--tw-leading, var(--text-xl--line-height));
+  }
+  .font-bold {
+    --tw-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
   }
   .font-medium {
     --tw-font-weight: var(--font-weight-medium);

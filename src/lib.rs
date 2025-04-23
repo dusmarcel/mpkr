@@ -100,6 +100,8 @@ pub fn MPKR() -> impl IntoView {
     });
 
     // Hauptsacheverfahren
+
+    // Welche Instanzen?
     let (h1, set_h1) = query_signal_with_options::<bool>(
         "h1",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
@@ -115,14 +117,39 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let change_h3 = move |ev| set_h3.set(Some(event_target_checked(&ev)));
 
+    // 1. Instanz Hauptsachverfahren
+    let (n3100, set_n3100) = query_signal_with_options::<bool>(
+        "n3100",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_n3100 = move |ev| set_n3100.set(Some(event_target_checked(&ev)));
+
+    let verfgeb13_h1 = Memo::new( move |_| {
+        if n3100.get().unwrap_or(true) {
+            1.3 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+        } else {
+            0.0
+        }
+    });
+
+    let verfgeb49_h1 = Memo::new( move |_| {
+        if n3100.get().unwrap_or(true) {
+            1.3 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+        } else {
+            0.0
+        }
+    });
+
+    // Summen Hauptsacheverfahren
     let summe_rvg13_h = Memo::new(move |_| {
-        let summe = 0.0;
-        summe
+        //let summe = 0.0;
+        //summe
+        verfgeb13_h1.get()
     });
 
     let summe_rvg49_h = Memo::new(move |_| {
-        let summe = 0.0;
-        summe
+        //let summe = 0.0;
+        //summe
+        verfgeb49_h1.get()
     });
 
     let summe_gkg_h = Memo::new(move |_| {
@@ -131,6 +158,8 @@ pub fn MPKR() -> impl IntoView {
     });
 
     // Vorläufiger Rechtsschutz
+
+    // Welche Instanzen?
     let (v1, set_v1) = query_signal_with_options::<bool>(
         "v1",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
@@ -141,6 +170,7 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let change_v2 = move |ev| set_v2.set(Some(event_target_checked(&ev)));
 
+    // Summen vorläufiger Rechtsschutz
     let summe_rvg13_v = Memo::new(move |_| {
         let summe = 0.0;
         summe
@@ -535,37 +565,90 @@ pub fn MPKR() -> impl IntoView {
                 <h3 class="text-xl font-medium">
                     "1. Instanz"
                 </h3>
-                <h4 class="text-l font-medium">
+                <h4 class="text-l font-bold">
                     "Rechtsanwaltsvergütungsgesetz"
                 </h4>
+                <table class="table-auto">
+                    <thead>
+                        <tr>
+                            <th>
+                            </th>
+                            <th>
+                                "Gebührentatbestand und Nummer"
+                            </th>
+                            <th class="px-1">
+                                "Gebührensatz"
+                            </th>
+                            <th class="px-1">
+                                "Wertgebühr (§ 13 RVG)"
+                            </th>
+                            <th class="px-1">
+                                "Wertgebühr (§ 49 RVG)"
+                            </th>
+                            <th class="pl-1">
+                                "Differenz"
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n3100"
+                                    on:change=change_n3100
+                                    prop:checked=move || n3100.get().unwrap_or(true)
+                                />
+                            </td>
+                            <td class="px-1">
+                                "Verfahrensgebühr, Nr. 3100"
+                            </td>
+                            <td class="px-1 text-right">
+                                "1,3"
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(verfgeb13_h1.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(verfgeb49_h1.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(verfgeb13_h1.get() - verfgeb49_h1.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                 <p>to be done...</p>
-                <h4 class="text-l font-medium">
+                <h4 class="text-l font-bold">
                     "Gerichtskostengesetz"
                 </h4>
                 <p>to be done...</p>               
             </p>
-            <p class=move || if h2.get().unwrap_or(true) { "visible" } else { "hidden" }>
+            <p class=move || if h2.get().unwrap_or(false) { "visible" } else { "hidden" }>
                 <h3 class="text-xl font-medium">
                     "2. Instanz"
                 </h3>
-                <h4 class="text-l font-medium">
+                <h4 class="text-l font-bold">
                     "Rechtsanwaltsvergütungsgesetz"
                 </h4>
                 <p>to be done...</p>
-                <h4 class="text-l font-medium">
+                <h4 class="text-l font-bold">
                     "Gerichtskostengesetz"
                 </h4>
                 <p>to be done...</p>  
             </p>
-            <p class=move || if h3.get().unwrap_or(true) { "visible" } else { "hidden" }>
+            <p class=move || if h3.get().unwrap_or(false) { "visible" } else { "hidden" }>
                 <h3 class="text-xl font-medium">
                     "3. Instanz"
                 </h3>
-                <h4 class="text-l font-medium">
+                <h4 class="text-l font-bold">
                     "Rechtsanwaltsvergütungsgesetz"
                 </h4>
                 <p>to be done...</p>
-                <h4 class="text-l font-medium">
+                <h4 class="text-l font-bold">
                     "Gerichtskostengesetz"
                 </h4>
                 <p>to be done...</p>
@@ -640,7 +723,7 @@ pub fn MPKR() -> impl IntoView {
                 </h4>
                 <p>to be done...</p>
             </p>
-            <p class=move || if v2.get().unwrap_or(true) { "visible" } else { "hidden" }>
+            <p class=move || if v2.get().unwrap_or(false) { "visible" } else { "hidden" }>
                 <h3 class="text-xl font-medium">
                     "2. Instanz"
                 </h3>
@@ -703,18 +786,19 @@ pub fn MPKR() -> impl IntoView {
                 <div class="col-span-5 pt-4 text-xl font-medium">
                     "Summe Rechtsanwaltsvergütungsgesetz"
                 </div>
-                <div class=move || if a.get().unwrap_or(false) == true { "visible col-span-2" } else { "hidden col-span-2" }>
+                <div class=move || if a.get().unwrap_or(false) == true && v.get().unwrap_or(0) != 1 { "visible col-span-2" } else { "hidden col-span-2" }>
                     "Außergerichtliche Vertretung"
                 </div>
-                <div class=move || if a.get().unwrap_or(false) == true { "visible text-right" } else { "hidden" }>
+                <div class=move || if a.get().unwrap_or(false) == true  && v.get().unwrap_or(0) != 1 { "visible text-right" } else { "hidden" }>
                     { move || format_euro(summe_aussergerichtlich.get()) }
                     <span class="ml-1">EUR</span>
                 </div>
-                <div class=move || if a.get().unwrap_or(false) == true { "visible text-right" } else { "hidden" }>
+                <div class=move || if a.get().unwrap_or(false) == true  && v.get().unwrap_or(0) != 1 { "visible text-right" } else { "hidden" }>
                     { move || format_euro(summe_aussergerichtlich.get()) }
                     <span class="ml-1">EUR</span>
                 </div>
-                <div></div>
+                <div class=move || if a.get().unwrap_or(false) == true  && v.get().unwrap_or(0) != 1 { "visible text-right" } else { "hidden" }>
+                </div>
                 <div class=move || if v.get().unwrap_or(0) != 1 { "visible col-span-2"} else { "hidden col-span-2" }>
                     "Hauptsacheverfahren"
                 </div>
@@ -796,7 +880,7 @@ pub fn MPKR() -> impl IntoView {
                     <span class="ml-1">EUR</span>
                 </div>            
                 <div class="text-right font-semibold">
-                    { move || format_euro(fees::umsatzsteuer(u.get().unwrap_or(19), summe_rvg13_netto.get()) - fees::umsatzsteuer(u.get().unwrap_or(19), summe_rvg49_netto.get())) }
+                    { move || format_euro(fees::umsatzsteuer_brutto(u.get().unwrap_or(19), summe_rvg13_netto.get()) - fees::umsatzsteuer_brutto(u.get().unwrap_or(19), summe_rvg49_netto.get())) }
                     <span class="ml-1">EUR</span>
                 </div> 
                 <div class="col-span-5 pt-4 text-xl font-medium">
