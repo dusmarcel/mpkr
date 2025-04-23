@@ -531,15 +531,74 @@ pub fn MPKR() -> impl IntoView {
                 />
                 <label for="h3" class="mx-1">3. Instanz</label>
             </p>
-            <h3 class=move || if h1.get().unwrap_or(true) { "visible text-xl font-medium" } else { "hidden" }>
-                "1. Instanz"
+            <p class=move || if h1.get().unwrap_or(true) { "visible" } else { "hidden" }>
+                <h3 class="text-xl font-medium">
+                    "1. Instanz"
+                </h3>
+                <h4 class="text-l font-medium">
+                    "Rechtsanwaltsvergütungsgesetz"
+                </h4>
+                <p>to be done...</p>
+                <h4 class="text-l font-medium">
+                    "Gerichtskostengesetz"
+                </h4>
+                <p>to be done...</p>               
+            </p>
+            <p class=move || if h2.get().unwrap_or(true) { "visible" } else { "hidden" }>
+                <h3 class="text-xl font-medium">
+                    "2. Instanz"
+                </h3>
+                <h4 class="text-l font-medium">
+                    "Rechtsanwaltsvergütungsgesetz"
+                </h4>
+                <p>to be done...</p>
+                <h4 class="text-l font-medium">
+                    "Gerichtskostengesetz"
+                </h4>
+                <p>to be done...</p>  
+            </p>
+            <p class=move || if h3.get().unwrap_or(true) { "visible" } else { "hidden" }>
+                <h3 class="text-xl font-medium">
+                    "3. Instanz"
+                </h3>
+                <h4 class="text-l font-medium">
+                    "Rechtsanwaltsvergütungsgesetz"
+                </h4>
+                <p>to be done...</p>
+                <h4 class="text-l font-medium">
+                    "Gerichtskostengesetz"
+                </h4>
+                <p>to be done...</p>
+            </p>
+            <h3 class="text-xl font-medium">
+                "Summen"
             </h3>
-            <h3 class=move || if h2.get().unwrap_or(false) { "visible text-xl font-medium" } else { "hidden" }>
-                "2. Instanz"
-            </h3>
-            <h3 class=move || if h3.get().unwrap_or(false) { "visible text-xl font-medium" } else { "hidden" }>
-                "3. Instanz"
-            </h3>
+            <p class="grid grid-cols-3 font-semibold">
+                <div>
+                    "Rechtsanwaltsvergütungsgesetz (§ 13 RVG)"
+                </div>
+                <div class="text-right">
+                   { move || format_euro(summe_rvg13_h.get()) }
+                    <span class="ml-1">EUR</span>
+                </div>
+                <div></div>
+                <div>
+                    "Rechtsanwaltsvergütungsgesetz (§ 49 RVG)"
+                </div>
+                <div class="text-right">
+                   { move || format_euro(summe_rvg49_h.get()) }
+                    <span class="ml-1">EUR</span>
+                </div>
+                <div></div>
+                <div>
+                    "Gerichtskostengesetz"
+                </div>
+                <div class="text-right">
+                   { move || format_euro(summe_gkg_h.get()) }
+                    <span class="ml-1">EUR</span>
+                </div>
+                <div></div>        
+            </p>
         </div>
 
         // Vorläufiger Rechtsschutz
@@ -568,12 +627,61 @@ pub fn MPKR() -> impl IntoView {
                 />
                 <span class="mx-1">2. Instanz</span>
             </p>
-            <h3 class=move || if v1.get().unwrap_or(true) { "visible text-xl font-medium" } else { "hidden" }>
-                "1. Instanz"
+            <p class=move || if v1.get().unwrap_or(true) { "visible" } else { "hidden" }>
+                <h3 class="text-xl font-medium">
+                    "1. Instanz"
+                </h3>
+                <h4 class="text-l font-medium">
+                    "Rechtsanwaltsvergütungsgesetz"
+                </h4>
+                <p>to be done...</p>
+                <h4 class="text-l font-medium">
+                    "Gerichtskostengesetz"
+                </h4>
+                <p>to be done...</p>
+            </p>
+            <p class=move || if v2.get().unwrap_or(true) { "visible" } else { "hidden" }>
+                <h3 class="text-xl font-medium">
+                    "2. Instanz"
+                </h3>
+                <h4 class="text-l font-medium">
+                    "Rechtsanwaltsvergütungsgesetz"
+                </h4>
+                <p>to be done...</p>
+                <h4 class="text-l font-medium">
+                    "Gerichtskostengesetz"
+                </h4>
+                <p>to be done...</p>
+            </p>
+            <h3 class="text-xl font-medium">
+                "Summen"
             </h3>
-            <h3 class=move || if v2.get().unwrap_or(false) { "visible text-xl font-medium" } else { "hidden" }>
-                "2. Instanz"
-            </h3>
+            <p class="grid grid-cols-3 font-semibold">
+                <div>
+                    "Rechtsanwaltsvergütungsgesetz (§ 13 RVG)"
+                </div>
+                <div class="text-right">
+                   { move || format_euro(summe_rvg13_v.get()) }
+                    <span class="ml-1">EUR</span>
+                </div>
+                <div></div>
+                <div>
+                    "Rechtsanwaltsvergütungsgesetz (§ 49 RVG)"
+                </div>
+                <div class="text-right">
+                   { move || format_euro(summe_rvg49_v.get()) }
+                    <span class="ml-1">EUR</span>
+                </div>
+                <div></div>
+                <div>
+                    "Gerichtskostengesetz"
+                </div>
+                <div class="text-right">
+                   { move || format_euro(summe_gkg_v.get()) }
+                    <span class="ml-1">EUR</span>
+                </div>
+                <div></div>        
+            </p>
         </div>
 
         // Summen
