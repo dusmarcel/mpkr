@@ -123,17 +123,78 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let change_n3100 = move |ev| set_n3100.set(Some(event_target_checked(&ev)));
 
+    let (n3101, set_n3101) = query_signal_with_options::<bool>(
+        "n3101",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_n3101 = move |ev| set_n3101.set(Some(event_target_checked(&ev)));
+
     let verfgeb13_h1 = Memo::new( move |_| {
-        if n3100.get().unwrap_or(true) {
-            1.3 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+        if n3101.get().unwrap_or(false) {
+            0.8 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+        } else {
+            if n3100.get().unwrap_or(true) {
+                1.3 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            } else {
+                0.0
+            }
+        }
+    });
+
+    let verfgeb49_h1 = Memo::new( move |_| {
+        if n3101.get().unwrap_or(false) {
+            0.8 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+        } else {
+            if n3100.get().unwrap_or(true) {
+                1.3 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            } else {
+                0.0
+            }
+        }
+    });
+
+    let (anr, set_anr) = query_signal_with_options::<bool>(
+        "anr",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_anrechnung = move |ev| set_anr.set(Some(event_target_checked(&ev)));
+
+    let anrechnung13 = Memo::new(move |_| {
+        if anr.get().unwrap_or(a.get().unwrap_or(false)) && a.get().unwrap_or(false) && g.get().unwrap_or(true) && (n3100.get().unwrap_or(true) || n3101.get().unwrap_or(false)) {
+            let mut anrechnungsbetrag = 0.5 * n2300.get();
+            if anrechnungsbetrag > 0.75 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT)) {
+                anrechnungsbetrag = 0.75 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT));
+            }
+            anrechnungsbetrag
+        } else {
+            0.0
+        }        
+    });
+
+    let anrechnung49 = Memo::new(move |_| {
+        let mut anrechnungsbetrag = anrechnung13.get();
+        let differenz = verfgeb13_h1.get() - verfgeb49_h1.get();
+        anrechnungsbetrag -= differenz;
+        if anrechnungsbetrag <= 0.0 {
+            anrechnungsbetrag = 0.0;
+        }
+        anrechnungsbetrag      
+    });
+
+    let (n3104, set_n3104) = query_signal_with_options::<bool>(
+        "n3104",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_n3104 = move |ev| set_n3104.set(Some(event_target_checked(&ev)));
+
+    let tgeb13_h1 = Memo::new( move |_| {
+        if n3104.get().unwrap_or(true) {
+            1.2 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
         } else {
             0.0
         }
     });
 
-    let verfgeb49_h1 = Memo::new( move |_| {
-        if n3100.get().unwrap_or(true) {
-            1.3 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+    let tgeb49_h1 = Memo::new( move |_| {
+        if n3104.get().unwrap_or(true) {
+            1.2 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
         } else {
             0.0
         }
@@ -141,15 +202,11 @@ pub fn MPKR() -> impl IntoView {
 
     // Summen Hauptsacheverfahren
     let summe_rvg13_h = Memo::new(move |_| {
-        //let summe = 0.0;
-        //summe
-        verfgeb13_h1.get()
+        verfgeb13_h1.get() - anrechnung13.get() + tgeb13_h1.get()
     });
 
     let summe_rvg49_h = Memo::new(move |_| {
-        //let summe = 0.0;
-        //summe
-        verfgeb49_h1.get()
+        verfgeb49_h1.get() - anrechnung49.get() + tgeb49_h1.get()
     });
 
     let summe_gkg_h = Memo::new(move |_| {
@@ -601,7 +658,7 @@ pub fn MPKR() -> impl IntoView {
                                 />
                             </td>
                             <td class="px-1">
-                                "Verfahrensgebühr, Nr. 3100"
+                                <label for="n3100">"Verfahrensgebühr, Nr. 3100"</label>
                             </td>
                             <td class="px-1 text-right">
                                 "1,3"
@@ -616,6 +673,90 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb13_h1.get() - verfgeb49_h1.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n3101"
+                                    on:change=change_n3101
+                                    prop:checked=move || n3101.get().unwrap_or(false)
+                                />
+                            </td>
+                            <td class="px-1">
+                                <label for="n3101">"Ermäßigte Verfahrensgebühr, Nr. 3101"</label>
+                                <button popovertarget="ermaessigung3101" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
+                                <div id="ermaessigung3101" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                                    <h4 class="text-xl font-medium">"Ermäßigung der Verfahrensgebühr Nr. 3100"</h4>
+                                    <p>{ popover::ERMAESSIGUNG3101 }</p>
+                                </div>
+                            </td>
+                            <td class="px-1 text-right">
+                                "0,8"
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="anr"
+                                    on:change=change_anrechnung
+                                    prop:checked=move || anr.get().unwrap_or(a.get().unwrap_or(false))
+                                />
+                            </td>
+                            <td colspan="2" class="px-1">
+                                <label for="anr">"Anrechnung der Geschäfts- auf die Verfahrensgebühr"</label>
+                                <button popovertarget="anrechnung" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
+                                <div id="anrechnung" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                                    <h4 class="text-xl font-medium">"Vorbemerkung 3 Abs. 4 VV RVG"</h4>
+                                    <p>{ popover::ANRECHNUNG }</p>
+                                </div>                                
+                            </td>
+                            <td class="px-1 text-right">
+                                <span class="mr-1">"-"</span>
+                                { move || format_euro(anrechnung13.get()) }
+                                <span class="ml-1">"EUR"</span>
+                            </td>
+                            <td class="px-1 text-right">
+                                <span class="mr-1">"-"</span>
+                                { move || format_euro(anrechnung49.get()) }
+                                <span class="ml-1">"EUR"</span>
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(anrechnung13.get() - anrechnung49.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n3104"
+                                    on:change=change_n3104
+                                    prop:checked=move || n3104.get().unwrap_or(true)
+                                />
+                            </td>
+                            <td class="px-1">
+                                <label for="n3104">"Terminsgebühr, Nr. 3104"</label>
+                            </td>
+                            <td class="px-1 text-right">
+                                "1,2"
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(tgeb13_h1.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(tgeb49_h1.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(tgeb13_h1.get() - tgeb49_h1.get()) }
                                 <span class="ml-1">EUR</span>
                             </td>
                         </tr>
