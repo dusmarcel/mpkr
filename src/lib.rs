@@ -118,6 +118,8 @@ pub fn MPKR() -> impl IntoView {
     let change_h3 = move |ev| set_h3.set(Some(event_target_checked(&ev)));
 
     // 1. Instanz Hauptsachverfahren
+
+    //RVG
     let (n3100, set_n3100) = query_signal_with_options::<bool>(
         "n3100",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
@@ -200,21 +202,81 @@ pub fn MPKR() -> impl IntoView {
         }
     });
 
+    let (h1p, set_h1p) = query_signal_with_options::<bool>(
+        "h1p",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_h1_pauschale = move |ev| set_h1p.set(Some(event_target_checked(&ev)));
+
+    let pauschale13_h1 = Memo::new( move |_| {
+        if h1p.get().unwrap_or(true) {
+            fees::pauschale(verfgeb13_h1.get () + tgeb13_h1.get())
+        } else {
+            0.0
+        }
+    });
+
+    let pauschale49_h1 = Memo::new( move |_| {
+        if h1p.get().unwrap_or(true) {
+            fees::pauschale(verfgeb49_h1.get () + tgeb49_h1.get())
+        } else {
+            0.0
+        }
+    });
+
+    let (h1a, set_h1a) = query_signal_with_options::<bool>(
+        "h1a",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_h1_auslagen = move |ev| set_h1a.set(Some(event_target_checked(&ev)));
+
+    let (h1sa, set_h1sa) = query_signal_with_options::<f64>(
+        "h1sa",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_h1_sonstige_auslagen = move |ev| set_h1sa.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(0.0))); 
+
+    // GKG
+
+    // 2. Instanz Hauptsacheverfahren
+
+    // RVG
+
+    // GKG
+
+    // 3. Instanz Hauptsacheverfahren
+
+    // RVG
+
+    // GKG
+
     // Summen Hauptsacheverfahren
     let summe_rvg13_h = Memo::new(move |_| {
-        verfgeb13_h1.get() - anrechnung13.get() + tgeb13_h1.get()
-    });
-
-    let summe_rvg49_h = Memo::new(move |_| {
-        verfgeb49_h1.get() - anrechnung49.get() + tgeb49_h1.get()
-    });
-
-    let summe_gkg_h = Memo::new(move |_| {
-        let summe = 0.0;
+        let mut summe = verfgeb13_h1.get() - anrechnung13.get() + tgeb13_h1.get() + pauschale13_h1.get();
+        if h1a.get().unwrap_or(false) {summe += h1sa.get().unwrap_or(0.0) }
         summe
     });
 
+    let summe_rvg49_h = Memo::new(move |_| {
+        let mut summe = verfgeb49_h1.get() - anrechnung49.get() + tgeb49_h1.get() + pauschale49_h1.get();
+        if h1a.get().unwrap_or(false) {summe += h1sa.get().unwrap_or(0.0) }
+        summe        
+    });
+
+    let summe_gkg_h = Memo::new(move |_| {
+        0.0
+    });
+
     // Vorläufiger Rechtsschutz
+
+    // 1. Instanz
+
+    // RVG
+
+    // GKG
+
+    // 2. Instanz
+
+    // RVG
+
+    // GKG
 
     // Welche Instanzen?
     let (v1, set_v1) = query_signal_with_options::<bool>(
@@ -229,18 +291,15 @@ pub fn MPKR() -> impl IntoView {
 
     // Summen vorläufiger Rechtsschutz
     let summe_rvg13_v = Memo::new(move |_| {
-        let summe = 0.0;
-        summe
+        0.0
     });
 
     let summe_rvg49_v = Memo::new(move |_| {
-        let summe = 0.0;
-        summe
+        0.0
     });
 
     let summe_gkg_v = Memo::new(move |_| {
-        let summe = 0.0;
-        summe
+        0.0
     });
 
     // Summen
@@ -760,9 +819,59 @@ pub fn MPKR() -> impl IntoView {
                                 <span class="ml-1">EUR</span>
                             </td>
                         </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="h1_pauschale"
+                                    on:change=change_h1_pauschale
+                                    prop:checked=move || h1p.get().unwrap_or(true)
+                                />
+                            </td>
+                            <td class="px-1">
+                                <label for="h1_pauschale">"Auslagenpauschale, Nr. 7002"</label>
+                            </td>
+                            <td></td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(pauschale13_h1.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(pauschale49_h1.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(pauschale49_h1.get() - pauschale13_h1.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="h1_auslagen"
+                                    on:change=change_h1_auslagen
+                                    prop:checked=move || h1a.get().unwrap_or(false)
+                                />
+                            </td>
+                            <td colspan="2" class="px-1">
+                                <label for="h1_auslagen">"Sonstige Auslagen"</label>
+                                <button popovertarget="auslagen" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
+                            </td>
+                            <td class="px-1 text-right">
+                                <input
+                                    type="text"
+                                    class="px-1 border-2 border-stone-400 rounded-lg text-right"
+                                    value=move || h1sa.get().unwrap_or(0.0)
+                                    on:change=change_h1_sonstige_auslagen
+                                    prop:value=move || if h1a.get().unwrap_or(false) { format_euro(h1sa.get().unwrap_or(0.0)) } else { "0,00".to_string() }
+                                />
+                                <span class="ml-1">EUR</span>
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
                     </tbody>
                 </table>
-                <p>to be done...</p>
                 <h4 class="text-l font-bold">
                     "Gerichtskostengesetz"
                 </h4>
