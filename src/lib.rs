@@ -89,7 +89,11 @@ pub fn MPKR() -> impl IntoView {
     let (asa, set_asa) = query_signal_with_options::<f64>(
         "asa",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_aussergerichtlich_sonstige_auslagen = move |ev| set_asa.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(0.0))); 
+    let change_aussergerichtlich_sonstige_auslagen = move |ev| {
+        set_asa.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(0.0)));
+        // FIXME!!!
+        set_aa.set(Some(true));
+    };
 
     let summe_aussergerichtlich = Memo::new(move |_| {
         let mut summe = 0.0;
@@ -231,7 +235,10 @@ pub fn MPKR() -> impl IntoView {
     let (h1sa, set_h1sa) = query_signal_with_options::<f64>(
         "h1sa",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_h1_sonstige_auslagen = move |ev| set_h1sa.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(0.0))); 
+    let change_h1_sonstige_auslagen = move |ev| {
+        set_h1sa.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(0.0)));
+        set_h1a.set(Some(true));
+    };
 
     // GKG
 
@@ -249,14 +256,22 @@ pub fn MPKR() -> impl IntoView {
 
     // Summen Hauptsacheverfahren
     let summe_rvg13_h = Memo::new(move |_| {
-        let mut summe = verfgeb13_h1.get() - anrechnung13.get() + tgeb13_h1.get() + pauschale13_h1.get();
-        if h1a.get().unwrap_or(false) {summe += h1sa.get().unwrap_or(0.0) }
+        let mut summe = 0.0;
+        if h1.get().unwrap_or(true) {
+            summe += verfgeb13_h1.get() - anrechnung13.get() + tgeb13_h1.get() + pauschale13_h1.get();
+            if h1a.get().unwrap_or(false) {
+                summe += h1sa.get().unwrap_or(0.0)
+            }
+        }
         summe
     });
 
     let summe_rvg49_h = Memo::new(move |_| {
-        let mut summe = verfgeb49_h1.get() - anrechnung49.get() + tgeb49_h1.get() + pauschale49_h1.get();
-        if h1a.get().unwrap_or(false) {summe += h1sa.get().unwrap_or(0.0) }
+        let mut summe = 0.0;
+        if h1.get().unwrap_or(true) {   
+            summe += verfgeb49_h1.get() - anrechnung49.get() + tgeb49_h1.get() + pauschale49_h1.get();
+            if h1a.get().unwrap_or(false) {summe += h1sa.get().unwrap_or(0.0) }
+        }
         summe        
     });
 
