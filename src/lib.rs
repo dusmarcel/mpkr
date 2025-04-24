@@ -91,8 +91,11 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let change_aussergerichtlich_sonstige_auslagen = move |ev| {
         set_asa.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(0.0)));
-        // FIXME!!!
-        set_aa.set(Some(true));
+        if event_target_value(&ev).parse::<f64>().unwrap_or(0.0) != 0.0 {
+            set_aa.set(Some(true));
+        } else {
+            set_aa.set(Some(false));
+        }
     };
 
     let summe_aussergerichtlich = Memo::new(move |_| {
@@ -237,7 +240,11 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let change_h1_sonstige_auslagen = move |ev| {
         set_h1sa.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(0.0)));
-        set_h1a.set(Some(true));
+        if event_target_value(&ev).parse::<f64>().unwrap_or(0.0) != 0.0 {
+            set_h1a.set(Some(true));
+        } else {
+            set_h1a.set(Some(false));
+        }
     };
 
     // GKG
