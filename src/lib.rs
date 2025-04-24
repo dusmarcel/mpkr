@@ -248,6 +248,25 @@ pub fn MPKR() -> impl IntoView {
     };
 
     // GKG
+    let (n5110, set_n5110) = query_signal_with_options::<bool>(
+        "n5110",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_n5110 = move |ev| set_n5110.set(Some(event_target_checked(&ev)));
+
+    let (n5111, set_n5111) = query_signal_with_options::<bool>(
+        "n5111",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_n5111 = move |ev| set_n5111.set(Some(event_target_checked(&ev)));
+
+    let gkg_h1 = Memo::new ( move |_| {
+        if n5111.get().unwrap_or(false) {
+            1.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+        } else if n5110.get().unwrap_or(true) {
+            3.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+        } else {
+            0.0
+        }
+    });
 
     // 2. Instanz Hauptsacheverfahren
 
@@ -283,7 +302,9 @@ pub fn MPKR() -> impl IntoView {
     });
 
     let summe_gkg_h = Memo::new(move |_| {
-        0.0
+        let mut summe = 0.0;
+        if h1.get().unwrap_or(true) { summe += gkg_h1.get(); }
+        summe
     });
 
     // Vorläufiger Rechtsschutz
@@ -897,7 +918,67 @@ pub fn MPKR() -> impl IntoView {
                 <h4 class="text-l font-bold">
                     "Gerichtskostengesetz"
                 </h4>
-                <p>to be done...</p>               
+                <table class="table-auto">
+                    <thead>
+                        <tr>
+                            <th>
+                            </th>
+                            <th>
+                                "Gebührentatbestand und Nummer"
+                            </th>
+                            <th class="px-1">
+                                "Gebührensatz"
+                            </th>
+                            <th class="px-1">
+                                "Wertgebühr"
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n5110"
+                                    on:change=change_n5110
+                                    prop:checked=move || n5110.get().unwrap_or(true)
+                                />
+                            </td>
+                            <td class="px-1">
+                                <label for="n5110">"Verfahren im Allgemeinen, Nr. 5110"</label>
+                            </td>
+                            <td class="px-1 text-right">
+                                "3,0"
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(gkg_h1.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n5111"
+                                    on:change=change_n5111
+                                    prop:checked=move || n5111.get().unwrap_or(false)
+                                />
+                            </td>
+                            <td class="px-1">
+                                <label for="n5111">"Ermäßigte Gebühr, Nr. 5111"</label>
+                                <button popovertarget="ermaessigung5111" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
+                                <div id="ermaessigung5111" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                                    <h4 class="text-xl font-medium">"Ermäßigung der Gebühr Nr. 5110"</h4>
+                                    <p>{ popover::ERMAESSIGUNG5111 }</p>
+                                </div>  
+                            </td>
+                            <td class="px-1 text-right">
+                                "1,0"
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>            
             </p>
             <p class=move || if h2.get().unwrap_or(false) { "visible" } else { "hidden" }>
                 <h3 class="text-xl font-medium">
