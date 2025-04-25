@@ -586,7 +586,7 @@ pub fn MPKR() -> impl IntoView {
                             <td class="px-1">
                                 <input type="number" min="1" value=move || p.get().unwrap_or(1) class="border-2 border-stone-400 rounded-lg px-1" on:change=change_personen />
                                 <button popovertarget="zahl-der-personen" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
-                                <div id="zahl-der-personen" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                                <div id="zahl-der-personen" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
                                     <h4 class="text-xl font-medium">Zahl der Personen</h4>
                                     <p>{ popover::PERSONS }</p>
                                 </div>
@@ -617,7 +617,7 @@ pub fn MPKR() -> impl IntoView {
                         <tr class=move || if v.get().unwrap_or(0) == 2 { "visible" } else { "hidden" }>
                             <td></td>
                             <td class="px-1">
-                                vorläufiger Rechtsschutz
+                                "vorläufiger Rechtsschutz"
                             </td>
                             <td></td>
                             <td></td>
@@ -667,7 +667,7 @@ pub fn MPKR() -> impl IntoView {
                 />
                 <label for="aussergerichtlich" class="ml-1">Außergerichtliche Vertretung</label>
                 <button popovertarget="aussergerichtliche-vertretung" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
-                <div id="aussergerichtliche-vertretung" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                <div id="aussergerichtliche-vertretung" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
                     <h4 class="text-xl font-medium">Außergerichtliche Vertretung</h4>
                     <p>{ popover::AUSSERGERICHTLICH }</p>
                 </div>            
@@ -703,7 +703,7 @@ pub fn MPKR() -> impl IntoView {
                                     prop:value=move || gs.get().unwrap_or(1.3)
                                 />
                                 <button popovertarget="gebuehrensatz" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
-                                <div id="gebuehrensatz" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                                <div id="gebuehrensatz" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
                                     <h4 class="text-xl font-medium">Gebührensatz für die Geschäftsgebühr</h4>
                                     <p>{ popover::GEBUEHRENSATZ }</p>
                                 </div>
@@ -741,9 +741,9 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1">
                                 <span>"Sonstige Auslagen, z. B. Nr. 7000, 7003 ff. VV RVG"</span>
-                                <button popovertarget="auslagen" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
-                                <div id="auslagen" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
-                                    <h4 class="text-xl font-medium">Sonstige Auslagen</h4>
+                                <button popovertarget="aauslagen" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
+                                <div id="aauslagen" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
+                                    <h4 class="text-xl font-medium">"Sonstige Auslagen"</h4>
                                     <p>"Zum Beispiel:"
                                         <ul>
                                             <li>"7000 Pauschale für die Herstellung und Überlassung von Dokumenten:"
@@ -768,7 +768,7 @@ pub fn MPKR() -> impl IntoView {
                                             "Die Umsatzsteuer (Nr. 7008) VV RVG wird unten, unter „Summe“ berechnet."
                                         </ul>
                                     </p>
-                                </div>  
+                                </div>
                             </td>
                             <td></td>
                             <td></td>
@@ -901,7 +901,7 @@ pub fn MPKR() -> impl IntoView {
                             <td class="px-1">
                                 <label for="n3101">"Ermäßigte Verfahrensgebühr, Nr. 3101"</label>
                                 <button popovertarget="ermaessigung3101" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
-                                <div id="ermaessigung3101" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                                <div id="ermaessigung3101" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
                                     <h4 class="text-xl font-medium">"Ermäßigung der Verfahrensgebühr Nr. 3100"</h4>
                                     <p>{ popover::ERMAESSIGUNGVERFGEB }</p>
                                 </div>
@@ -925,7 +925,7 @@ pub fn MPKR() -> impl IntoView {
                             <td colspan="2" class="px-1">
                                 <label for="anr">"Anrechnung der Geschäfts- auf die Verfahrensgebühr"</label>
                                 <button popovertarget="anrechnung" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
-                                <div id="anrechnung" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                                <div id="anrechnung" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
                                     <h4 class="text-xl font-medium">"Vorbemerkung 3 Abs. 4 VV RVG"</h4>
                                     <p>{ popover::ANRECHNUNG }</p>
                                 </div>                                
@@ -1010,7 +1010,34 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td colspan="2" class="px-1">
                                 <label for="h1_auslagen">"Sonstige Auslagen"</label>
-                                <button popovertarget="auslagen" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
+                                <button popovertarget="h1auslagen" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
+                                <div id="h1auslagen" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
+                                    <h4 class="text-xl font-medium">"Sonstige Auslagen"</h4>
+                                    <p>"Zum Beispiel:"
+                                        <ul>
+                                            <li>"7000 Pauschale für die Herstellung und Überlassung von Dokumenten:"
+                                                <ul>
+                                                    <li>"für Kopien und Ausdrucke"</li>        
+                                                    <li>"für die ersten 50 abzurechnenden Seiten je Seite 0,50 EUR"</li>
+                                                    <li>"für jede weitere Seite 0,15 EUR"</li>
+                                                    <li>"für die ersten 50 abzurechnenden Seiten in Farbe je Seite 1,00 EUR"</li>
+                                                    <li>"für jede weitere Seite in Farbe 0,30 EUR"</li>
+                                                </ul>
+                                            </li>
+                                            <li>"7003 Fahrtkosten für eine Geschäftsreise bei Benutzung eines eigenen Kraftfahrzeugs für jeden gefahrenen Kilometer 0,42 EUR."</li>
+                                            <li>"7004 Fahrtkosten für eine Geschäftsreise bei Benutzung eines anderen Verkehrsmittels, soweit sie angemessen sind in voller Höhe."</li>
+                                            <li>"7005 Tage- und Abwesenheitsgeld bei einer Geschäftsreise"
+                                                <ol>
+                                                    <li>"von nicht mehr als 4 Stunden 30,00 EUR"</li>
+                                                    <li>"von mehr als 4 bis 8 Stunden 50,00 EUR"</li>
+                                                    <li>"von mehr als 8 Stunden 80,00 EUR"</li>
+                                                </ol>
+                                                "Bei Auslandsreisen kann zu diesen Beträgen ein Zuschlag von 50 % berechnet werden."</li>
+                                            <li>"7006 Sonstige Auslagen (z.B. Hotel) anlässlich einer Geschäftsreise, soweit sie angemessen sind in voller Höhe."</li>
+                                            "Die Umsatzsteuer (Nr. 7008) VV RVG wird unten, unter „Summe“ berechnet."
+                                        </ul>
+                                    </p>
+                                </div>
                             </td>
                             <td class="px-1 text-right">
                                 <input
@@ -1078,7 +1105,7 @@ pub fn MPKR() -> impl IntoView {
                             <td class="px-1">
                                 <label for="n5111">"Ermäßigte Gebühr, Nr. 5111"</label>
                                 <button popovertarget="ermaessigung5111" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
-                                <div id="ermaessigung5111" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                                <div id="ermaessigung5111" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
                                     <h4 class="text-xl font-medium">"Ermäßigung der Gebühr Nr. 5110"</h4>
                                     <p>{ popover::ERMAESSIGUNG5111 }</p>
                                 </div>  
@@ -1160,9 +1187,9 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1">
                                 <label for="n3101">"Ermäßigte Verfahrensgebühr, Nr. 3201"</label>
-                                <button popovertarget="ermaessigung3101" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
-                                <div id="ermaessigung3101" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
-                                    <h4 class="text-xl font-medium">"Ermäßigung der Verfahrensgebühr Nr. 3100"</h4>
+                                <button popovertarget="ermaessigung3201" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
+                                <div id="ermaessigung3201" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
+                                    <h4 class="text-xl font-medium">"Ermäßigung der Verfahrensgebühr Nr. 3200"</h4>
                                     <p>{ popover::ERMAESSIGUNGVERFGEB }</p>
                                 </div>
                             </td>
@@ -1238,7 +1265,34 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td colspan="2" class="px-1">
                                 <label for="h2_auslagen">"Sonstige Auslagen"</label>
-                                <button popovertarget="auslagen" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
+                                <button popovertarget="h2auslagen" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
+                                <div id="h2auslagen" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
+                                    <h4 class="text-xl font-medium">"Sonstige Auslagen"</h4>
+                                    <p>"Zum Beispiel:"
+                                        <ul>
+                                            <li>"7000 Pauschale für die Herstellung und Überlassung von Dokumenten:"
+                                                <ul>
+                                                    <li>"für Kopien und Ausdrucke"</li>        
+                                                    <li>"für die ersten 50 abzurechnenden Seiten je Seite 0,50 EUR"</li>
+                                                    <li>"für jede weitere Seite 0,15 EUR"</li>
+                                                    <li>"für die ersten 50 abzurechnenden Seiten in Farbe je Seite 1,00 EUR"</li>
+                                                    <li>"für jede weitere Seite in Farbe 0,30 EUR"</li>
+                                                </ul>
+                                            </li>
+                                            <li>"7003 Fahrtkosten für eine Geschäftsreise bei Benutzung eines eigenen Kraftfahrzeugs für jeden gefahrenen Kilometer 0,42 EUR."</li>
+                                            <li>"7004 Fahrtkosten für eine Geschäftsreise bei Benutzung eines anderen Verkehrsmittels, soweit sie angemessen sind in voller Höhe."</li>
+                                            <li>"7005 Tage- und Abwesenheitsgeld bei einer Geschäftsreise"
+                                                <ol>
+                                                    <li>"von nicht mehr als 4 Stunden 30,00 EUR"</li>
+                                                    <li>"von mehr als 4 bis 8 Stunden 50,00 EUR"</li>
+                                                    <li>"von mehr als 8 Stunden 80,00 EUR"</li>
+                                                </ol>
+                                                "Bei Auslandsreisen kann zu diesen Beträgen ein Zuschlag von 50 % berechnet werden."</li>
+                                            <li>"7006 Sonstige Auslagen (z.B. Hotel) anlässlich einer Geschäftsreise, soweit sie angemessen sind in voller Höhe."</li>
+                                            "Die Umsatzsteuer (Nr. 7008) VV RVG wird unten, unter „Summe“ berechnet."
+                                        </ul>
+                                    </p>
+                                </div>
                             </td>
                             <td class="px-1 text-right">
                                 <input
@@ -1470,7 +1524,7 @@ pub fn MPKR() -> impl IntoView {
                     <input type="number" min="0" value=move || u.get().unwrap_or(19) class="px-1 w-16 border-2 border-stone-400 rounded-lg" on:change=change_umsatzsteuer />
                     <span class="ml-1">%</span>
                     <button popovertarget="umsatzsteuer" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
-                    <div id="umsatzsteuer" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
+                    <div id="umsatzsteuer" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
                         <h4 class="text-xl font-medium">Steuersatz der Umsatzsteuer</h4>
                         <p>{ popover::UMSATZSTEUER }</p>
                     </div>
@@ -1494,11 +1548,11 @@ pub fn MPKR() -> impl IntoView {
                     { move || format_euro(fees::umsatzsteuer_brutto(u.get().unwrap_or(19), summe_rvg13_netto.get())) }
                     <span class="ml-1">EUR</span>
                 </div>
-                <div class="text-right font-semibold">
+                <div class="text-right italic">
                     { move || format_euro(fees::umsatzsteuer_brutto(u.get().unwrap_or(19), summe_rvg49_netto.get())) }
                     <span class="ml-1">EUR</span>
                 </div>            
-                <div class="text-right font-semibold">
+                <div class="text-right italic">
                     { move || format_euro(fees::umsatzsteuer_brutto(u.get().unwrap_or(19), summe_rvg13_netto.get()) - fees::umsatzsteuer_brutto(u.get().unwrap_or(19), summe_rvg49_netto.get())) }
                     <span class="ml-1">EUR</span>
                 </div> 
@@ -1538,7 +1592,7 @@ pub fn MPKR() -> impl IntoView {
                     { move || format_euro(summe_gkg.get()) }
                     <span class="ml-1">EUR</span>
                 </div>
-                <div class="text-right font-semibold">
+                <div class="text-right italic">
                     { move || format_euro(summe_gkg.get()) }
                     <span class="ml-1">EUR</span>
                 </div>            
@@ -1550,11 +1604,11 @@ pub fn MPKR() -> impl IntoView {
                     { move || format_euro(gesamtsumme13.get()) }
                     <span class="ml-1">EUR</span>
                 </div>
-                <div class="pt-4 text-right text-xl font-medium">
+                <div class="pt-4 text-right text-l italic">
                     { move || format_euro(gesamtsumme49.get()) }
                     <span class="ml-1">EUR</span>
                 </div>
-                <div class="pt-4 text-right text-xl font-medium">
+                <div class="pt-4 text-right text-l italic">
                     { move || format_euro(gesamtsumme13.get() - gesamtsumme49.get()) }
                     <span class="ml-1">EUR</span>
                 </div>
@@ -1591,7 +1645,12 @@ pub fn MPKR() -> impl IntoView {
             <p>
                 "Die Abkürzung PKH steht für Prozesskostenhilfe. Da die Wertgebühren bei Prozesskostenhilfe teilweise abweichen,
                 werden die entsprechenden Gebühren gesondert ausgewiesen. Für außergerichtliche Vertretung gibt es keine
-                Prozesskostenhilfe, daher werden für die außergerichtliche Vertretung immer die Wergebühren nach § 13 RVG ausgewiesen."
+                Prozesskostenhilfe, daher werden für die außergerichtliche Vertretung immer die Wergebühren nach § 13 RVG ausgewiesen.
+                Für die Abrechnung gegenüber Mandant*innen sind in aller Regel die Gebühren nach § 13 RVG in der jeweils linken Spalte maßgeblich.
+                Die PKH-Gebühren werden meist nur für die Abrechnung gegenüber der Staatskasse benötigt, wenn Prozesskostenhilfe bewilligt wurde.
+                Dass die PKH-Gebühren und ihre Differenz zu den Wertgebühren nach § 13 RVG hier gesondert ausgewiesen werden, versteht sich
+                daher eher als Serviceleistung für Anwaltskanzleien. Für Rechtssuchende hingegen sind sie grundsätzlich irrelevant, da
+                es für sie nur auf die Wertgebühren gemäß § 13 RVG ankommt."
             </p>
             <p>
                 "Der Rechner geht äußerst sparsam mit deinen Daten um. Zwar werden einige technisch benötigte Daten,
