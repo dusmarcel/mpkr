@@ -399,6 +399,11 @@ pub fn MPKR() -> impl IntoView {
                 "Erstellt von "<a class="text-blue-600 hover:underline hover:text-violet-600" href="https://aufentha.lt">"Marcel Keienborg"</a>". Bitte beachte unbedingt auch die
                 Hinweise unten auf dieser Seite."
             </p>
+            <p>
+                <span class="underline text-red-500">"!!!Achtung!!!"</span>" Der Rechner befindet sich noch im Aufbau. Er ist deswegen noch unvollständig und es sind noch nicht alle Funktionen hinreichend getestet. Nutzung daher auf eigene Gefahr.
+                Feedback, auch kritisches Feedback von fachkundigen Personen, ist ausdrücklich erwünscht.
+                Die hier abgebildeten Gebührensätze für Rechtsanwält*innen finden Anwendung, wenn die*der Anwält*in ab dem 01.06.2025 beauftragt wurde. Für Aufträge, die im Zeitraum zwischen 01.01.2021 und 31.05.2025 ertreilt worden sind, habe ich "<a class="text-blue-600 hover:underline hover:text-violet-600" href="https://mpkr21.aufentha.lt">"hier auch einen Rechner"</a>" erstellt."
+            </p>
         </div>
         <div class="container max-w-screen-xl mx-auto px-4 bg-linear-to-b from-stone-50 to-stone-300">
             <h2 class="pt-4 text-2xl font-medium">
@@ -792,7 +797,7 @@ pub fn MPKR() -> impl IntoView {
                                 <button popovertarget="ermaessigung3101" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
                                 <div id="ermaessigung3101" popover class="open:border-2 open:border-stone-400 open:rounded-lg open:p-2 open:mt-60 open:mx-60">
                                     <h4 class="text-xl font-medium">"Ermäßigung der Verfahrensgebühr Nr. 3100"</h4>
-                                    <p>{ popover::ERMAESSIGUNG3101 }</p>
+                                    <p>{ popover::ERMAESSIGUNGVERFGEB }</p>
                                 </div>
                             </td>
                             <td class="px-1 text-right">
