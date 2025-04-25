@@ -365,6 +365,44 @@ pub fn MPKR() -> impl IntoView {
     };
 
     // GKG
+    let (n5122, set_n5122) = query_signal_with_options::<bool>(
+        "n5122",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_n5122 = move |ev| set_n5122.set(Some(event_target_checked(&ev)));
+
+    let (n5120, set_n5120) = query_signal_with_options::<bool>(
+        "n5120",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_n5120 = move |ev| set_n5120.set(Some(event_target_checked(&ev)));
+
+    let (n5121, set_n5121) = query_signal_with_options::<bool>(
+        "n5121",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_n5121 = move |ev| set_n5121.set(Some(event_target_checked(&ev)));
+
+    let (n5123, set_n5123) = query_signal_with_options::<bool>(
+        "n5123",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_n5123 = move |ev| set_n5123.set(Some(event_target_checked(&ev)));
+
+    let (n5124, set_n5124) = query_signal_with_options::<bool>(
+        "n5124",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_n5124 = move |ev| set_n5124.set(Some(event_target_checked(&ev)));
+
+    let gkg_h2 = Memo::new ( move |_| {
+        if n5123.get().unwrap_or(false) || n5120.get().unwrap_or(false) {
+            1.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+        } else if n5121.get().unwrap_or(false) {
+            0.5 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+        } else if n5124.get().unwrap_or(false) {
+            2.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+        } else if n5122.get().unwrap_or(true) {
+            4.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+        } else {
+            0.0
+        }
+    });
 
     // 3. Instanz Hauptsacheverfahren
 
@@ -410,6 +448,7 @@ pub fn MPKR() -> impl IntoView {
     let summe_gkg_h = Memo::new(move |_| {
         let mut summe = 0.0;
         if h1.get().unwrap_or(true) { summe += gkg_h1.get(); }
+        if h2.get().unwrap_or(false) { summe += gkg_h2.get(); }
         summe
     });
 
@@ -840,7 +879,7 @@ pub fn MPKR() -> impl IntoView {
                 </h4>
                 <table class="table-auto">
                     <thead>
-                        <tr>
+                        <tr class="text-left">
                             <th>
                             </th>
                             <th>
@@ -1058,7 +1097,7 @@ pub fn MPKR() -> impl IntoView {
                 </h4>
                 <table class="table-auto">
                     <thead>
-                        <tr>
+                        <tr class="text-left">
                             <th>
                             </th>
                             <th>
@@ -1082,7 +1121,7 @@ pub fn MPKR() -> impl IntoView {
                                     prop:checked=move || n5110.get().unwrap_or(true)
                                 />
                             </td>
-                            <td class="px-1">
+                            <td class="px-1 max-w-64">
                                 <label for="n5110">"Verfahren im Allgemeinen, Nr. 5110"</label>
                             </td>
                             <td class="px-1 text-right">
@@ -1102,7 +1141,7 @@ pub fn MPKR() -> impl IntoView {
                                     prop:checked=move || n5111.get().unwrap_or(false)
                                 />
                             </td>
-                            <td class="px-1">
+                            <td class="px-1 max-w-64">
                                 <label for="n5111">"Ermäßigte Gebühr, Nr. 5111"</label>
                                 <button popovertarget="ermaessigung5111" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
                                 <div id="ermaessigung5111" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
@@ -1116,7 +1155,7 @@ pub fn MPKR() -> impl IntoView {
                             <td></td>
                         </tr>
                     </tbody>
-                </table>            
+                </table>
             </p>
             <p class=move || if h2.get().unwrap_or(false) { "visible" } else { "hidden" }>
                 <h3 class="text-xl font-medium">
@@ -1127,7 +1166,7 @@ pub fn MPKR() -> impl IntoView {
                 </h4>
                 <table class="table-auto">
                     <thead>
-                        <tr>
+                        <tr class="text-left">
                             <th>
                             </th>
                             <th>
@@ -1311,7 +1350,123 @@ pub fn MPKR() -> impl IntoView {
                 <h4 class="text-l font-bold">
                     "Gerichtskostengesetz"
                 </h4>
-                <p>to be done...</p>  
+                <table class="table-auto">
+                    <thead>
+                        <tr class="text-left">
+                            <th>
+                            </th>
+                            <th>
+                                "Gebührentatbestand und Nummer"
+                            </th>
+                            <th class="px-1">
+                                "Gebührensatz"
+                            </th>
+                            <th class="px-1">
+                                "Wertgebühr"
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n5122"
+                                    on:change=change_n5122
+                                    prop:checked=move || n5122.get().unwrap_or(true)
+                                />
+                            </td>
+                            <td class="px-1 max-w-128">
+                                <label for="n5122">"Verfahren im Allgemeinen, Nr. 5122"</label>
+                            </td>
+                            <td class="px-1 text-right">
+                                "4,0"
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(gkg_h2.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n5120"
+                                    on:change=change_n5120
+                                    prop:checked=move || n5120.get().unwrap_or(false)
+                                />
+                            </td>
+                            <td class="px-1 max-w-128">
+                                <label for="n5120">"Verfahren über die Zulassung der Berufung, soweit der Antrag abgeleht wird, Nr. 5120"</label>
+                            </td>
+                            <td class="px-1 text-right">
+                                "1,0"
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n5121"
+                                    on:change=change_n5121
+                                    prop:checked=move || n5121.get().unwrap_or(false)
+                                />
+                            </td>
+                            <td class="px-1 max-w-128">
+                                <label for="n5121">"Verfahren über die Zulassung der Berufung, soweit der Antrag zurückgenommen oder das Verfahren durch anderweitige Erledigung beendet wird, Nr. 5121"</label>
+                            </td>
+                            <td class="px-1 text-right">
+                                "0,5"
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n5123"
+                                    on:change=change_n5123
+                                    prop:checked=move || n5123.get().unwrap_or(false)
+                                />
+                            </td>
+                            <td class="px-1 max-w-128">
+                                <label for="n5123">"Ermäßigte Gebühr, Nr. 5123"</label>
+                                <button popovertarget="ermaessigung5123" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
+                                <div id="ermaessigung5123" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
+                                    <h4 class="text-xl font-medium">"Ermäßigung der Gebühr Nr. 5122"</h4>
+                                    <p>{ popover::ERMAESSIGUNG5123 }</p>
+                                </div>  
+                            </td>
+                            <td class="px-1 text-right">
+                                "1,0"
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n5124"
+                                    on:change=change_n5124
+                                    prop:checked=move || n5124.get().unwrap_or(false)
+                                />
+                            </td>
+                            <td class="px-1 max-w-128">
+                                <label for="n5124">"Weitere Beendigung des Verfahrens, Nr. 5124"</label>
+                                <button popovertarget="ermaessigung5124" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
+                                <div id="ermaessigung5124" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
+                                    <h4 class="text-xl font-medium">"Ermäßigung der Gebühr Nr. 5122"</h4>
+                                    <p>{ popover::ERMAESSIGUNG5124 }</p>
+                                </div>  
+                            </td>
+                            <td class="px-1 text-right">
+                                "2,0"
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
             </p>
             <p class=move || if h3.get().unwrap_or(false) { "visible" } else { "hidden" }>
                 <h3 class="text-xl font-medium">

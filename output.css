@@ -229,6 +229,12 @@
   .w-16 {
     width: calc(var(--spacing) * 16);
   }
+  .max-w-64 {
+    max-width: calc(var(--spacing) * 64);
+  }
+  .max-w-128 {
+    max-width: calc(var(--spacing) * 128);
+  }
   .max-w-screen-xl {
     max-width: var(--breakpoint-xl);
   }
@@ -352,16 +358,6 @@
       z-index: 50;
     }
   }
-  .open\:mx-60 {
-    &:is([open], :popover-open, :open) {
-      margin-inline: calc(var(--spacing) * 60);
-    }
-  }
-  .open\:mt-60 {
-    &:is([open], :popover-open, :open) {
-      margin-top: calc(var(--spacing) * 60);
-    }
-  }
   .open\:w-full {
     &:is([open], :popover-open, :open) {
       width: 100%;
@@ -397,11 +393,6 @@
   .open\:bg-white {
     &:is([open], :popover-open, :open) {
       background-color: var(--color-white);
-    }
-  }
-  .open\:p-2 {
-    &:is([open], :popover-open, :open) {
-      padding: calc(var(--spacing) * 2);
     }
   }
   .open\:px-4 {
