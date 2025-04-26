@@ -653,6 +653,17 @@ pub fn MPKR() -> impl IntoView {
 
     // Vorläufiger Rechtsschutz
 
+    // Welche Instanzen?
+    let (v1, set_v1) = query_signal_with_options::<bool>(
+        "v1",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_v1 = move |ev| set_v1.set(Some(event_target_checked(&ev)));
+
+    let (v2, set_v2) = query_signal_with_options::<bool>(
+        "v2",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_v2 = move |ev| set_v2.set(Some(event_target_checked(&ev)));
+
     // 1. Instanz
 
     // RVG
@@ -696,7 +707,7 @@ pub fn MPKR() -> impl IntoView {
     let change_n3104v = move |ev| set_n3104v.set(Some(event_target_checked(&ev)));
 
     let tgeb13_v1 = Memo::new( move |_| {
-        if n3104v.get().unwrap_or(true) {
+        if n3104v.get().unwrap_or(false) {
             1.2 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
         } else {
             0.0
@@ -704,7 +715,7 @@ pub fn MPKR() -> impl IntoView {
     });
 
     let tgeb49_v1 = Memo::new( move |_| {
-        if n3104v.get().unwrap_or(true) {
+        if n3104v.get().unwrap_or(false) {
             1.2 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
         } else {
             0.0
@@ -773,19 +784,119 @@ pub fn MPKR() -> impl IntoView {
     // 2. Instanz
 
     // RVG
+    let (n3200v, set_n3200v) = query_signal_with_options::<bool>(
+        "n3200v",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_n3200v = move |ev| set_n3200v.set(Some(event_target_checked(&ev)));
+
+    let (n3201v, set_n3201v) = query_signal_with_options::<bool>(
+        "n3201v",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_n3201v = move |ev| set_n3201v.set(Some(event_target_checked(&ev)));
+
+    let verfgeb13_v2 = Memo::new( move |_| {
+        if n3201v.get().unwrap_or(false) {
+            1.1 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+        } else {
+            if n3200v.get().unwrap_or(true) {
+                1.6 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+            } else {
+                0.0
+            }
+        }
+    });
+
+    let verfgeb49_v2 = Memo::new( move |_| {
+        if n3201v.get().unwrap_or(false) {
+            1.1 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+        } else {
+            if n3200v.get().unwrap_or(true) {
+                1.6 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+            } else {
+                0.0
+            }
+        }
+    });
+
+    let (n3202v, set_n3202v) = query_signal_with_options::<bool>(
+        "n3202v",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_n3202v = move |ev| set_n3202v.set(Some(event_target_checked(&ev)));
+
+    let tgeb13_v2 = Memo::new( move |_| {
+        if n3202v.get().unwrap_or(false) {
+            1.2 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+        } else {
+            0.0
+        }
+    });
+
+    let tgeb49_v2 = Memo::new( move |_| {
+        if n3202v.get().unwrap_or(false) {
+            1.2 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+        } else {
+            0.0
+        }
+    });
+
+    let (v2p, set_v2p) = query_signal_with_options::<bool>(
+        "v2p",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_v2_pauschale = move |ev| set_v2p.set(Some(event_target_checked(&ev)));
+
+    let pauschale13_v2 = Memo::new( move |_| {
+        if v2p.get().unwrap_or(true) {
+            fees::pauschale(verfgeb13_v2.get () + tgeb13_v2.get())
+        } else {
+            0.0
+        }
+    });
+
+    let pauschale49_v2 = Memo::new( move |_| {
+        if v2p.get().unwrap_or(true) {
+            fees::pauschale(verfgeb49_v2.get () + tgeb49_v2.get())
+        } else {
+            0.0
+        }
+    });
+
+    let (v2a, set_v2a) = query_signal_with_options::<bool>(
+        "v1a",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_v2_auslagen = move |ev| set_v2a.set(Some(event_target_checked(&ev)));
+
+    let (v2sa, set_v2sa) = query_signal_with_options::<f64>(
+        "v2sa",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let change_v2_sonstige_auslagen = move |ev| {
+        set_v2sa.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(0.0)));
+        if event_target_value(&ev).parse::<f64>().unwrap_or(0.0) != 0.0 {
+            set_v2a.set(Some(true));
+        } else {
+            set_v2a.set(Some(false));
+        }
+    };
 
     // GKG
-
-    // Welche Instanzen?
-    let (v1, set_v1) = query_signal_with_options::<bool>(
-        "v1",
+    let (n5240, set_n5240) = query_signal_with_options::<bool>(
+        "n5240",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_v1 = move |ev| set_v1.set(Some(event_target_checked(&ev)));
+    let change_n5240 = move |ev| set_n5240.set(Some(event_target_checked(&ev)));
 
-    let (v2, set_v2) = query_signal_with_options::<bool>(
-        "v2",
+    let (n5241, set_n5241) = query_signal_with_options::<bool>(
+        "n5241",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_v2 = move |ev| set_v2.set(Some(event_target_checked(&ev)));
+    let change_n5241 = move |ev| set_n5241.set(Some(event_target_checked(&ev)));
+
+    let gkg_v2 = Memo::new ( move |_| {
+        if n5241.get().unwrap_or(false) {
+            1.0 * fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+        } else if n5240.get().unwrap_or(true) {
+            2.0 * fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+        } else {
+            0.0
+        }
+    });
 
     // Summen vorläufiger Rechtsschutz
     let summe_rvg13_v = Memo::new(move |_| {
@@ -796,12 +907,12 @@ pub fn MPKR() -> impl IntoView {
                 summe += v1sa.get().unwrap_or(0.0)
             }
         }
-        // if v2.get().unwrap_or(false) {
-        //     summe += verfgeb13_v2.get() + tgeb13_v2.get() + pauschale13_v2.get();
-        //     if v2a.get().unwrap_or(false) {
-        //         summe += v2sa.get().unwrap_or(0.0)
-        //     }
-        // }
+        if v2.get().unwrap_or(false) {
+            summe += verfgeb13_v2.get() + tgeb13_v2.get() + pauschale13_v2.get();
+            if v2a.get().unwrap_or(false) {
+                summe += v2sa.get().unwrap_or(0.0)
+            }
+        }
         summe
     });
 
@@ -813,19 +924,19 @@ pub fn MPKR() -> impl IntoView {
                 summe += v1sa.get().unwrap_or(0.0)
             }
         }
-        // if v2.get().unwrap_or(false) {
-        //     summe += verfgeb49_v2.get() + tgeb49_v2.get() + pauschale49_v2.get();
-        //     if v2a.get().unwrap_or(false) {
-        //         summe += v2sa.get().unwrap_or(0.0)
-        //     }
-        // }
+        if v2.get().unwrap_or(false) {
+            summe += verfgeb49_v2.get() + tgeb49_v2.get() + pauschale49_v2.get();
+            if v2a.get().unwrap_or(false) {
+                summe += v2sa.get().unwrap_or(0.0)
+            }
+        }
         summe
     });
 
     let summe_gkg_v = Memo::new(move |_| {
         let mut summe = 0.0;
         if v1.get().unwrap_or(true) { summe += gkg_v1.get(); }
-        // if v2.get().unwrap_or(false) { summe += gkg_v2.get(); }
+        if v2.get().unwrap_or(false) { summe += gkg_v2.get(); }
         summe
     });
 
@@ -1586,7 +1697,7 @@ pub fn MPKR() -> impl IntoView {
                                 />
                             </td>
                             <td class="px-1">
-                                <label for="n3104">"Terminsgebühr, Nr. 3202"</label>
+                                <label for="n3202">"Terminsgebühr, Nr. 3202"</label>
                             </td>
                             <td class="px-1 text-right">
                                 "1,2"
@@ -2227,11 +2338,11 @@ pub fn MPKR() -> impl IntoView {
                                     type="checkbox"
                                     id="n3104v"
                                     on:change=change_n3104v
-                                    prop:checked=move || n3104v.get().unwrap_or(true)
+                                    prop:checked=move || n3104v.get().unwrap_or(false)
                                 />
                             </td>
                             <td class="px-1">
-                                <label for="n3104">"Terminsgebühr, Nr. 3104"</label>
+                                <label for="n3104v">"Terminsgebühr, Nr. 3104"</label>
                             </td>
                             <td class="px-1 text-right">
                                 "1,2"
@@ -2253,13 +2364,13 @@ pub fn MPKR() -> impl IntoView {
                             <td class="pr-1">
                                 <input
                                     type="checkbox"
-                                    id="h1_pauschale"
+                                    id="v1_pauschale"
                                     on:change=change_v1_pauschale
-                                    prop:checked=move || h1p.get().unwrap_or(true)
+                                    prop:checked=move || v1p.get().unwrap_or(true)
                                 />
                             </td>
                             <td class="px-1">
-                                <label for="h1_pauschale">"Auslagenpauschale, Nr. 7002"</label>
+                                <label for="v1_pauschale">"Auslagenpauschale, Nr. 7002"</label>
                             </td>
                             <td></td>
                             <td class="px-1 text-right">
@@ -2279,15 +2390,15 @@ pub fn MPKR() -> impl IntoView {
                             <td class="pr-1">
                                 <input
                                     type="checkbox"
-                                    id="hv_auslagen"
+                                    id="v1_auslagen"
                                     on:change=change_v1_auslagen
                                     prop:checked=move || v1a.get().unwrap_or(false)
                                 />
                             </td>
                             <td colspan="2" class="px-1">
                                 <label for="v1_auslagen">"Sonstige Auslagen"</label>
-                                <button popovertarget="h1auslagen" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
-                                <div id="h1auslagen" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
+                                <button popovertarget="v1auslagen" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
+                                <div id="v1auslagen" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
                                     <h4 class="text-xl font-medium">"Sonstige Auslagen"</h4>
                                     <p>"Zum Beispiel:"
                                         <ul>
@@ -2401,11 +2512,253 @@ pub fn MPKR() -> impl IntoView {
                 <h4 class="text-l font-medium">
                     "Rechtsanwaltsvergütungsgesetz"
                 </h4>
-                <p>to be done...</p>
+                <table class="table-auto">
+                    <thead>
+                        <tr class="text-left">
+                            <th>
+                            </th>
+                            <th>
+                                "Gebührentatbestand und Nummer"
+                            </th>
+                            <th class="px-1">
+                                "Gebührensatz"
+                            </th>
+                            <th class="px-1">
+                                "Wertgebühr (§ 13 RVG)"
+                            </th>
+                            <th class="px-1">
+                                "Wertgebühr (§ 49 RVG)"
+                            </th>
+                            <th class="pl-1">
+                                "Differenz"
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n3200v"
+                                    on:change=change_n3200v
+                                    prop:checked=move || n3200v.get().unwrap_or(true)
+                                />
+                            </td>
+                            <td class="px-1">
+                                <label for="n3200">"Verfahrensgebühr, Nr. 3200"</label>
+                            </td>
+                            <td class="px-1 text-right">
+                                "1,6"
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(verfgeb13_v2.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(verfgeb49_v2.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(verfgeb13_v2.get() - verfgeb49_v2.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n3201v"
+                                    on:change=change_n3201v
+                                    prop:checked=move || n3201v.get().unwrap_or(false)
+                                />
+                            </td>
+                            <td class="px-1">
+                                <label for="n3201v">"Ermäßigte Verfahrensgebühr, Nr. 3201"</label>
+                                <button popovertarget="ermaessigung3201v" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
+                                <div id="ermaessigung3201v" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
+                                    <h4 class="text-xl font-medium">"Ermäßigung der Verfahrensgebühr Nr. 3200"</h4>
+                                    <p>{ popover::ERMAESSIGUNG3201 }</p>
+                                </div>
+                            </td>
+                            <td class="px-1 text-right">
+                                "1,1"
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n3202v"
+                                    on:change=change_n3202v
+                                    prop:checked=move || n3202v.get().unwrap_or(false)
+                                />
+                            </td>
+                            <td class="px-1">
+                                <label for="n3202v">"Terminsgebühr, Nr. 3202"</label>
+                            </td>
+                            <td class="px-1 text-right">
+                                "1,2"
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(tgeb13_v2.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(tgeb49_v2.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(tgeb13_v2.get() - tgeb49_v2.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="v2_pauschale"
+                                    on:change=change_v2_pauschale
+                                    prop:checked=move || v2p.get().unwrap_or(true)
+                                />
+                            </td>
+                            <td class="px-1">
+                                <label for="v2_pauschale">"Auslagenpauschale, Nr. 7002"</label>
+                            </td>
+                            <td></td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(pauschale13_v2.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(pauschale49_v2.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(pauschale49_v2.get() - pauschale13_v2.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="v2_auslagen"
+                                    on:change=change_v2_auslagen
+                                    prop:checked=move || v2a.get().unwrap_or(false)
+                                />
+                            </td>
+                            <td colspan="2" class="px-1">
+                                <label for="v2_auslagen">"Sonstige Auslagen"</label>
+                                <button popovertarget="v2auslagen" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
+                                <div id="v2auslagen" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
+                                    <h4 class="text-xl font-medium">"Sonstige Auslagen"</h4>
+                                    <p>"Zum Beispiel:"
+                                        <ul>
+                                            <li>"7000 Pauschale für die Herstellung und Überlassung von Dokumenten:"
+                                                <ul>
+                                                    <li>"für Kopien und Ausdrucke"</li>        
+                                                    <li>"für die ersten 50 abzurechnenden Seiten je Seite 0,50 EUR"</li>
+                                                    <li>"für jede weitere Seite 0,15 EUR"</li>
+                                                    <li>"für die ersten 50 abzurechnenden Seiten in Farbe je Seite 1,00 EUR"</li>
+                                                    <li>"für jede weitere Seite in Farbe 0,30 EUR"</li>
+                                                </ul>
+                                            </li>
+                                            <li>"7003 Fahrtkosten für eine Geschäftsreise bei Benutzung eines eigenen Kraftfahrzeugs für jeden gefahrenen Kilometer 0,42 EUR."</li>
+                                            <li>"7004 Fahrtkosten für eine Geschäftsreise bei Benutzung eines anderen Verkehrsmittels, soweit sie angemessen sind in voller Höhe."</li>
+                                            <li>"7005 Tage- und Abwesenheitsgeld bei einer Geschäftsreise"
+                                                <ol>
+                                                    <li>"von nicht mehr als 4 Stunden 30,00 EUR"</li>
+                                                    <li>"von mehr als 4 bis 8 Stunden 50,00 EUR"</li>
+                                                    <li>"von mehr als 8 Stunden 80,00 EUR"</li>
+                                                </ol>
+                                                "Bei Auslandsreisen kann zu diesen Beträgen ein Zuschlag von 50 % berechnet werden."</li>
+                                            <li>"7006 Sonstige Auslagen (z.B. Hotel) anlässlich einer Geschäftsreise, soweit sie angemessen sind in voller Höhe."</li>
+                                            "Die Umsatzsteuer (Nr. 7008) VV RVG wird unten, unter „Summe“ berechnet."
+                                        </ul>
+                                    </p>
+                                </div>
+                            </td>
+                            <td class="px-1 text-right">
+                                <input
+                                    type="text"
+                                    class="px-1 border-2 border-stone-400 rounded-lg text-right"
+                                    value=move || v2sa.get().unwrap_or(0.0)
+                                    on:change=change_v2_sonstige_auslagen
+                                    prop:value=move || if v2a.get().unwrap_or(false) { format_euro(v2sa.get().unwrap_or(0.0)) } else { "0,00".to_string() }
+                                />
+                                <span class="ml-1">EUR</span>
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+                    </tbody>
+                </table>
                 <h4 class="text-l font-medium">
                     "Gerichtskostengesetz"
                 </h4>
-                <p>to be done...</p>
+                <table class="table-auto">
+                    <thead>
+                        <tr class="text-left">
+                            <th>
+                            </th>
+                            <th>
+                                "Gebührentatbestand und Nummer"
+                            </th>
+                            <th class="px-1">
+                                "Gebührensatz"
+                            </th>
+                            <th class="px-1">
+                                "Wertgebühr"
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n5240"
+                                    on:change=change_n5240
+                                    prop:checked=move || n5240.get().unwrap_or(true)
+                                />
+                            </td>
+                            <td class="px-1 max-w-128">
+                                <label for="n5240">"Verfahren im Allgemeinen, Nr. 5240"</label>
+                            </td>
+                            <td class="px-1 text-right">
+                                "2,0"
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(gkg_v2.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n5241"
+                                    on:change=change_n5241
+                                    prop:checked=move || n5241.get().unwrap_or(false)
+                                />
+                            </td>
+                            <td class="px-1 max-w-128">
+                                <label for="n5241">"Ermäßigte Gebühr, Nr. 5241"</label>
+                                <button popovertarget="ermaessigung5241" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
+                                <div id="ermaessigung5241" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
+                                    <h4 class="text-xl font-medium">"Ermäßigung der Gebühr Nr. 5240"</h4>
+                                    <p>{ popover::ERMAESSIGUNG5241 }</p>
+                                </div>  
+                            </td>
+                            <td class="px-1 text-right">
+                                "0,5"
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
             </p>
             <h3 class="text-xl font-medium">
                 "Summen"
