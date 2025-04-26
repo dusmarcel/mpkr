@@ -549,6 +549,52 @@ pub fn MPKR() -> impl IntoView {
     };
 
     // GKG
+    let (n5130, set_n5130) = query_signal_with_options::<bool>(
+        "n5130",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+
+    let (n5131, set_n5131) = query_signal_with_options::<bool>(
+        "n5131",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+
+    let (n5132, set_n5132) = query_signal_with_options::<bool>(
+        "n5132",
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+
+    let change_n5130 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5130.set(Some(value));
+    };
+
+    let change_n5131 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5131.set(Some(value));
+        if value {
+            set_n5130.set(Some(true));
+            set_n5132.set(Some(false));
+        }
+    };
+
+    let change_n5132 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5132.set(Some(value));
+        if value {
+            set_n5130.set(Some(true));
+            set_n5131.set(Some(false));
+        }
+    };
+
+    let gkg_h3 = Memo::new ( move |_| {
+        if n5132.get().unwrap_or(false) {
+            3.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+        } else if n5131.get().unwrap_or(false) {
+            1.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+        } else if n5130.get().unwrap_or(true) {
+            5.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+        } else {
+            0.0
+        }
+    });
 
     // Summen Hauptsacheverfahren
     let summe_rvg13_h = Memo::new(move |_| {
@@ -601,6 +647,7 @@ pub fn MPKR() -> impl IntoView {
         let mut summe = 0.0;
         if h1.get().unwrap_or(true) { summe += gkg_h1.get(); }
         if h2.get().unwrap_or(false) { summe += gkg_h2.get(); }
+        if h3.get().unwrap_or(false) { summe += gkg_h3.get(); }
         summe
     });
 
@@ -1813,7 +1860,89 @@ pub fn MPKR() -> impl IntoView {
                 <h4 class="text-l font-bold">
                     "Gerichtskostengesetz"
                 </h4>
-                <p>to be done...</p>
+                <table class="table-auto">
+                    <thead>
+                        <tr class="text-left">
+                            <th>
+                            </th>
+                            <th>
+                                "Gebührentatbestand und Nummer"
+                            </th>
+                            <th class="px-1">
+                                "Gebührensatz"
+                            </th>
+                            <th class="px-1">
+                                "Wertgebühr"
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n5130"
+                                    on:change=change_n5130
+                                    prop:checked=move || n5130.get().unwrap_or(true)
+                                />
+                            </td>
+                            <td class="px-1 max-w-128">
+                                <label for="n5130">"Verfahren im Allgemeinen, Nr. 5130"</label>
+                            </td>
+                            <td class="px-1 text-right">
+                                "5,0"
+                            </td>
+                            <td class="px-1 text-right">
+                                { move || format_euro(gkg_h3.get()) }
+                                <span class="ml-1">EUR</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n5131"
+                                    on:change=change_n5131
+                                    prop:checked=move || n5131.get().unwrap_or(false)
+                                />
+                            </td>
+                            <td class="px-1 max-w-128">
+                                <label for="n5131">"Ermäßigte Gebühr, Nr. 5131"</label>
+                                <button popovertarget="ermaessigung5131" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
+                                <div id="ermaessigung5131" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
+                                    <h4 class="text-xl font-medium">"Ermäßigung der Gebühr Nr. 5130"</h4>
+                                    <p>{ popover::ERMAESSIGUNG5131 }</p>
+                                </div>  
+                            </td>
+                            <td class="px-1 text-right">
+                                "1,0"
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="pr-1">
+                                <input
+                                    type="checkbox"
+                                    id="n5132"
+                                    on:change=change_n5132
+                                    prop:checked=move || n5132.get().unwrap_or(false)
+                                />
+                            </td>
+                            <td class="px-1 max-w-128">
+                                <label for="n5132">"Weitere Beendigung des Verfahrens, Nr. 5132"</label>
+                                <button popovertarget="ermaessigung5132" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
+                                <div id="ermaessigung5132" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
+                                    <h4 class="text-xl font-medium">"Ermäßigung der Gebühr Nr. 5130"</h4>
+                                    <p>{ popover::ERMAESSIGUNG5132 }</p>
+                                </div>  
+                            </td>
+                            <td class="px-1 text-right">
+                                "3,0"
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
             </p>
             <h3 class="text-xl font-medium">
                 "Summen"
