@@ -368,27 +368,75 @@ pub fn MPKR() -> impl IntoView {
     let (n5122, set_n5122) = query_signal_with_options::<bool>(
         "n5122",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_n5122 = move |ev| set_n5122.set(Some(event_target_checked(&ev)));
 
     let (n5120, set_n5120) = query_signal_with_options::<bool>(
         "n5120",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_n5120 = move |ev| set_n5120.set(Some(event_target_checked(&ev)));
 
     let (n5121, set_n5121) = query_signal_with_options::<bool>(
         "n5121",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_n5121 = move |ev| set_n5121.set(Some(event_target_checked(&ev)));
 
     let (n5123, set_n5123) = query_signal_with_options::<bool>(
         "n5123",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_n5123 = move |ev| set_n5123.set(Some(event_target_checked(&ev)));
 
     let (n5124, set_n5124) = query_signal_with_options::<bool>(
         "n5124",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_n5124 = move |ev| set_n5124.set(Some(event_target_checked(&ev)));
+
+    let change_n5122 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5122.set(Some(value));
+        if value {
+            set_n5120.set(Some(false));
+            set_n5121.set(Some(false));
+        }
+    };
+
+    let change_n5120 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5120.set(Some(value));
+        if value {
+            set_n5122.set(Some(false));
+            set_n5121.set(Some(false));
+            set_n5123.set(Some(false));
+            set_n5124.set(Some(false));
+        }
+    };
+
+    let change_n5121 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5121.set(Some(value));
+        if value {
+            set_n5122.set(Some(false));
+            set_n5120.set(Some(false));
+            set_n5123.set(Some(false));
+            set_n5124.set(Some(false));
+        }
+    };
+
+    let change_n5123 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5123.set(Some(value));
+        if value {
+            set_n5122.set(Some(true));
+            set_n5120.set(Some(false));
+            set_n5121.set(Some(false));
+            set_n5124.set(Some(false));
+        }
+    };
+
+    let change_n5124 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5124.set(Some(value));
+        if value {
+            set_n5122.set(Some(true));
+            set_n5120.set(Some(false));
+            set_n5121.set(Some(false));
+            set_n5123.set(Some(false));
+        }
+    };
 
     let gkg_h2 = Memo::new ( move |_| {
         if n5123.get().unwrap_or(false) || n5120.get().unwrap_or(false) {
