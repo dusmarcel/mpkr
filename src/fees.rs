@@ -105,7 +105,7 @@ pub fn gkg_geb(thema: u32, streitwert: f64) -> f64 {
                 gkg_geb += 40.5;
                 tmp_wert += 5000.0;
             } else if tmp_wert <= 200000.0 {
-                gkg_geb += 14.0;
+                gkg_geb += 140.0;
                 tmp_wert += 15000.0;
             } else if tmp_wert < 500000.0 {
                 gkg_geb += 210.0;
