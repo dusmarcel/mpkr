@@ -1074,7 +1074,7 @@ pub fn MPKR() -> impl IntoView {
                                 <input type="number" min="1" value=move || p.get().unwrap_or(1) class="border-2 border-stone-400 rounded-lg px-1" on:change=change_personen />
                                 <button popovertarget="zahl-der-personen" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
                                 <div id="zahl-der-personen" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
-                                    <h4 class="text-xl font-medium">Zahl der Personen</h4>
+                                    <h4 class="text-xl font-medium">"Zahl der Personen"</h4>
                                     <p>{ popover::PERSONS }</p>
                                 </div>
                             </td>
@@ -1082,22 +1082,45 @@ pub fn MPKR() -> impl IntoView {
                                 <input
                                     type="text"
                                     class="px-1 border-2 border-stone-400 rounded-lg text-right"
-                                    value=move || s.get().unwrap_or(fees::default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1)))
+                                    value=move || if v.get().unwrap_or(0) != 1 {
+                                        s.get().unwrap_or(fees::default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1)))
+                                    } else {
+                                        sv.get().unwrap_or(fees::default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1)) / 2.0)
+                                    }
                                     on:change=change_streitwert
-                                    prop:value=move || format_euro(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+                                    prop:value=move || if v.get().unwrap_or(0) != 1 {
+                                        format_euro(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+                                    } else {
+                                        format_euro(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+                                    }
                                 />
                                 <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
-                                { move || format_euro(fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))) }
+                                { move || if v.get().unwrap_or(0) != 1 {
+                                        format_euro(fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT)))
+                                    } else {
+                                        format_euro(fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0)))
+                                    }
+                                }
                                 <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
-                                { move || format_euro(fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))) }
+                                { move || if v.get().unwrap_or(0) != 1 {
+                                        format_euro(fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT)))
+                                    } else {
+                                        format_euro(fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0)))
+                                    }
+                                }
                                 <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
-                                { move || format_euro(fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))) }
+                                { move || if v.get().unwrap_or(0) != 1 {
+                                        format_euro(fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT)))
+                                    } else {
+                                        format_euro(fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0)))
+                                    }
+                                }
                                 <span class="ml-1">EUR</span>
                             </td>                     
                         </tr>
