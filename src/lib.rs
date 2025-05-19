@@ -1072,7 +1072,7 @@ pub fn MPKR() -> impl IntoView {
                         <tr>
                             <td class="px-1">
                                 <input type="number" min="1" value=move || p.get().unwrap_or(1) class="border-2 border-stone-400 rounded-lg px-1" on:change=change_personen />
-                                <button popovertarget="zahl-der-personen" class="border-2 border-stone-400 rounded-lg px-1 ml-1">?</button>
+                                <button popovertarget="zahl-der-personen" class="border-2 border-stone-400 rounded-lg px-1 ml-1">"?"</button>
                                 <div id="zahl-der-personen" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
                                     <h4 class="text-xl font-medium">"Zahl der Personen"</h4>
                                     <p>{ popover::PERSONS }</p>
@@ -1167,10 +1167,10 @@ pub fn MPKR() -> impl IntoView {
                     on:change=change_aussergerichtlich
                     prop:checked=move || a.get().unwrap_or(false)
                 />
-                <label for="aussergerichtlich" class="ml-1">Außergerichtliche Vertretung</label>
+                <label for="aussergerichtlich" class="ml-1">"Außergerichtliche Vertretung"</label>
                 <button popovertarget="aussergerichtliche-vertretung" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
                 <div id="aussergerichtliche-vertretung" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
-                    <h4 class="text-xl font-medium">Außergerichtliche Vertretung</h4>
+                    <h4 class="text-xl font-medium">"Außergerichtliche Vertretung"</h4>
                     <p>{ popover::AUSSERGERICHTLICH }</p>
                 </div>            
             </p>
@@ -1206,7 +1206,7 @@ pub fn MPKR() -> impl IntoView {
                                 />
                                 <button popovertarget="gebuehrensatz" class="px-1 ml-1 border-2 border-stone-400 rounded-lg">?</button>
                                 <div id="gebuehrensatz" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
-                                    <h4 class="text-xl font-medium">Gebührensatz für die Geschäftsgebühr</h4>
+                                    <h4 class="text-xl font-medium">"Gebührensatz für die Geschäftsgebühr"</h4>
                                     <p>{ popover::GEBUEHRENSATZ }</p>
                                 </div>
                             </td>
