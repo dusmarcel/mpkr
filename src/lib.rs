@@ -1094,7 +1094,6 @@ pub fn MPKR() -> impl IntoView {
                                         format_euro(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
                                     }
                                 />
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || if v.get().unwrap_or(0) != 1 {
@@ -1103,7 +1102,6 @@ pub fn MPKR() -> impl IntoView {
                                         format_euro(fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0)))
                                     }
                                 }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || if v.get().unwrap_or(0) != 1 {
@@ -1112,7 +1110,6 @@ pub fn MPKR() -> impl IntoView {
                                         format_euro(fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0)))
                                     }
                                 }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || if v.get().unwrap_or(0) != 1 {
@@ -1121,7 +1118,6 @@ pub fn MPKR() -> impl IntoView {
                                         format_euro(fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0)))
                                     }
                                 }
-                                <span class="ml-1">EUR</span>
                             </td>                     
                         </tr>
                         <tr class=move || if v.get().unwrap_or(0) == 2 { "visible" } else { "hidden" }>
@@ -1143,19 +1139,15 @@ pub fn MPKR() -> impl IntoView {
                                     on:change=change_streitwert_vorl
                                     prop:value=move || format_euro(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
                                 />
-                                <span class="ml-1">EUR</span>                       
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                     </tbody>
@@ -1220,7 +1212,6 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || if g.get().unwrap_or(true) { format_euro(n2300.get()) } else { "0,00".to_string() } }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -1237,7 +1228,6 @@ pub fn MPKR() -> impl IntoView {
                             <td></td>
                             <td class="px-1 text-right">
                                 { move || if ap.get().unwrap_or(true) { format_euro(pauschale(n2300.get())) } else { "0,00".to_string() } }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -1290,7 +1280,6 @@ pub fn MPKR() -> impl IntoView {
                                     on:change=change_aussergerichtlich_sonstige_auslagen
                                     prop:value=move || if aa.get().unwrap_or(false) { format_euro(asa.get().unwrap_or(0.0)) } else { "0,00".to_string() }
                                 />
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>                        
                         <tr class="font-semibold">
@@ -1300,7 +1289,6 @@ pub fn MPKR() -> impl IntoView {
                             <td></td>
                             <td class="px-1 text-right">
                                 { move || format_euro(summe_aussergerichtlich.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>  
                     </tbody>
@@ -1388,15 +1376,12 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb13_h1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb49_h1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb13_h1.get() - verfgeb49_h1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -1443,16 +1428,13 @@ pub fn MPKR() -> impl IntoView {
                             <td class="px-1 text-right">
                                 <span class="mr-1">"-"</span>
                                 { move || format_euro(anrechnung13.get()) }
-                                <span class="ml-1">"EUR"</span>
                             </td>
                             <td class="px-1 text-right">
                                 <span class="mr-1">"-"</span>
                                 { move || format_euro(anrechnung49.get()) }
-                                <span class="ml-1">"EUR"</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(anrechnung13.get() - anrechnung49.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -1472,15 +1454,12 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(tgeb13_h1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(tgeb49_h1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(tgeb13_h1.get() - tgeb49_h1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -1498,15 +1477,12 @@ pub fn MPKR() -> impl IntoView {
                             <td></td>
                             <td class="px-1 text-right">
                                 { move || format_euro(pauschale13_h1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(pauschale49_h1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(pauschale49_h1.get() - pauschale13_h1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -1557,7 +1533,6 @@ pub fn MPKR() -> impl IntoView {
                                     on:change=change_h1_sonstige_auslagen
                                     prop:value=move || if h1a.get().unwrap_or(false) { format_euro(h1sa.get().unwrap_or(0.0)) } else { "0,00".to_string() }
                                 />
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td colspan="2"></td>
                         </tr>
@@ -1600,7 +1575,6 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(gkg_h1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -1675,15 +1649,12 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb13_h2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb49_h2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb13_h2.get() - verfgeb49_h2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -1727,15 +1698,12 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(tgeb13_h2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(tgeb49_h2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(tgeb13_h2.get() - tgeb49_h2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -1753,15 +1721,12 @@ pub fn MPKR() -> impl IntoView {
                             <td></td>
                             <td class="px-1 text-right">
                                 { move || format_euro(pauschale13_h2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(pauschale49_h2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(pauschale49_h2.get() - pauschale13_h2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -1812,7 +1777,6 @@ pub fn MPKR() -> impl IntoView {
                                     on:change=change_h2_sonstige_auslagen
                                     prop:value=move || if h2a.get().unwrap_or(false) { format_euro(h2sa.get().unwrap_or(0.0)) } else { "0,00".to_string() }
                                 />
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td colspan="2"></td>
                         </tr>
@@ -1855,7 +1819,6 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(gkg_h2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -1986,15 +1949,12 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb13_h3.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb49_h3.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb13_h3.get() - verfgeb49_h3.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -2038,15 +1998,12 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(tgeb13_h3.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(tgeb49_h3.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(tgeb13_h3.get() - tgeb49_h3.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -2064,15 +2021,12 @@ pub fn MPKR() -> impl IntoView {
                             <td></td>
                             <td class="px-1 text-right">
                                 { move || format_euro(pauschale13_h3.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(pauschale49_h3.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(pauschale49_h3.get() - pauschale13_h3.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -2123,7 +2077,6 @@ pub fn MPKR() -> impl IntoView {
                                     on:change=change_h3_sonstige_auslagen
                                     prop:value=move || if h3a.get().unwrap_or(false) { format_euro(h3sa.get().unwrap_or(0.0)) } else { "0,00".to_string() }
                                 />
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td colspan="2"></td>
                         </tr>
@@ -2166,7 +2119,6 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(gkg_h3.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -2225,7 +2177,6 @@ pub fn MPKR() -> impl IntoView {
                 </div>
                 <div class="text-right">
                    { move || format_euro(summe_rvg13_h.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div></div>
                 <div>
@@ -2233,7 +2184,6 @@ pub fn MPKR() -> impl IntoView {
                 </div>
                 <div class="text-right">
                    { move || format_euro(summe_rvg49_h.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div></div>
                 <div>
@@ -2241,7 +2191,6 @@ pub fn MPKR() -> impl IntoView {
                 </div>
                 <div class="text-right">
                    { move || format_euro(summe_gkg_h.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div></div>        
             </p>
@@ -2320,15 +2269,12 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb13_v1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb49_v1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb13_v1.get() - verfgeb49_v1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -2372,15 +2318,12 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(tgeb13_v1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(tgeb49_v1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(tgeb13_v1.get() - tgeb49_v1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -2398,15 +2341,12 @@ pub fn MPKR() -> impl IntoView {
                             <td></td>
                             <td class="px-1 text-right">
                                 { move || format_euro(pauschale13_v1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(pauschale49_v1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(pauschale49_v1.get() - pauschale13_v1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -2457,7 +2397,6 @@ pub fn MPKR() -> impl IntoView {
                                     on:change=change_v1_sonstige_auslagen
                                     prop:value=move || if v1a.get().unwrap_or(false) { format_euro(v1sa.get().unwrap_or(0.0)) } else { "0,00".to_string() }
                                 />
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td colspan="2"></td>
                         </tr>
@@ -2500,7 +2439,6 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(gkg_v1.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -2575,15 +2513,12 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb13_v2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb49_v2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(verfgeb13_v2.get() - verfgeb49_v2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -2627,15 +2562,12 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(tgeb13_v2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(tgeb49_v2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(tgeb13_v2.get() - tgeb49_v2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -2653,15 +2585,12 @@ pub fn MPKR() -> impl IntoView {
                             <td></td>
                             <td class="px-1 text-right">
                                 { move || format_euro(pauschale13_v2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(pauschale49_v2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(pauschale49_v2.get() - pauschale13_v2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -2712,7 +2641,6 @@ pub fn MPKR() -> impl IntoView {
                                     on:change=change_v2_sonstige_auslagen
                                     prop:value=move || if v2a.get().unwrap_or(false) { format_euro(v2sa.get().unwrap_or(0.0)) } else { "0,00".to_string() }
                                 />
-                                <span class="ml-1">EUR</span>
                             </td>
                             <td colspan="2"></td>
                         </tr>
@@ -2755,7 +2683,6 @@ pub fn MPKR() -> impl IntoView {
                             </td>
                             <td class="px-1 text-right">
                                 { move || format_euro(gkg_v2.get()) }
-                                <span class="ml-1">EUR</span>
                             </td>
                         </tr>
                         <tr>
@@ -2792,7 +2719,6 @@ pub fn MPKR() -> impl IntoView {
                 </div>
                 <div class="text-right">
                    { move || format_euro(summe_rvg13_v.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div></div>
                 <div>
@@ -2800,7 +2726,6 @@ pub fn MPKR() -> impl IntoView {
                 </div>
                 <div class="text-right">
                    { move || format_euro(summe_rvg49_v.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div></div>
                 <div>
@@ -2808,7 +2733,6 @@ pub fn MPKR() -> impl IntoView {
                 </div>
                 <div class="text-right">
                    { move || format_euro(summe_gkg_v.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div></div>        
             </p>
@@ -2838,11 +2762,9 @@ pub fn MPKR() -> impl IntoView {
                 </div>
                 <div class=move || if a.get().unwrap_or(false) == true  && v.get().unwrap_or(0) != 1 { "visible text-right" } else { "hidden" }>
                     { move || format_euro(summe_aussergerichtlich.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class=move || if a.get().unwrap_or(false) == true  && v.get().unwrap_or(0) != 1 { "visible text-right" } else { "hidden" }>
                     { move || format_euro(summe_aussergerichtlich.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class=move || if a.get().unwrap_or(false) == true  && v.get().unwrap_or(0) != 1 { "visible text-right" } else { "hidden" }>
                 </div>
@@ -2851,45 +2773,36 @@ pub fn MPKR() -> impl IntoView {
                 </div>
                 <div class=move || if v.get().unwrap_or(0) != 1 { "visible text-right"} else { "hidden" }>
                     { move || format_euro(summe_rvg13_h.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class=move || if v.get().unwrap_or(0) != 1 { "visible text-right"} else { "hidden" }>
                     { move || format_euro(summe_rvg49_h.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class=move || if v.get().unwrap_or(0) != 1 { "visible text-right"} else { "hidden" }>
                     { move || format_euro(summe_rvg13_h.get() - summe_rvg49_h.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class=move || if v.get().unwrap_or(0) != 0 { "visible col-span-2"} else { "hidden col-span-2" }>
                     "Vorläufiger Rechtsschutz"
                 </div>
                 <div class=move || if v.get().unwrap_or(0) != 0 { "visibl text-right"} else { "hidden" }>
                     { move || format_euro(summe_rvg13_v.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class=move || if v.get().unwrap_or(0) != 0 { "visible text-right"} else { "hidden" }>
                     { move || format_euro(summe_rvg49_v.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class=move || if v.get().unwrap_or(0) != 0 { "visible text-right" } else { "hidden" }>
                     { move || format_euro(summe_rvg13_v.get() - summe_rvg49_v.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class="col-span-2 italic">
                     "Summe netto"
                 </div>
                 <div class="text-right italic">
                     { move || format_euro(summe_rvg13_netto.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class="text-right italic">
                     { move || format_euro(summe_rvg49_netto.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>            
                 <div class="text-right italic">
                     { move || format_euro(summe_rvg13_netto.get() - summe_rvg49_netto.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div>
                     "Umsatzsteuer, Nr. 7008 VV RVG"
@@ -2905,30 +2818,24 @@ pub fn MPKR() -> impl IntoView {
                 </div>
                 <div class="text-right">
                     { move || format_euro(fees::umsatzsteuer(u.get().unwrap_or(19), summe_rvg13_netto.get())) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class="text-right">
                     { move || format_euro(fees::umsatzsteuer(u.get().unwrap_or(19), summe_rvg49_netto.get())) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class="text-right">
                     { move || format_euro(fees::umsatzsteuer(u.get().unwrap_or(19), summe_rvg13_netto.get()) - fees::umsatzsteuer(u.get().unwrap_or(19), summe_rvg49_netto.get())) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class="col-span-2 font-semibold">
                     "Summe brutto"
                 </div>
                 <div class="text-right font-semibold">
                     { move || format_euro(fees::umsatzsteuer_brutto(u.get().unwrap_or(19), summe_rvg13_netto.get())) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class="text-right italic">
                     { move || format_euro(fees::umsatzsteuer_brutto(u.get().unwrap_or(19), summe_rvg49_netto.get())) }
-                    <span class="ml-1">EUR</span>
                 </div>            
                 <div class="text-right italic">
                     { move || format_euro(fees::umsatzsteuer_brutto(u.get().unwrap_or(19), summe_rvg13_netto.get()) - fees::umsatzsteuer_brutto(u.get().unwrap_or(19), summe_rvg49_netto.get())) }
-                    <span class="ml-1">EUR</span>
                 </div> 
                 <div class="col-span-5 pt-4 text-xl font-medium">
                     "Summe Gerichtskostengesetz"
@@ -2938,11 +2845,9 @@ pub fn MPKR() -> impl IntoView {
                 </div>
                 <div class=move || if v.get().unwrap_or(0) != 1 { "visible text-right"} else { "hidden" }>
                     { move || format_euro(summe_gkg_h.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class=move || if v.get().unwrap_or(0) != 1 { "visible text-right"} else { "hidden" }>
                     { move || format_euro(summe_gkg_h.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class=move || if v.get().unwrap_or(0) != 1 { "visible"} else { "hidden" }>
                 </div>
@@ -2951,11 +2856,9 @@ pub fn MPKR() -> impl IntoView {
                 </div>
                 <div class=move || if v.get().unwrap_or(0) != 0 { "visibl text-right"} else { "hidden" }>
                     { move || format_euro(summe_gkg_v.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class=move || if v.get().unwrap_or(0) != 0 { "visible text-right"} else { "hidden" }>
                     { move || format_euro(summe_gkg_v.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class=move || if v.get().unwrap_or(0) != 0 { "visible" } else { "hidden" }>
                 </div>
@@ -2964,11 +2867,9 @@ pub fn MPKR() -> impl IntoView {
                 </div>
                 <div class="text-right font-semibold">
                     { move || format_euro(summe_gkg.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class="text-right italic">
                     { move || format_euro(summe_gkg.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>            
                 <div></div>             
                 <div class="col-span-2 pt-4 text-xl font-medium">
@@ -2976,15 +2877,12 @@ pub fn MPKR() -> impl IntoView {
                 </div>
                 <div class="pt-4 text-right text-xl font-medium">
                     { move || format_euro(gesamtsumme13.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class="pt-4 text-right text-l italic">
                     { move || format_euro(gesamtsumme49.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
                 <div class="pt-4 text-right text-l italic">
                     { move || format_euro(gesamtsumme13.get() - gesamtsumme49.get()) }
-                    <span class="ml-1">EUR</span>
                 </div>
             </div>
         </div>
