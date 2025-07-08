@@ -7,7 +7,10 @@ mod fees;
 mod utils;
 use utils::format_euro;
 mod components;
-use crate::components::intro::Intro;
+use crate::components::{
+    intro::Intro,
+    status::Status
+};
 
 #[component]
 pub fn MPKR() -> impl IntoView {
@@ -989,6 +992,7 @@ pub fn MPKR() -> impl IntoView {
 
     view! {
         <Intro />
+        <Status />
         <div class="container max-w-screen-xl mx-auto px-4 bg-linear-to-b from-stone-50 to-stone-300">
             <h2 class="pt-4 text-2xl font-medium">
                 "Streitwerte"
