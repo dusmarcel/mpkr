@@ -93,11 +93,9 @@ pub fn MPKR() -> impl IntoView {
     let (n3100, set_n3100) = query_signal_with_options::<bool>(
         "n3100",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-
     let (n3101, set_n3101) = query_signal_with_options::<bool>(
         "n3101",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-
     let verfgeb13_h1 = Memo::new( move |_| {
         if n3101.get().unwrap_or(false) {
             0.8 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
@@ -121,12 +119,9 @@ pub fn MPKR() -> impl IntoView {
             }
         }
     });
-
     let (anr, set_anr) = query_signal_with_options::<bool>(
         "anr",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_anrechnung = move |ev| set_anr.set(Some(event_target_checked(&ev)));
-
     let anrechnung13 = Memo::new(move |_| {
         if anr.get().unwrap_or(a.get().unwrap_or(false)) && a.get().unwrap_or(false) && g.get().unwrap_or(true) && (n3100.get().unwrap_or(true) || n3101.get().unwrap_or(false)) {
             let mut anrechnungsbetrag = 0.5 * n2300.get();
@@ -138,7 +133,6 @@ pub fn MPKR() -> impl IntoView {
             0.0
         }        
     });
-
     let anrechnung49 = Memo::new(move |_| {
         let mut anrechnungsbetrag = anrechnung13.get();
         let differenz = verfgeb13_h1.get() - verfgeb49_h1.get();
@@ -148,12 +142,9 @@ pub fn MPKR() -> impl IntoView {
         }
         anrechnungsbetrag      
     });
-
     let (n3104, set_n3104) = query_signal_with_options::<bool>(
         "n3104",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_n3104 = move |ev| set_n3104.set(Some(event_target_checked(&ev)));
-
     let tgeb13_h1 = Memo::new( move |_| {
         if n3104.get().unwrap_or(true) {
             1.2 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
@@ -161,7 +152,6 @@ pub fn MPKR() -> impl IntoView {
             0.0
         }
     });
-
     let tgeb49_h1 = Memo::new( move |_| {
         if n3104.get().unwrap_or(true) {
             1.2 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
@@ -169,12 +159,9 @@ pub fn MPKR() -> impl IntoView {
             0.0
         }
     });
-
     let (h1p, set_h1p) = query_signal_with_options::<bool>(
         "h1p",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_h1_pauschale = move |ev| set_h1p.set(Some(event_target_checked(&ev)));
-
     let pauschale13_h1 = Memo::new( move |_| {
         if h1p.get().unwrap_or(true) {
             fees::pauschale(verfgeb13_h1.get () + tgeb13_h1.get())
@@ -182,7 +169,6 @@ pub fn MPKR() -> impl IntoView {
             0.0
         }
     });
-
     let pauschale49_h1 = Memo::new( move |_| {
         if h1p.get().unwrap_or(true) {
             fees::pauschale(verfgeb49_h1.get () + tgeb49_h1.get())
@@ -190,35 +176,20 @@ pub fn MPKR() -> impl IntoView {
             0.0
         }
     });
-
     let (h1a, set_h1a) = query_signal_with_options::<bool>(
         "h1a",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_h1_auslagen = move |ev| set_h1a.set(Some(event_target_checked(&ev)));
-
     let (h1sa, set_h1sa) = query_signal_with_options::<f64>(
         "h1sa",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_h1_sonstige_auslagen = move |ev| {
-        set_h1sa.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(0.0)));
-        if event_target_value(&ev).parse::<f64>().unwrap_or(0.0) != 0.0 {
-            set_h1a.set(Some(true));
-        } else {
-            set_h1a.set(Some(false));
-        }
-    };
 
     // GKG
     let (n5110, set_n5110) = query_signal_with_options::<bool>(
         "n5110",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_n5110 = move |ev| set_n5110.set(Some(event_target_checked(&ev)));
-
     let (n5111, set_n5111) = query_signal_with_options::<bool>(
         "n5111",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_n5111 = move |ev| set_n5111.set(Some(event_target_checked(&ev)));
-
     let gkg_h1 = Memo::new ( move |_| {
         if n5111.get().unwrap_or(false) {
             1.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
@@ -235,13 +206,9 @@ pub fn MPKR() -> impl IntoView {
     let (n3200, set_n3200) = query_signal_with_options::<bool>(
         "n3200",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_n3200 = move |ev| set_n3200.set(Some(event_target_checked(&ev)));
-
     let (n3201, set_n3201) = query_signal_with_options::<bool>(
         "n3201",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
-    let change_n3201 = move |ev| set_n3201.set(Some(event_target_checked(&ev)));
-
     let verfgeb13_h2 = Memo::new( move |_| {
         if n3201.get().unwrap_or(false) {
             1.1 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
@@ -943,9 +910,9 @@ pub fn MPKR() -> impl IntoView {
         <Status />
         <Value v=v set_v=set_v set_t_changed=set_t_changed t=t set_t=set_t set_p_changed=set_p_changed p=p set_p=set_p s=s set_s=set_s sv=sv set_sv=set_sv />
         <Extrajudicial v=v a=a set_a=set_a g=g set_g=set_g gs=gs set_gs=set_gs n2300=n2300 ap=ap set_ap=set_ap aa=aa set_aa=set_aa asa=asa set_asa=set_asa summe_aussergerichtlich=summe_aussergerichtlich />
-        <Main h1=h1 set_h1=set_h1 h2=h2 set_h2=set_h2 h3=h3 set_h3=set_h3 n3100=n3100 set_n3100=set_n3100 n3101=n3101 set_n3101=set_n3101 verfgeb13_h1=verfgeb13_h1 verfgeb49_h1=verfgeb49_h1 />
-        <Interim v1=v1 set_v1=set_v1 v2=v2 set_v2=set_v2 n3100v=n3100v set_n3100v=set_n3100v n3101v=n3101v set_n3101v=set_n3101v verfgeb13_v1=verfgeb13_v1 verfgeb49_v1=verfgeb49_v1 summe_rvg13_v=summe_rvg13_v summe_rvg49_v=summe_rvg49_v summe_gkg_v=summe_gkg_v />
-        <Total summe_rvg13_netto=summe_rvg13_netto summe_rvg49_netto=summe_rvg49_netto u=u set_u=set_u summe_gkg=summe_gkg gesamtsumme13=gesamtsumme13 gesamtsumme49=gesamtsumme49 />
+        <Main v=v a=a h1=h1 set_h1=set_h1 h2=h2 set_h2=set_h2 h3=h3 set_h3=set_h3 n3100=n3100 set_n3100=set_n3100 n3101=n3101 set_n3101=set_n3101 verfgeb13_h1=verfgeb13_h1 verfgeb49_h1=verfgeb49_h1 anr=anr set_anr=set_anr anrechnung13=anrechnung13 anrechnung49=anrechnung49 n3104=n3104 set_n3104=set_n3104 tgeb13_h1=tgeb13_h1 tgeb49_h1=tgeb49_h1 h1p=h1p set_h1p=set_h1p pauschale13_h1=pauschale13_h1 pauschale49_h1=pauschale49_h1 h1a=h1a set_h1a=set_h1a h1sa=h1sa set_h1sa=set_h1sa n5110=n5110 set_n5110=set_n5110 n5111=n5111 set_n5111=set_n5111 gkg_h1=gkg_h1 n3200=n3200 set_n3200=set_n3200 n3201=n3201 set_n3201=set_n3201 verfgeb13_h2=verfgeb13_h2 verfgeb49_h2=verfgeb49_h2 />
+        <Interim v=v v1=v1 set_v1=set_v1 v2=v2 set_v2=set_v2 n3100v=n3100v set_n3100v=set_n3100v n3101v=n3101v set_n3101v=set_n3101v verfgeb13_v1=verfgeb13_v1 verfgeb49_v1=verfgeb49_v1 summe_rvg13_v=summe_rvg13_v summe_rvg49_v=summe_rvg49_v summe_gkg_v=summe_gkg_v />
+        <Total v=v a=a summe_aussergerichtlich=summe_aussergerichtlich summe_rvg13_h=summe_rvg13_h summe_rvg49_h=summe_rvg49_h summe_gkg_h=summe_gkg_h summe_rvg13_v=summe_rvg13_v summe_rvg49_v=summe_rvg49_v summe_gkg_v=summe_gkg_v summe_rvg13_netto=summe_rvg13_netto summe_rvg49_netto=summe_rvg49_netto u=u set_u=set_u summe_gkg=summe_gkg gesamtsumme13=gesamtsumme13 gesamtsumme49=gesamtsumme49 />
         <Notes />
     }
 }

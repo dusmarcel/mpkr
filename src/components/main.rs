@@ -8,6 +8,8 @@ use crate::popover;
 
 #[component]
 pub fn Main(
+    v: Memo<Option<u32>>,
+    a: Memo<Option<bool>>,
     h1: Memo<Option<bool>>,
     set_h1: SignalSetter<Option<bool>>,
     h2: Memo<Option<bool>>,
@@ -19,13 +21,56 @@ pub fn Main(
     n3101: Memo<Option<bool>>,
     set_n3101: SignalSetter<Option<bool>>,
     verfgeb13_h1: Memo<f64>,
-    verfgeb49_h1: Memo<f64>
+    verfgeb49_h1: Memo<f64>,
+    anr: Memo<Option<bool>>,
+    set_anr: SignalSetter<Option<bool>>,
+    anrechnung13: Memo<f64>,
+    anrechnung49: Memo<f64>,
+    n3104: Memo<Option<bool>>,
+    set_n3104: SignalSetter<Option<bool>>,
+    tgeb13_h1: Memo<f64>,
+    tgeb49_h1: Memo<f64>,
+    h1p: Memo<Option<bool>>,
+    set_h1p: SignalSetter<Option<bool>>,
+    pauschale13_h1: Memo<f64>,
+    pauschale49_h1: Memo<f64>,
+    h1a: Memo<Option<bool>>,
+    set_h1a: SignalSetter<Option<bool>>,
+    h1sa: Memo<Option<f64>>,
+    set_h1sa: SignalSetter<Option<f64>>,
+    n5110: Memo<Option<bool>>,
+    set_n5110: SignalSetter<Option<bool>>,
+    n5111: Memo<Option<bool>>,
+    set_n5111: SignalSetter<Option<bool>>,
+    gkg_h1: Memo<f64>,
+    n3200: Memo<Option<bool>>,
+    set_n3200: SignalSetter<Option<bool>>,
+    n3201: Memo<Option<bool>>,
+    set_n3201: SignalSetter<Option<bool>>,
+    verfgeb13_h2: Memo<f64>,
+    verfgeb49_h2: Memo<f64>
 ) -> impl IntoView {
     let change_h1 = move |ev| set_h1.set(Some(event_target_checked(&ev)));
     let change_h2 = move |ev| set_h2.set(Some(event_target_checked(&ev)));
     let change_h3 = move |ev| set_h3.set(Some(event_target_checked(&ev)));
     let change_n3100 = move |ev| set_n3100.set(Some(event_target_checked(&ev)));
     let change_n3101 = move |ev| set_n3101.set(Some(event_target_checked(&ev)));
+    let change_anrechnung = move |ev| set_anr.set(Some(event_target_checked(&ev)));
+    let change_n3104 = move |ev| set_n3104.set(Some(event_target_checked(&ev)));
+    let change_h1_pauschale = move |ev| set_h1p.set(Some(event_target_checked(&ev)));
+    let change_h1_auslagen = move |ev| set_h1a.set(Some(event_target_checked(&ev)));
+    let change_h1_sonstige_auslagen = move |ev| {
+        set_h1sa.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(0.0)));
+        if event_target_value(&ev).parse::<f64>().unwrap_or(0.0) != 0.0 {
+            set_h1a.set(Some(true));
+        } else {
+            set_h1a.set(Some(false));
+        }
+    };
+    let change_n5110 = move |ev| set_n5110.set(Some(event_target_checked(&ev)));
+    let change_n5111 = move |ev| set_n5111.set(Some(event_target_checked(&ev)));
+    let change_n3200 = move |ev| set_n3200.set(Some(event_target_checked(&ev)));
+    let change_n3201 = move |ev| set_n3201.set(Some(event_target_checked(&ev)));
 
     view! {
         <div class=move || if v.get().unwrap_or(0) != 1 { // Container einblenden, wenn nicht "nur vorläufiger Rechtsschutz" ausgewählt ist 

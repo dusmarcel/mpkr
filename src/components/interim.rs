@@ -8,6 +8,7 @@ use crate::popover;
 
 #[component]
 pub fn Interim(
+    v: Memo<Option<u32>>,
     v1: Memo<Option<bool>>,
     set_v1: SignalSetter<Option<bool>>,
     v2: Memo<Option<bool>>,

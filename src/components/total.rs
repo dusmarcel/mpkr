@@ -1,12 +1,22 @@
 use leptos::prelude::*;
 
 use crate::utils::format_euro;
+use crate::fees;
 use crate::popover;
 
 // Summen
 
 #[component]
 pub fn Total(
+    v: Memo<Option<u32>>,
+    a: Memo<Option<bool>>,
+    summe_aussergerichtlich: Memo<f64>,
+    summe_rvg13_h: Memo<f64>,
+    summe_rvg49_h: Memo<f64>,
+    summe_gkg_h: Memo<f64>,
+    summe_rvg13_v: Memo<f64>,
+    summe_rvg49_v: Memo<f64>,
+    summe_gkg_v: Memo<f64>,
     summe_rvg13_netto: Memo<f64>,
     summe_rvg49_netto: Memo<f64>,
     u: Memo<Option<u32>>,
