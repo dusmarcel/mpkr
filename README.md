@@ -1,6 +1,6 @@
-# mpkr25
+# MPKR
 
-Migrationsrechtlicher Prozesskostenrechner (Stand 2025)
+Migrationsrechtlicher Prozesskostenrechner
 
 ## About
 
@@ -11,13 +11,13 @@ Dieser Prozesskostenrechner berechnet gesetzliche Gebühren auf der Grundlage de
 Der Rechner kann mit Docker oder mit Trunk installiert werden. In beiden Fällen ist es erforderlich, das Repository zunächst zu klonen:
 
 ```console
-$  git clone https://github.com/dusmarcel/mpkr25.git
+$  git clone https://github.com/dusmarcel/mpkr.git
 ```
 
 Anschließend wechselt man in das entsprechende Verzeichnis:
 
 ```console
-$ cd mpkr25
+$ cd mpkr
 ```
 
 ### Installation mit Docker
