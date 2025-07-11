@@ -1,7 +1,6 @@
 use leptos::prelude::*;
 
 use crate::utils::format_euro;
-use crate::fees::pauschale;
 use crate::popover;
 
 // Vorläufiger Rechtsschutz
@@ -27,6 +26,38 @@ pub fn Interim(
     set_v1p: SignalSetter<Option<bool>>,
     pauschale13_v1: Memo<f64>,
     pauschale49_v1: Memo<f64>,
+    v1a: Memo<Option<bool>>,
+    set_v1a: SignalSetter<Option<bool>>,
+    v1sa: Memo<Option<f64>>,
+    set_v1sa: SignalSetter<Option<f64>>,
+    n5210: Memo<Option<bool>>,
+    set_n5210: SignalSetter<Option<bool>>,
+    n5211: Memo<Option<bool>>,
+    set_n5211: SignalSetter<Option<bool>>,
+    gkg_v1: Memo<f64>,
+    n3200v: Memo<Option<bool>>,
+    set_n3200v: SignalSetter<Option<bool>>,
+    n3201v: Memo<Option<bool>>,
+    set_n3201v: SignalSetter<Option<bool>>,
+    verfgeb13_v2: Memo<f64>,
+    verfgeb49_v2: Memo<f64>,
+    n3202v: Memo<Option<bool>>,
+    set_n3202v: SignalSetter<Option<bool>>,
+    tgeb13_v2: Memo<f64>,
+    tgeb49_v2: Memo<f64>,
+    v2p: Memo<Option<bool>>,
+    set_v2p: SignalSetter<Option<bool>>,
+    pauschale13_v2: Memo<f64>,
+    pauschale49_v2: Memo<f64>,
+    v2a: Memo<Option<bool>>,
+    set_v2a: SignalSetter<Option<bool>>,
+    v2sa: Memo<Option<f64>>,
+    set_v2sa: SignalSetter<Option<f64>>,
+    n5240: Memo<Option<bool>>,
+    set_n5240: SignalSetter<Option<bool>>,
+    n5241: Memo<Option<bool>>,
+    set_n5241: SignalSetter<Option<bool>>,
+    gkg_v2: Memo<f64>,
     summe_rvg13_v: Memo<f64>,
     summe_rvg49_v: Memo<f64>,
     summe_gkg_v: Memo<f64>
@@ -37,6 +68,32 @@ pub fn Interim(
     let change_n3101v = move |ev| set_n3101v.set(Some(event_target_checked(&ev)));
     let change_n3104v = move |ev| set_n3104v.set(Some(event_target_checked(&ev)));
     let change_v1_pauschale = move |ev| set_v1p.set(Some(event_target_checked(&ev)));
+    let change_v1_auslagen = move |ev| set_v1a.set(Some(event_target_checked(&ev)));
+    let change_v1_sonstige_auslagen = move |ev| {
+        set_v1sa.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(0.0)));
+        if event_target_value(&ev).parse::<f64>().unwrap_or(0.0) != 0.0 {
+            set_v1a.set(Some(true));
+        } else {
+            set_v1a.set(Some(false));
+        }
+    };
+    let change_n5210 = move |ev| set_n5210.set(Some(event_target_checked(&ev)));
+    let change_n5211 = move |ev| set_n5211.set(Some(event_target_checked(&ev)));
+    let change_n3200v = move |ev| set_n3200v.set(Some(event_target_checked(&ev)));
+    let change_n3201v = move |ev| set_n3201v.set(Some(event_target_checked(&ev)));
+    let change_n3202v = move |ev| set_n3202v.set(Some(event_target_checked(&ev)));
+    let change_v2_pauschale = move |ev| set_v2p.set(Some(event_target_checked(&ev)));
+    let change_v2_auslagen = move |ev| set_v2a.set(Some(event_target_checked(&ev)));
+    let change_v2_sonstige_auslagen = move |ev| {
+        set_v2sa.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(0.0)));
+        if event_target_value(&ev).parse::<f64>().unwrap_or(0.0) != 0.0 {
+            set_v2a.set(Some(true));
+        } else {
+            set_v2a.set(Some(false));
+        }
+    };
+    let change_n5240 = move |ev| set_n5240.set(Some(event_target_checked(&ev)));
+    let change_n5241 = move |ev| set_n5241.set(Some(event_target_checked(&ev)));
 
     view! {
         <div class=move || if v.get().unwrap_or(0) != 0 { // Container einblenden, wenn nicht "nur Hauptsacheverfahren" ausgewählt ist 

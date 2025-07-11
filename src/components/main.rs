@@ -1,7 +1,6 @@
 use leptos::prelude::*;
 
 use crate::utils::format_euro;
-use crate::fees::pauschale;
 use crate::popover;
 
 // Hauptsacheverfahren
@@ -72,12 +71,31 @@ pub fn Main(
     n5124: Memo<Option<bool>>,
     set_n5124: SignalSetter<Option<bool>>,
     gkg_h2: Memo<f64>,
+    n3206: Memo<Option<bool>>,
+    set_n3206: SignalSetter<Option<bool>>,
+    n3207: Memo<Option<bool>>,
+    set_n3207: SignalSetter<Option<bool>>,
+    verfgeb13_h3: Memo<f64>,
+    verfgeb49_h3: Memo<f64>,
+    n3210: Memo<Option<bool>>,
+    set_n3210: SignalSetter<Option<bool>>,
+    tgeb13_h3: Memo<f64>,
+    tgeb49_h3: Memo<f64>,
+    h3p: Memo<Option<bool>>,
+    set_h3p: SignalSetter<Option<bool>>,
+    pauschale13_h3: Memo<f64>,
+    pauschale49_h3: Memo<f64>,
+    h3a: Memo<Option<bool>>,
+    set_h3a: SignalSetter<Option<bool>>,
+    h3sa: Memo<Option<f64>>,
+    set_h3sa: SignalSetter<Option<f64>>,
     n5130: Memo<Option<bool>>,
     set_n5130: SignalSetter<Option<bool>>,
     n5131: Memo<Option<bool>>,
     set_n5131: SignalSetter<Option<bool>>,
     n5132: Memo<Option<bool>>,
     set_n5132: SignalSetter<Option<bool>>,
+    gkg_h3: Memo<f64>,
     summe_rvg13_h: Memo<f64>,
     summe_rvg49_h: Memo<f64>,
     summe_gkg_h: Memo<f64>
@@ -160,6 +178,19 @@ pub fn Main(
             set_n5120.set(Some(false));
             set_n5121.set(Some(false));
             set_n5123.set(Some(false));
+        }
+    };
+    let change_n3206 = move |ev| set_n3206.set(Some(event_target_checked(&ev)));
+    let change_n3207 = move |ev| set_n3207.set(Some(event_target_checked(&ev)));
+    let change_n3210 = move |ev| set_n3210.set(Some(event_target_checked(&ev)));
+    let change_h3_pauschale = move |ev| set_h3p.set(Some(event_target_checked(&ev)));
+    let change_h3_auslagen = move |ev| set_h3a.set(Some(event_target_checked(&ev)));
+    let change_h3_sonstige_auslagen = move |ev| {
+        set_h3sa.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(0.0)));
+        if event_target_value(&ev).parse::<f64>().unwrap_or(0.0) != 0.0 {
+            set_h3a.set(Some(true));
+        } else {
+            set_h3a.set(Some(false));
         }
     };
     let change_n5130 = move |ev| {

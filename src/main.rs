@@ -1,7 +1,7 @@
 use leptos::prelude::*;
 use leptos_router::components::Router;
 
-use mpkr25::MPKR;
+use mpkr::MPKR;
 
 fn main() {
     console_error_panic_hook::set_once();
