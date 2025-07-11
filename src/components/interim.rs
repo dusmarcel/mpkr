@@ -19,6 +19,14 @@ pub fn Interim(
     set_n3101v: SignalSetter<Option<bool>>,
     verfgeb13_v1: Memo<f64>,
     verfgeb49_v1: Memo<f64>,
+    n3104v: Memo<Option<bool>>,
+    set_n3104v: SignalSetter<Option<bool>>,
+    tgeb13_v1: Memo<f64>,
+    tgeb49_v1: Memo<f64>,
+    v1p: Memo<Option<bool>>,
+    set_v1p: SignalSetter<Option<bool>>,
+    pauschale13_v1: Memo<f64>,
+    pauschale49_v1: Memo<f64>,
     summe_rvg13_v: Memo<f64>,
     summe_rvg49_v: Memo<f64>,
     summe_gkg_v: Memo<f64>
@@ -27,6 +35,8 @@ pub fn Interim(
     let change_v2 = move |ev| set_v2.set(Some(event_target_checked(&ev)));
     let change_n3100v = move |ev| set_n3100v.set(Some(event_target_checked(&ev)));
     let change_n3101v = move |ev| set_n3101v.set(Some(event_target_checked(&ev)));
+    let change_n3104v = move |ev| set_n3104v.set(Some(event_target_checked(&ev)));
+    let change_v1_pauschale = move |ev| set_v1p.set(Some(event_target_checked(&ev)));
 
     view! {
         <div class=move || if v.get().unwrap_or(0) != 0 { // Container einblenden, wenn nicht "nur Hauptsacheverfahren" ausgewählt ist 

@@ -48,7 +48,39 @@ pub fn Main(
     n3201: Memo<Option<bool>>,
     set_n3201: SignalSetter<Option<bool>>,
     verfgeb13_h2: Memo<f64>,
-    verfgeb49_h2: Memo<f64>
+    verfgeb49_h2: Memo<f64>,
+    n3202: Memo<Option<bool>>,
+    set_n3202: SignalSetter<Option<bool>>,
+    tgeb13_h2: Memo<f64>,
+    tgeb49_h2: Memo<f64>,
+    h2p: Memo<Option<bool>>,
+    set_h2p: SignalSetter<Option<bool>>,
+    pauschale13_h2: Memo<f64>,
+    pauschale49_h2: Memo<f64>,
+    h2a: Memo<Option<bool>>,
+    set_h2a: SignalSetter<Option<bool>>,
+    h2sa: Memo<Option<f64>>,
+    set_h2sa: SignalSetter<Option<f64>>,
+    n5122: Memo<Option<bool>>,
+    set_n5122: SignalSetter<Option<bool>>,
+    n5120: Memo<Option<bool>>,
+    set_n5120: SignalSetter<Option<bool>>,
+    n5121: Memo<Option<bool>>,
+    set_n5121: SignalSetter<Option<bool>>,
+    n5123: Memo<Option<bool>>,
+    set_n5123: SignalSetter<Option<bool>>,
+    n5124: Memo<Option<bool>>,
+    set_n5124: SignalSetter<Option<bool>>,
+    gkg_h2: Memo<f64>,
+    n5130: Memo<Option<bool>>,
+    set_n5130: SignalSetter<Option<bool>>,
+    n5131: Memo<Option<bool>>,
+    set_n5131: SignalSetter<Option<bool>>,
+    n5132: Memo<Option<bool>>,
+    set_n5132: SignalSetter<Option<bool>>,
+    summe_rvg13_h: Memo<f64>,
+    summe_rvg49_h: Memo<f64>,
+    summe_gkg_h: Memo<f64>
 ) -> impl IntoView {
     let change_h1 = move |ev| set_h1.set(Some(event_target_checked(&ev)));
     let change_h2 = move |ev| set_h2.set(Some(event_target_checked(&ev)));
@@ -67,10 +99,89 @@ pub fn Main(
             set_h1a.set(Some(false));
         }
     };
+    let change_h2_auslagen = move |ev| set_h2a.set(Some(event_target_checked(&ev)));
+    let change_h2_sonstige_auslagen = move |ev| {
+        set_h2sa.set(Some(event_target_value(&ev).parse::<f64>().unwrap_or(0.0)));
+        if event_target_value(&ev).parse::<f64>().unwrap_or(0.0) != 0.0 {
+            set_h2a.set(Some(true));
+        } else {
+            set_h2a.set(Some(false));
+        }
+    };
     let change_n5110 = move |ev| set_n5110.set(Some(event_target_checked(&ev)));
     let change_n5111 = move |ev| set_n5111.set(Some(event_target_checked(&ev)));
     let change_n3200 = move |ev| set_n3200.set(Some(event_target_checked(&ev)));
     let change_n3201 = move |ev| set_n3201.set(Some(event_target_checked(&ev)));
+    let change_n3202 = move |ev| set_n3202.set(Some(event_target_checked(&ev)));
+    let change_h2_pauschale = move |ev| set_h2p.set(Some(event_target_checked(&ev)));
+        let change_n5122 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5122.set(Some(value));
+        if value {
+            set_n5120.set(Some(false));
+            set_n5121.set(Some(false));
+        }
+    };
+    let change_n5120 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5120.set(Some(value));
+        if value {
+            set_n5122.set(Some(false));
+            set_n5121.set(Some(false));
+            set_n5123.set(Some(false));
+            set_n5124.set(Some(false));
+        }
+    };
+    let change_n5121 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5121.set(Some(value));
+        if value {
+            set_n5122.set(Some(false));
+            set_n5120.set(Some(false));
+            set_n5123.set(Some(false));
+            set_n5124.set(Some(false));
+        }
+    };
+    let change_n5123 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5123.set(Some(value));
+        if value {
+            set_n5122.set(Some(true));
+            set_n5120.set(Some(false));
+            set_n5121.set(Some(false));
+            set_n5124.set(Some(false));
+        }
+    };
+    let change_n5124 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5124.set(Some(value));
+        if value {
+            set_n5122.set(Some(true));
+            set_n5120.set(Some(false));
+            set_n5121.set(Some(false));
+            set_n5123.set(Some(false));
+        }
+    };
+    let change_n5130 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5130.set(Some(value));
+    };
+    let change_n5131 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5131.set(Some(value));
+        if value {
+            set_n5130.set(Some(true));
+            set_n5132.set(Some(false));
+        }
+    };
+    let change_n5132 = move |ev| {
+        let value = event_target_checked(&ev);
+        set_n5132.set(Some(value));
+        if value {
+            set_n5130.set(Some(true));
+            set_n5131.set(Some(false));
+        }
+    };
 
     view! {
         <div class=move || if v.get().unwrap_or(0) != 1 { // Container einblenden, wenn nicht "nur vorläufiger Rechtsschutz" ausgewählt ist 

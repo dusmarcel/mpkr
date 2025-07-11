@@ -123,7 +123,7 @@ pub fn pauschale(gebuehren: f64) -> f64 {
     if gebuehren * 0.2 > 20.0 {
         20.0
     } else {
-        gebuehren * 0.2
+       gebuehren * 0.2
     }
 }
 
