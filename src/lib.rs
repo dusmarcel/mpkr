@@ -19,6 +19,17 @@ use crate::components::{
 
 #[component]
 pub fn MPKR() -> impl IntoView {
+    // Stand der anzuwendenen Normen
+    let (rg, set_rg) = query_signal_with_options::<u32>(
+        "v", 
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+    let (gg, set_gg) = query_signal_with_options::<u32>(
+        "v", 
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });    
+    let (sk, set_sk) = query_signal_with_options::<u32>(
+        "v", 
+        NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
+
     // Streitwerte
     let (v, set_v) = query_signal_with_options::<u32>(
         "v", 
@@ -39,8 +50,8 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     Effect::new(move |_| {
         if t_changed.get() || p_changed.get() {
-            set_s.set(Some(fees::default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1))));
-            set_sv.set(Some(fees::default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1)) / 2.0));
+            set_s.set(Some(fees::default_streitwert(t.get().unwrap_or(0), p.get().unwrap_or(1), sk.get().unwrap_or(0))));
+            set_sv.set(Some(fees::default_streitwert(t.get().unwrap_or(0), p.get().unwrap_or(1), sk.get().unwrap_or(0)) / 2.0));
         }
     });
 
@@ -107,7 +118,6 @@ pub fn MPKR() -> impl IntoView {
             }
         }
     });
-
     let verfgeb49_h1 = Memo::new( move |_| {
         if n3101.get().unwrap_or(false) {
             0.8 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
@@ -220,7 +230,6 @@ pub fn MPKR() -> impl IntoView {
             }
         }
     });
-
     let verfgeb49_h2 = Memo::new( move |_| {
         if n3201.get().unwrap_or(false) {
             1.1 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
@@ -232,7 +241,6 @@ pub fn MPKR() -> impl IntoView {
             }
         }
     });
-
     let (n3202, set_n3202) = query_signal_with_options::<bool>(
         "n3202",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
@@ -250,7 +258,6 @@ pub fn MPKR() -> impl IntoView {
             0.0
         }
     });
-
     let (h2p, set_h2p) = query_signal_with_options::<bool>(
         "h2p",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
@@ -336,7 +343,6 @@ pub fn MPKR() -> impl IntoView {
             }
         }
     });
-
     let (n3210, set_n3210) = query_signal_with_options::<bool>(
         "n3210",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
@@ -424,7 +430,6 @@ pub fn MPKR() -> impl IntoView {
         }
         summe
     });
-
     let summe_rvg49_h = Memo::new(move |_| {
         let mut summe = 0.0;
         if h1.get().unwrap_or(true) {   
@@ -447,7 +452,6 @@ pub fn MPKR() -> impl IntoView {
         }      
         summe        
     });
-
     let summe_gkg_h = Memo::new(move |_| {
         let mut summe = 0.0;
         if h1.get().unwrap_or(true) { summe += gkg_h1.get(); }
@@ -498,7 +502,6 @@ pub fn MPKR() -> impl IntoView {
             }
         }
     });
-
     let (n3104v, set_n3104v) = query_signal_with_options::<bool>(
         "n3104v",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
@@ -577,7 +580,6 @@ pub fn MPKR() -> impl IntoView {
             }
         }
     });
-
     let verfgeb49_v2 = Memo::new( move |_| {
         if n3201v.get().unwrap_or(false) {
             1.1 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
@@ -664,7 +666,6 @@ pub fn MPKR() -> impl IntoView {
         }
         summe
     });
-
     let summe_rvg49_v = Memo::new(move |_| {
         let mut summe = 0.0;
         if v1.get().unwrap_or(true) {   
@@ -681,7 +682,6 @@ pub fn MPKR() -> impl IntoView {
         }
         summe
     });
-
     let summe_gkg_v = Memo::new(move |_| {
         let mut summe = 0.0;
         if v1.get().unwrap_or(true) { summe += gkg_v1.get(); }
@@ -728,8 +728,8 @@ pub fn MPKR() -> impl IntoView {
 
     view! {
         <Intro />
-        <Status />
-        <Value v=v set_v=set_v set_t_changed=set_t_changed t=t set_t=set_t set_p_changed=set_p_changed p=p set_p=set_p s=s set_s=set_s sv=sv set_sv=set_sv />
+        <Status rg=rg set_rg=set_rg gg=gg set_gg=set_gg sk=sk set_sk=set_sk />
+        <Value sk=sk v=v set_v=set_v set_t_changed=set_t_changed t=t set_t=set_t set_p_changed=set_p_changed p=p set_p=set_p s=s set_s=set_s sv=sv set_sv=set_sv />
         <Extrajudicial v=v a=a set_a=set_a g=g set_g=set_g gs=gs set_gs=set_gs n2300=n2300 ap=ap set_ap=set_ap aa=aa set_aa=set_aa asa=asa set_asa=set_asa summe_aussergerichtlich=summe_aussergerichtlich />
         <Main v=v a=a h1=h1 set_h1=set_h1 h2=h2 set_h2=set_h2 h3=h3 set_h3=set_h3 n3100=n3100 set_n3100=set_n3100 n3101=n3101 set_n3101=set_n3101 verfgeb13_h1=verfgeb13_h1 verfgeb49_h1=verfgeb49_h1 anr=anr set_anr=set_anr anrechnung13=anrechnung13 anrechnung49=anrechnung49 n3104=n3104 set_n3104=set_n3104 tgeb13_h1=tgeb13_h1 tgeb49_h1=tgeb49_h1 h1p=h1p set_h1p=set_h1p pauschale13_h1=pauschale13_h1 pauschale49_h1=pauschale49_h1 h1a=h1a set_h1a=set_h1a h1sa=h1sa set_h1sa=set_h1sa n5110=n5110 set_n5110=set_n5110 n5111=n5111 set_n5111=set_n5111 gkg_h1=gkg_h1 n3200=n3200 set_n3200=set_n3200 n3201=n3201 set_n3201=set_n3201 verfgeb13_h2=verfgeb13_h2 verfgeb49_h2=verfgeb49_h2 n3202=n3202 set_n3202=set_n3202 tgeb13_h2=tgeb13_h2 tgeb49_h2=tgeb49_h2 h2p=h2p set_h2p=set_h2p pauschale13_h2=pauschale13_h2 pauschale49_h2=pauschale49_h2 h2a=h2a set_h2a=set_h2a h2sa=h2sa set_h2sa=set_h2sa n5122=n5122 set_n5122=set_n5122 n5120=n5120 set_n5120=set_n5120 n5121=n5121 set_n5121=set_n5121 n5123=n5123 set_n5123=set_n5123 n5124=n5124 set_n5124=set_n5124 gkg_h2=gkg_h2 n3206=n3206 set_n3206=set_n3206 n3207=n3207 set_n3207=set_n3207 verfgeb13_h3=verfgeb13_h3 verfgeb49_h3=verfgeb49_h3 n3210=n3210 set_n3210=set_n3210 tgeb13_h3=tgeb13_h3 tgeb49_h3=tgeb49_h3 h3p=h3p set_h3p=set_h3p pauschale13_h3=pauschale13_h3 pauschale49_h3=pauschale49_h3 h3a=h3a set_h3a=set_h3a h3sa=h3sa set_h3sa=set_h3sa n5130=n5130 set_n5130=set_n5130 n5131=n5131 set_n5131=set_n5131 n5132=n5132 set_n5132=set_n5132 gkg_h3=gkg_h3 summe_rvg13_h=summe_rvg13_h summe_rvg49_h=summe_rvg49_h summe_gkg_h=summe_gkg_h />
         <Interim v=v v1=v1 set_v1=set_v1 v2=v2 set_v2=set_v2 n3100v=n3100v set_n3100v=set_n3100v n3101v=n3101v set_n3101v=set_n3101v verfgeb13_v1=verfgeb13_v1 verfgeb49_v1=verfgeb49_v1 n3104v=n3104v set_n3104v=set_n3104v tgeb13_v1=tgeb13_v1 tgeb49_v1=tgeb49_v1 v1p=v1p set_v1p=set_v1p pauschale13_v1=pauschale13_v1 pauschale49_v1=pauschale49_v1 v1a=v1a set_v1a=set_v1a v1sa=v1sa set_v1sa=set_v1sa n5210=n5210 set_n5210=set_n5210 n5211=n5211 set_n5211=set_n5211 gkg_v1=gkg_v1 n3200v=n3200v set_n3200v=set_n3200v n3201v=n3201v set_n3201v=set_n3201v verfgeb13_v2=verfgeb13_v2 verfgeb49_v2=verfgeb49_v2 n3202v=n3202v set_n3202v=set_n3202v tgeb13_v2=tgeb13_v2 tgeb49_v2=tgeb49_v2 v2p=v2p set_v2p=set_v2p pauschale13_v2=pauschale13_v2 pauschale49_v2=pauschale49_v2 v2a=v2a set_v2a=set_v2a v2sa=v2sa set_v2sa=set_v2sa n5240=n5240 set_n5240=set_n5240 n5241=n5241 set_n5241=set_n5241 gkg_v2=gkg_v2 summe_rvg13_v=summe_rvg13_v summe_rvg49_v=summe_rvg49_v summe_gkg_v=summe_gkg_v />

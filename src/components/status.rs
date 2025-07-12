@@ -1,7 +1,14 @@
 use leptos::prelude::*;
 
 #[component]
-pub fn Status() -> impl IntoView {
+pub fn Status(
+    rg: Memo<Option<u32>>,
+    set_rg: SignalSetter<Option<u32>>,
+    gg: Memo<Option<u32>>,
+    set_gg: SignalSetter<Option<u32>>,
+    sk: Memo<Option<u32>>,
+    set_sk: SignalSetter<Option<u32>>
+) -> impl IntoView {
     view! {
         <div class="container max-w-screen-xl mx-auto px-4 bg-linear-to-b from-stone-50 to-stone-300">
             <h2 class="pt-4 text-2xl font-medium">

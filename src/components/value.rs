@@ -6,6 +6,7 @@ use crate::popover;
 
 #[component]
 pub fn Value(
+    sk: Memo<Option<u32>>,
     v: Memo<Option<u32>>,
     set_v: SignalSetter<Option<u32>>,
     set_t_changed: WriteSignal<bool>,
@@ -56,16 +57,16 @@ pub fn Value(
             </p>
             <p>
                 <select class="p-1 border-2 border-stone-400 rounded-lg" aria-label="Auswahl des Themas" id="thema" on:change=change_thema>
-                    <option value="0" selected=move || t.get().unwrap_or(4) == 0>"Asylrecht: Zulässigkeit (z.B. Dublin, Drittstaatenfall, Folgeantrag)"</option>
-                    <option value="1" selected=move || t.get().unwrap_or(4) == 1>"Asylrecht: Anerkennungsverfahren"</option>
-                    <option value="2" selected=move || t.get().unwrap_or(4) == 2>"Asylrecht: Widerruf/Rücknahme"</option>
-                    <option value="3" selected=move || t.get().unwrap_or(4) == 3>"Asylrecht: Untätigkeitsklage"</option>
-                    <option value="4" selected=move || t.get().unwrap_or(4) == 4>"Aufenthaltstitel inkl. Untätigkeitsklage"</option>
-                    <option value="5" selected=move || t.get().unwrap_or(4) == 5>"Ausweisung"</option>
-                    <option value="6" selected=move || t.get().unwrap_or(4) == 6>"Pass/Passersatz"</option>
-                    <option value="7" selected=move || t.get().unwrap_or(4) == 7>"Duldung und Abschiebung inkl. Ausbildungs-/Beschäftigungsduldung,
+                    <option value="0" selected=move || t.get().unwrap_or(0) == 0>"Befristete Aufenthaltsrechte, z.B. Aufenthaltserlaubnis, inkl. Untätigkeitsklage und Verlust, z.B. durcn Erlöschen oder Ausweisung"</option>
+                    <option value="1" selected=move || t.get().unwrap_or(0) == 1>"Unbefristete Aufenthaltsrechte, z.B. Niederlassungserlaubnis, inkl. Untätigkeitsklage und Verlust, z.B. durcn Erlöschen oder Ausweisung"</option>
+                    <option value="2" selected=move || t.get().unwrap_or(0) == 2>"Pass/Passersatz"</option>
+                    <option value="3" selected=move || t.get().unwrap_or(0) == 3>"Duldung und Abschiebung inkl. Ausbildungs-/Beschäftigungsduldung,
                         Untätigkeitsklage"</option>
-                    <option value="8" selected=move || t.get().unwrap_or(4) == 8>"Einbürgerung und Feststellung der Staatsangehörigkeit"</option>
+                    <option value="4" selected=move || t.get().unwrap_or(0) == 4>"Einbürgerung und Feststellung der Staatsangehörigkeit"</option>
+                    <option value="5" selected=move || t.get().unwrap_or(0) == 5>"Asylrecht: Zulässigkeit (z.B. Dublin, Drittstaatenfall, Folgeantrag)"</option>
+                    <option value="6" selected=move || t.get().unwrap_or(0) == 6>"Asylrecht: Anerkennungsverfahren"</option>
+                    <option value="7" selected=move || t.get().unwrap_or(0) == 7>"Asylrecht: Widerruf/Rücknahme"</option>
+                    <option value="8" selected=move || t.get().unwrap_or(0) == 8>"Asylrecht: Untätigkeitsklage"</option>
                 </select>
             </p>
             <div>
@@ -117,9 +118,9 @@ pub fn Value(
                                     type="text"
                                     class="px-1 border-2 border-stone-400 rounded-lg text-right"
                                     value=move || if v.get().unwrap_or(0) != 1 {
-                                        s.get().unwrap_or(fees::default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1)))
+                                        s.get().unwrap_or(fees::default_streitwert(t.get().unwrap_or(0), p.get().unwrap_or(1), sk.get().unwrap_or(0)))
                                     } else {
-                                        sv.get().unwrap_or(fees::default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1)) / 2.0)
+                                        sv.get().unwrap_or(fees::default_streitwert(t.get().unwrap_or(0), p.get().unwrap_or(1), sk.get().unwrap_or(0)) / 2.0)
                                     }
                                     on:change=change_streitwert
                                     prop:value=move || if v.get().unwrap_or(0) != 1 {
@@ -169,7 +170,7 @@ pub fn Value(
                                 <input
                                     type="text"
                                     class="px-1 border-2 border-stone-400 rounded-lg text-right"
-                                    value=move || sv.get().unwrap_or(fees::default_streitwert(t.get().unwrap_or(4), p.get().unwrap_or(1)) / 2.0)
+                                    value=move || sv.get().unwrap_or(fees::default_streitwert(t.get().unwrap_or(0), p.get().unwrap_or(1), sk.get().unwrap_or(0)) / 2.0)
                                     on:change=change_streitwert_vorl
                                     prop:value=move || format_euro(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
                                 />
