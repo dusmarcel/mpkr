@@ -21,13 +21,13 @@ use crate::components::{
 pub fn MPKR() -> impl IntoView {
     // Stand der anzuwendenen Normen
     let (rg, set_rg) = query_signal_with_options::<u32>(
-        "v", 
+        "rg", 
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let (gg, set_gg) = query_signal_with_options::<u32>(
-        "v", 
+        "gg", 
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });    
     let (sk, set_sk) = query_signal_with_options::<u32>(
-        "v", 
+        "sk", 
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
 
     // Streitwerte
@@ -66,7 +66,7 @@ pub fn MPKR() -> impl IntoView {
         "gs",
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let n2300 = Memo::new( move |_| {
-        gs.get().unwrap_or(1.3) * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+        gs.get().unwrap_or(1.3) * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
     });
     let (ap, set_ap) = query_signal_with_options::<bool>(
         "ap",
@@ -109,10 +109,10 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let verfgeb13_h1 = Memo::new( move |_| {
         if n3101.get().unwrap_or(false) {
-            0.8 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            0.8 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
         } else {
             if n3100.get().unwrap_or(true) {
-                1.3 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+                1.3 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
             } else {
                 0.0
             }
@@ -120,10 +120,10 @@ pub fn MPKR() -> impl IntoView {
     });
     let verfgeb49_h1 = Memo::new( move |_| {
         if n3101.get().unwrap_or(false) {
-            0.8 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            0.8 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
         } else {
             if n3100.get().unwrap_or(true) {
-                1.3 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+                1.3 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
             } else {
                 0.0
             }
@@ -135,8 +135,8 @@ pub fn MPKR() -> impl IntoView {
     let anrechnung13 = Memo::new(move |_| {
         if anr.get().unwrap_or(a.get().unwrap_or(false)) && a.get().unwrap_or(false) && g.get().unwrap_or(true) && (n3100.get().unwrap_or(true) || n3101.get().unwrap_or(false)) {
             let mut anrechnungsbetrag = 0.5 * n2300.get();
-            if anrechnungsbetrag > 0.75 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT)) {
-                anrechnungsbetrag = 0.75 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT));
+            if anrechnungsbetrag > 0.75 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0)) {
+                anrechnungsbetrag = 0.75 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0));
             }
             anrechnungsbetrag
         } else {
@@ -157,14 +157,14 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let tgeb13_h1 = Memo::new( move |_| {
         if n3104.get().unwrap_or(true) {
-            1.2 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            1.2 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
         } else {
             0.0
         }
     });
     let tgeb49_h1 = Memo::new( move |_| {
         if n3104.get().unwrap_or(true) {
-            1.2 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            1.2 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
         } else {
             0.0
         }
@@ -202,9 +202,9 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let gkg_h1 = Memo::new ( move |_| {
         if n5111.get().unwrap_or(false) {
-            1.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            1.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT), gg.get().unwrap_or(0))
         } else if n5110.get().unwrap_or(true) {
-            3.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            3.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT), gg.get().unwrap_or(0))
         } else {
             0.0
         }
@@ -221,10 +221,10 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let verfgeb13_h2 = Memo::new( move |_| {
         if n3201.get().unwrap_or(false) {
-            1.1 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            1.1 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
         } else {
             if n3200.get().unwrap_or(true) {
-                1.6 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+                1.6 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
             } else {
                 0.0
             }
@@ -232,10 +232,10 @@ pub fn MPKR() -> impl IntoView {
     });
     let verfgeb49_h2 = Memo::new( move |_| {
         if n3201.get().unwrap_or(false) {
-            1.1 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            1.1 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
         } else {
             if n3200.get().unwrap_or(true) {
-                1.6 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+                1.6 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
             } else {
                 0.0
             }
@@ -246,14 +246,14 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let tgeb13_h2 = Memo::new( move |_| {
         if n3202.get().unwrap_or(true) {
-            1.2 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            1.2 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
         } else {
             0.0
         }
     });
     let tgeb49_h2 = Memo::new( move |_| {
         if n3202.get().unwrap_or(true) {
-            1.2 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            1.2 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
         } else {
             0.0
         }
@@ -300,13 +300,13 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let gkg_h2 = Memo::new ( move |_| {
         if n5123.get().unwrap_or(false) || n5120.get().unwrap_or(false) {
-            1.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            1.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT), gg.get().unwrap_or(0))
         } else if n5121.get().unwrap_or(false) {
-            0.5 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            0.5 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT), gg.get().unwrap_or(0))
         } else if n5124.get().unwrap_or(false) {
-            2.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            2.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT), gg.get().unwrap_or(0))
         } else if n5122.get().unwrap_or(true) {
-            4.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            4.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT), gg.get().unwrap_or(0))
         } else {
             0.0
         }
@@ -323,10 +323,10 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let verfgeb13_h3 = Memo::new( move |_| {
         if n3207.get().unwrap_or(false) {
-            1.1 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            1.1 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
         } else {
             if n3206.get().unwrap_or(true) {
-                1.6 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+                1.6 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
             } else {
                 0.0
             }
@@ -334,10 +334,10 @@ pub fn MPKR() -> impl IntoView {
     });
     let verfgeb49_h3 = Memo::new( move |_| {
         if n3207.get().unwrap_or(false) {
-            1.1 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            1.1 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
         } else {
             if n3206.get().unwrap_or(true) {
-                1.6 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+                1.6 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
             } else {
                 0.0
             }
@@ -348,14 +348,14 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let tgeb13_h3 = Memo::new( move |_| {
         if n3210.get().unwrap_or(true) {
-            1.5 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            1.5 * fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
         } else {
             0.0
         }
     });
     let tgeb49_h3 = Memo::new( move |_| {
         if n3210.get().unwrap_or(true) {
-            1.5 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            1.5 * fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0))
         } else {
             0.0
         }
@@ -397,11 +397,11 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let gkg_h3 = Memo::new ( move |_| {
         if n5132.get().unwrap_or(false) {
-            3.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            3.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT), gg.get().unwrap_or(0))
         } else if n5131.get().unwrap_or(false) {
-            1.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            1.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT), gg.get().unwrap_or(0))
         } else if n5130.get().unwrap_or(true) {
-            5.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT))
+            5.0 * fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT), gg.get().unwrap_or(0))
         } else {
             0.0
         }
@@ -482,10 +482,10 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let verfgeb13_v1 = Memo::new( move |_| {
         if n3101v.get().unwrap_or(false) {
-            0.8 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+            0.8 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0))
         } else {
             if n3100v.get().unwrap_or(true) {
-                1.3 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+                1.3 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0))
             } else {
                 0.0
             }
@@ -493,10 +493,10 @@ pub fn MPKR() -> impl IntoView {
     });
     let verfgeb49_v1 = Memo::new( move |_| {
         if n3101v.get().unwrap_or(false) {
-            0.8 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+            0.8 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0))
         } else {
             if n3100v.get().unwrap_or(true) {
-                1.3 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+                1.3 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0))
             } else {
                 0.0
             }
@@ -507,14 +507,14 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let tgeb13_v1 = Memo::new( move |_| {
         if n3104v.get().unwrap_or(false) {
-            1.2 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+            1.2 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0))
         } else {
             0.0
         }
     });
     let tgeb49_v1 = Memo::new( move |_| {
         if n3104v.get().unwrap_or(false) {
-            1.2 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+            1.2 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0))
         } else {
             0.0
         }
@@ -552,9 +552,9 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let gkg_v1 = Memo::new ( move |_| {
         if n5211.get().unwrap_or(false) {
-            0.5 * fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+            0.5 * fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), gg.get().unwrap_or(0))
         } else if n5210.get().unwrap_or(true) {
-            1.5 * fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+            1.5 * fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), gg.get().unwrap_or(0))
         } else {
             0.0
         }
@@ -571,10 +571,10 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let verfgeb13_v2 = Memo::new( move |_| {
         if n3201v.get().unwrap_or(false) {
-            1.1 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+            1.1 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0))
         } else {
             if n3200v.get().unwrap_or(true) {
-                1.6 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+                1.6 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0))
             } else {
                 0.0
             }
@@ -582,10 +582,10 @@ pub fn MPKR() -> impl IntoView {
     });
     let verfgeb49_v2 = Memo::new( move |_| {
         if n3201v.get().unwrap_or(false) {
-            1.1 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+            1.1 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0))
         } else {
             if n3200v.get().unwrap_or(true) {
-                1.6 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+                1.6 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0))
             } else {
                 0.0
             }
@@ -596,14 +596,14 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let tgeb13_v2 = Memo::new( move |_| {
         if n3202v.get().unwrap_or(false) {
-            1.2 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+            1.2 * fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0))
         } else {
             0.0
         }
     });
     let tgeb49_v2 = Memo::new( move |_| {
         if n3202v.get().unwrap_or(false) {
-            1.2 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+            1.2 * fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0))
         } else {
             0.0
         }
@@ -641,9 +641,9 @@ pub fn MPKR() -> impl IntoView {
         NavigateOptions { resolve: true, replace: false, scroll: false, state: State::new(None) });
     let gkg_v2 = Memo::new ( move |_| {
         if n5241.get().unwrap_or(false) {
-            1.0 * fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+            1.0 * fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), gg.get().unwrap_or(0))
         } else if n5240.get().unwrap_or(true) {
-            2.0 * fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))
+            2.0 * fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), gg.get().unwrap_or(0))
         } else {
             0.0
         }
@@ -729,7 +729,7 @@ pub fn MPKR() -> impl IntoView {
     view! {
         <Intro />
         <Status rg=rg set_rg=set_rg gg=gg set_gg=set_gg sk=sk set_sk=set_sk />
-        <Value sk=sk v=v set_v=set_v set_t_changed=set_t_changed t=t set_t=set_t set_p_changed=set_p_changed p=p set_p=set_p s=s set_s=set_s sv=sv set_sv=set_sv />
+        <Value rg=rg gg=gg sk=sk v=v set_v=set_v set_t_changed=set_t_changed t=t set_t=set_t set_p_changed=set_p_changed p=p set_p=set_p s=s set_s=set_s sv=sv set_sv=set_sv />
         <Extrajudicial v=v a=a set_a=set_a g=g set_g=set_g gs=gs set_gs=set_gs n2300=n2300 ap=ap set_ap=set_ap aa=aa set_aa=set_aa asa=asa set_asa=set_asa summe_aussergerichtlich=summe_aussergerichtlich />
         <Main v=v a=a h1=h1 set_h1=set_h1 h2=h2 set_h2=set_h2 h3=h3 set_h3=set_h3 n3100=n3100 set_n3100=set_n3100 n3101=n3101 set_n3101=set_n3101 verfgeb13_h1=verfgeb13_h1 verfgeb49_h1=verfgeb49_h1 anr=anr set_anr=set_anr anrechnung13=anrechnung13 anrechnung49=anrechnung49 n3104=n3104 set_n3104=set_n3104 tgeb13_h1=tgeb13_h1 tgeb49_h1=tgeb49_h1 h1p=h1p set_h1p=set_h1p pauschale13_h1=pauschale13_h1 pauschale49_h1=pauschale49_h1 h1a=h1a set_h1a=set_h1a h1sa=h1sa set_h1sa=set_h1sa n5110=n5110 set_n5110=set_n5110 n5111=n5111 set_n5111=set_n5111 gkg_h1=gkg_h1 n3200=n3200 set_n3200=set_n3200 n3201=n3201 set_n3201=set_n3201 verfgeb13_h2=verfgeb13_h2 verfgeb49_h2=verfgeb49_h2 n3202=n3202 set_n3202=set_n3202 tgeb13_h2=tgeb13_h2 tgeb49_h2=tgeb49_h2 h2p=h2p set_h2p=set_h2p pauschale13_h2=pauschale13_h2 pauschale49_h2=pauschale49_h2 h2a=h2a set_h2a=set_h2a h2sa=h2sa set_h2sa=set_h2sa n5122=n5122 set_n5122=set_n5122 n5120=n5120 set_n5120=set_n5120 n5121=n5121 set_n5121=set_n5121 n5123=n5123 set_n5123=set_n5123 n5124=n5124 set_n5124=set_n5124 gkg_h2=gkg_h2 n3206=n3206 set_n3206=set_n3206 n3207=n3207 set_n3207=set_n3207 verfgeb13_h3=verfgeb13_h3 verfgeb49_h3=verfgeb49_h3 n3210=n3210 set_n3210=set_n3210 tgeb13_h3=tgeb13_h3 tgeb49_h3=tgeb49_h3 h3p=h3p set_h3p=set_h3p pauschale13_h3=pauschale13_h3 pauschale49_h3=pauschale49_h3 h3a=h3a set_h3a=set_h3a h3sa=h3sa set_h3sa=set_h3sa n5130=n5130 set_n5130=set_n5130 n5131=n5131 set_n5131=set_n5131 n5132=n5132 set_n5132=set_n5132 gkg_h3=gkg_h3 summe_rvg13_h=summe_rvg13_h summe_rvg49_h=summe_rvg49_h summe_gkg_h=summe_gkg_h />
         <Interim v=v v1=v1 set_v1=set_v1 v2=v2 set_v2=set_v2 n3100v=n3100v set_n3100v=set_n3100v n3101v=n3101v set_n3101v=set_n3101v verfgeb13_v1=verfgeb13_v1 verfgeb49_v1=verfgeb49_v1 n3104v=n3104v set_n3104v=set_n3104v tgeb13_v1=tgeb13_v1 tgeb49_v1=tgeb49_v1 v1p=v1p set_v1p=set_v1p pauschale13_v1=pauschale13_v1 pauschale49_v1=pauschale49_v1 v1a=v1a set_v1a=set_v1a v1sa=v1sa set_v1sa=set_v1sa n5210=n5210 set_n5210=set_n5210 n5211=n5211 set_n5211=set_n5211 gkg_v1=gkg_v1 n3200v=n3200v set_n3200v=set_n3200v n3201v=n3201v set_n3201v=set_n3201v verfgeb13_v2=verfgeb13_v2 verfgeb49_v2=verfgeb49_v2 n3202v=n3202v set_n3202v=set_n3202v tgeb13_v2=tgeb13_v2 tgeb49_v2=tgeb49_v2 v2p=v2p set_v2p=set_v2p pauschale13_v2=pauschale13_v2 pauschale49_v2=pauschale49_v2 v2a=v2a set_v2a=set_v2a v2sa=v2sa set_v2sa=set_v2sa n5240=n5240 set_n5240=set_n5240 n5241=n5241 set_n5241=set_n5241 gkg_v2=gkg_v2 summe_rvg13_v=summe_rvg13_v summe_rvg49_v=summe_rvg49_v summe_gkg_v=summe_gkg_v />

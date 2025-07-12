@@ -6,6 +6,8 @@ use crate::popover;
 
 #[component]
 pub fn Value(
+    rg: Memo<Option<u32>>,
+    gg: Memo<Option<u32>>,
     sk: Memo<Option<u32>>,
     v: Memo<Option<u32>>,
     set_v: SignalSetter<Option<u32>>,
@@ -132,25 +134,25 @@ pub fn Value(
                             </td>
                             <td class="px-1 text-right">
                                 { move || if v.get().unwrap_or(0) != 1 {
-                                        format_euro(fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT)))
+                                        format_euro(fees::rvg13_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0)))
                                     } else {
-                                        format_euro(fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0)))
+                                        format_euro(fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0)))
                                     }
                                 }
                             </td>
                             <td class="px-1 text-right">
                                 { move || if v.get().unwrap_or(0) != 1 {
-                                        format_euro(fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT)))
+                                        format_euro(fees::rvg49_geb(s.get().unwrap_or(fees::AUFFANGSTREITWERT), rg.get().unwrap_or(0)))
                                     } else {
-                                        format_euro(fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0)))
+                                        format_euro(fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0)))
                                     }
                                 }
                             </td>
                             <td class="px-1 text-right">
                                 { move || if v.get().unwrap_or(0) != 1 {
-                                        format_euro(fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT)))
+                                        format_euro(fees::gkg_geb(t.get().unwrap_or(4), s.get().unwrap_or(fees::AUFFANGSTREITWERT), gg.get().unwrap_or(0)))
                                     } else {
-                                        format_euro(fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0)))
+                                        format_euro(fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), gg.get().unwrap_or(0)))
                                     }
                                 }
                             </td>                     
@@ -176,13 +178,13 @@ pub fn Value(
                                 />
                             </td>
                             <td class="px-1 text-right">
-                                { move || format_euro(fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))) }
+                                { move || format_euro(fees::rvg13_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0))) }
                             </td>
                             <td class="px-1 text-right">
-                                { move || format_euro(fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))) }
+                                { move || format_euro(fees::rvg49_geb(sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), rg.get().unwrap_or(0))) }
                             </td>
                             <td class="px-1 text-right">
-                                { move || format_euro(fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0))) }
+                                { move || format_euro(fees::gkg_geb(t.get().unwrap_or(4), sv.get().unwrap_or(fees::AUFFANGSTREITWERT / 2.0), gg.get().unwrap_or(0))) }
                             </td>
                         </tr>
                     </tbody>
