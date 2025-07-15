@@ -29,12 +29,7 @@ pub fn Notes() -> impl IntoView {
                 Anrechnung der Geschäftsgebühr auf die Verfahrensgebühr (Vorbemerkung 4 zu Teil 3 VV RVG) erfolgt immer auf
                 die 1. Instanz des Hauptsacheverfahrens, da dies auch in der Praxis nahezu immer der Fall sein wird. Soweit
                 zumindest theoretisch auch Fälle konstruiert werden können, in denen die Anrechnung auf die Verfahrensgebühr
-                in einer höheren Insatz erfolgt, bleiben diese Fälle hier um der Einfachheit willen unberücksichtigt. Zudem
-                kann es praktisch auch durchaus vorkommen, dass auf unterschiedliche Instanzen unterschiedliche Normfassungen
-                anzuwenden sind. Aus Praktikabilitätsgründen kann hier aber immer nur eine Normfassung ausgewählt werden,
-                die dann auf alle Instanzen angewendet wird. Generell freue ich mich über Feedback. Falls es also ein
-                Bedürfnis geben sollte, die Fähigkeiten des Rechners zu erweitern, darf man mir das gerne mitteilen, dann
-                schaue ich, was sich machen lässt."
+                in einer höheren Insatz erfolgt, bleiben diese Fälle hier um der Einfachheit willen unberücksichtigt."
             </p>
             <p>
                 "Die Abkürzung PKH steht für Prozesskostenhilfe. Da die Wertgebühren bei Prozesskostenhilfe teilweise abweichen,
