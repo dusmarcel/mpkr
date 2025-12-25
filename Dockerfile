@@ -1,5 +1,6 @@
 FROM rust:latest AS build
 WORKDIR /build
+RUN rustup target add wasm32-unknown-unknown
 RUN cargo install wasm-bindgen-cli
 RUN cargo install trunk
 COPY . .
