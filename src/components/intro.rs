@@ -8,7 +8,7 @@ pub fn Intro() -> impl IntoView {
                 "Migrationsrechtlicher Prozesskostenrechner"
             </h1>
             <p>
-                "Erstellt von "<a class="text-blue-600 hover:underline hover:text-violet-600" href="https://aufentha.lt">"Marcel Keienborg"</a>". Bitte beachte unbedingt auch die
+                "Erstellt von "<a class="text-violet-800 hover:underline hover:text-violet-900" href="https://aufentha.lt">"Marcel Keienborg"</a>". Bitte beachte unbedingt auch die
                 Hinweise unten auf dieser Seite."
             </p>
         </div>

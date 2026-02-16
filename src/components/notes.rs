@@ -11,9 +11,9 @@ pub fn Notes() -> impl IntoView {
             </h2>
             <p>
                 "Dieser Prozesskostenrechner berechnet gesetzliche Gebühren auf der Grundlage des 
-                Rechtsanwaltsvergütungsgesetzes ("<a class="text-blue-600 hover:underline hover:text-violet-600" href="https://dejure.org/gesetze/RVG">"RVG"</a>
-                "), des Gerichtskostengesetzes ("<a class="text-blue-600 hover:underline hover:text-violet-600" href="https://dejure.org/gesetze/GKG">"GKG"</a>
-                "), des "<a class="text-blue-600 hover:underline hover:text-violet-600" href="https://www.bverwg.de/rechtsprechung/streitwertkatalog">"Streitwertkatalogs"</a>
+                Rechtsanwaltsvergütungsgesetzes ("<a class="text-violet-800 hover:underline hover:text-violet-900" href="https://dejure.org/gesetze/RVG">"RVG"</a>
+                "), des Gerichtskostengesetzes ("<a class="text-violet-800 hover:underline hover:text-violet-900" href="https://dejure.org/gesetze/GKG">"GKG"</a>
+                "), des "<a class="text-violet-800 hover:underline hover:text-violet-900" href="https://www.bverwg.de/rechtsprechung/streitwertkatalog">"Streitwertkatalogs"</a>
                 " des Bundesverwaltungsgerichts und meiner Erfahrung mit der Interpretation dieser Vorgaben durch die
                 Verwaltungsgerichte vornehmlich in NRW. Der Rechner dient nur einer unverbindlichen
                 Orientierung und kann eine fachkundige Beratung nicht ersetzen. Seine Nutzung erfolgt insofern auf eigene
@@ -52,13 +52,13 @@ pub fn Notes() -> impl IntoView {
             </p>
             <p>
                 "Der Rechner ist zudem auch als Freie Software unter den Lizenzen Apache, Version 2.0, und MIT
-                veröffentlicht. Du kannst dir die Software also auch aus dem "<a class="text-blue-600 hover:underline hover:text-violet-600" href="https://github.com/dusmarcel/mpkr25">
+                veröffentlicht. Du kannst dir die Software also auch aus dem "<a class="text-violet-800 hover:underline hover:text-violet-900" href="https://github.com/dusmarcel/mpkr25">
                 "Repository"</a>" herunterladen und sie dann ganz auf einem Gerät deiner Wahl ausführen.
                 In diesem Falle hast du mit meinem Server gar nichts mehr zu tun, und die Notwendigkeit, Daten an meinen
                 Server zu übertragen, entfällt ganz."
             </p>
             <p>
-                "Und schließlich geht es hier noch zu meinem „"<a class="text-blue-600 hover:underline hover:text-violet-600" href="https://aufentha.lt/index.php/impressum/">"Impressum"</a>"“."
+                "Und schließlich geht es hier noch zu meinem „"<a class="text-violet-800 hover:underline hover:text-violet-900" href="https://aufentha.lt/index.php/impressum/">"Impressum"</a>"“."
             </p>
         </div>
     }

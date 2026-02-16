@@ -108,7 +108,7 @@ pub fn Value(
                         </tr>
                         <tr>
                             <td class="px-1">
-                                <input type="number" min="1" value=move || p.get().unwrap_or(1) class="border-2 border-stone-400 rounded-lg px-1" on:change=change_personen />
+                                <input type="number" min="1" value=move || p.get().unwrap_or(1) class="w-16 border-2 border-stone-400 rounded-lg px-1" on:change=change_personen />
                                 <button popovertarget="zahl-der-personen" class="border-2 border-stone-400 rounded-lg px-1 ml-1">"?"</button>
                                 <div id="zahl-der-personen" popover class="open:fixed open:left-1/2 open:top-1/4 open:-translate-x-1/2 open:max-w-lg open:w-full open:px-4 open:z-50 open:border-2 open:border-stone-400 open:rounded-lg open:bg-white open:shadow-lg">
                                     <h4 class="text-xl font-medium">"Zahl der Personen"</h4>
