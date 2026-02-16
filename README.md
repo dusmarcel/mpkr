@@ -22,13 +22,31 @@ $ cd mpkr
 
 ### Installation mit Docker
 
-Wenn Docker installiert ist und der daemon läuft, kann der Container einfach mit
+#### Entwicklung (Hot Reload)
+
+Wenn Docker installiert ist und der Daemon läuft, kann die Entwicklungsumgebung mit
 
 ```console
-$ docker compose up -d
+$ docker compose up --build dev
 ```
 
-erzeugt und gestartet werden. Der Rechner wird sodann über einen Webserver auf http://localhost:8025 bereitgestellt.
+gebaut und gestartet werden. Die Anwendung ist unter http://localhost:8025 erreichbar.
+
+Hinweise:
+- Die Quelltexte werden in den Container gemountet.
+- `trunk serve` beobachtet Änderungen und löst automatisch Rebuild/Reload aus.
+- Tailwind wird im Container verarbeitet.
+- Node-Abhängigkeiten (inkl. Tailwind) werden im Container installiert und in einem benannten Volume gecacht.
+
+#### Produktion (statisches Serving via nginx)
+
+Für das Produktionsprofil:
+
+```console
+$ docker compose --profile prod up --build prod
+```
+
+Die Anwendung ist dann unter http://localhost:8026 erreichbar.
 
 ### Installation mit Trunk
 
@@ -50,7 +68,7 @@ Die benötigten JavaScript- und WASM-Dateien werden erzeugt mit:
 $ trunk build --release
 ```
 
-trunk erzeugt einen Unterordner „dist“. Dessen Inhalt muss jetzt nur noch in das gewünschte Verzeichnis des Websververs verschoben oder kopiert werden.
+Trunk erzeugt einen Unterordner `dist`. Dessen Inhalt muss jetzt nur noch in das gewünschte Verzeichnis des Webservers verschoben oder kopiert werden.
 
 ## License
 

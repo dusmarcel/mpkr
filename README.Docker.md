@@ -1,22 +1,31 @@
-### Building and running your application
+### Entwicklung mit Hot Reload (Tailwind + Trunk)
 
-When you're ready, start your application by running:
-`docker compose up --build`.
+Starte die Entwicklungsumgebung mit:
 
-Your application will be available at http://localhost:8025.
+`docker compose up --build dev`
 
-### Deploying your application to the cloud
+Die Anwendung ist dann unter http://localhost:8025 erreichbar.
 
-First, build your image, e.g.: `docker build -t myapp .`.
-If your cloud uses a different CPU architecture than your development
-machine (e.g., you are on a Mac M1 and your cloud provider is amd64),
-you'll want to build the image for that platform, e.g.:
-`docker build --platform=linux/amd64 -t myapp .`.
+Hinweise:
+- Quellcode wird per Bind-Mount in den Container eingebunden.
+- `trunk serve` beobachtet Dateien und löst bei Änderungen automatisch einen Rebuild/Reload aus.
+- Tailwind wird im Dev-Container über die installierte CLI verarbeitet.
+- Die Node-Abhängigkeiten (inkl. Tailwind-Paket) werden im Container installiert und im benannten Volume `node-modules` gecacht.
 
-Then, push it to your registry, e.g. `docker push myregistry.com/myapp`.
+### Production Build und Auslieferung (nginx)
 
-Consult Docker's [getting started](https://docs.docker.com/go/get-started-sharing/)
-docs for more detail on building and pushing.
+Baue und starte das Production-Setup mit:
 
-### References
-* [Docker's Rust guide](https://docs.docker.com/language/rust/)
+`docker compose --profile prod up --build prod`
+
+Die Anwendung ist dann unter http://localhost:8026 erreichbar.
+
+### Eigenes Image bauen
+
+`docker build -t myapp .`
+
+Falls eine andere Zielarchitektur benötigt wird (z. B. amd64):
+
+`docker build --platform=linux/amd64 -t myapp .`
+
+Danach kann das Image wie gewohnt in eine Registry gepusht werden.

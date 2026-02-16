@@ -1,0 +1,7 @@
+{
+  "name": "mpkr",
+  "private": true,
+  "devDependencies": {
+    "tailwindcss": "^4.1.18"
+  }
+}

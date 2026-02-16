@@ -1,12 +1,31 @@
 services:
-  server:
+  dev:
     build:
       context: .
-      target: final
-    develop:
-      watch:
-        - action: rebuild
-          path: .
+      dockerfile: Dockerfile.dev
     ports:
-      - 127.0.0.1:8025:80
-    restart: always
+      - "127.0.0.1:8025:8080"
+    volumes:
+      - .:/app
+      - node-modules:/app/node_modules
+      - cargo-registry:/usr/local/cargo/registry
+      - cargo-git:/usr/local/cargo/git
+      - target-cache:/app/target
+    restart: unless-stopped
+
+  prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: final
+    ports:
+      - "127.0.0.1:8026:80"
+    restart: unless-stopped
+    profiles:
+      - prod
+
+volumes:
+  node-modules:
+  cargo-registry:
+  cargo-git:
+  target-cache:
